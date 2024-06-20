@@ -1,30 +1,57 @@
 """Pytest 1"""
 import json
+import pytest
 
 
-def test_perform_calculations(mocker):
+with open('shared_data.json', 'r', encoding="utf-8") as f:
+    data = json.load(f)
+
+
+@pytest.fixture
+def app():
+    """Create and configure a test app instance."""
+
+    @app.route('/test', methods=['POST'])
+    def test_route():
+        # Perform calculations using request form data
+        result = data["ar_sista_ack_nuvarde"]
+        return json.dumps(result)
+
+    yield app
+
+
+@pytest.fixture
+def client():
+    """A test client for the Flask app."""
+    return app.test_client()
+
+
+def test_perform_calculations(client):
     """Testing the basic logic of the calculus"""
-    # Mock the htmldata variables
-    mocked_htmldata = {
-        "År": 10,
-        "Grundinvestering": 2_000_000,
-        "Inbetalningar": 1_000_000,
-        "Utbetalningar": 300_000,
-        "Utbetalningar_0": 500_000,
-        "Rest": 200_000,
-        "Rörelsebindandekapital": 200_000,
-        "Kalkylräntan": 0.15,
-        "Skattesats": 0.3
+    # Mock the form data as it would be received in a request
+    form_data = {
+        "År": '10',
+        "Grundinvestering": '2000000',
+        "Inbetalningar": '1000000',
+        "Utbetalningar": '300000',
+        "Utbetalningar_0": '500000',
+        "Rest": '200000',
+        "Rörelsebindandekapital": '200000',
+        "Kalkylräntan": '0.15',
+        "Skattesats": '0.3'
     }
 
-    # Mock the request.form dictionary with mocked_htmldata
-    mocker.patch('flask.request.form', mocked_htmldata)
+    # Simulate a POST request with form data
+    response = client.post(
+        '/test', data=form_data,
+        content_type='application/x-www-form-urlencoded'
+    )
 
-    # Call the perform_calculations function
-    with open('shared_data.json', 'r', encoding="utf-8") as f:
-        data = json.load(f)
+    # Assert the response status code (if needed)
+    assert response.status_code == 200
 
-    result = round(data["ar_sista_ack_nuvarde"], 2)
+    # Decode the JSON response
+    result = json.loads(response.data.decode('utf-8'))
 
     # Assert the result based on expected calculations
-    assert result == 883_397.62
+    assert round(result["ar_sista_ack_nuvarde"], 2) == 883397.62
