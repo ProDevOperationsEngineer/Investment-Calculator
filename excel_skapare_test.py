@@ -230,7 +230,7 @@ excel_sheet.write("B15", skattesats)
 excel_document.close()
 
 subprocess.run(
-        ['python', 'green_or_red_changer.py'],
+        ['python', 'excel_colorizer.py'],
         capture_output=True,
         text=True,
         check=True
