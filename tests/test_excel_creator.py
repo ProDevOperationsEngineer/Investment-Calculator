@@ -1,33 +1,35 @@
 """Pytest 1"""
 import json
+from flask import Flask
 import pytest
 
-
+# Load shared data
 with open('shared_data.json', 'r', encoding="utf-8") as f:
     data = json.load(f)
 
-
-@pytest.fixture
-def app():
-    """Create and configure a test app instance."""
-
-    @app.route('/test', methods=['POST'])
-    def test_route():
-        # Perform calculations using request form data
-        result = data["ar_sista_ack_nuvarde"]
-        return json.dumps(result)
-
-    yield app
+# Assuming app is already defined globally
+app = Flask(__name__)
 
 
+# Define the route and its logic
+@app.route('/test', methods=['POST'])
+def test_route():
+    # Perform calculations using request form data
+    result = data["ar_sista_ack_nuvarde"]
+    return json.dumps(result)
+
+
+# Global client fixture
 @pytest.fixture
 def client():
     """A test client for the Flask app."""
-    return app.test_client()
+    with app.test_client() as client:
+        yield client
 
 
+# Test function
 def test_perform_calculations(client):
-    """Testing the basic logic of the calculus"""
+    """Testing the basic logic of the calculations"""
     # Mock the form data as it would be received in a request
     form_data = {
         "År": '10',
@@ -47,7 +49,7 @@ def test_perform_calculations(client):
         content_type='application/x-www-form-urlencoded'
     )
 
-    # Assert the response status code (if needed)
+    # Assert the response status code
     assert response.status_code == 200
 
     # Decode the JSON response
