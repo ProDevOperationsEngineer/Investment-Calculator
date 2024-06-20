@@ -1,6 +1,6 @@
 """Pytest 1"""
 import json
-from flask import Flask
+from flask import Flask, jsonify
 import pytest
 
 # Load shared data
@@ -29,6 +29,11 @@ def client():
 
 # Test function
 def test_perform_calculations(client):
+    perform_calculations(client)
+
+
+# Function to perform the calculations
+def perform_calculations(client):
     """Testing the basic logic of the calculations"""
     # Mock the form data as it would be received in a request
     form_data = {
@@ -42,7 +47,6 @@ def test_perform_calculations(client):
         "Kalkylräntan": '0.15',
         "Skattesats": '0.3'
     }
-
     # Simulate a POST request with form data
     response = client.post(
         '/test', data=form_data,
@@ -55,5 +59,14 @@ def test_perform_calculations(client):
     # Decode the JSON response
     result = json.loads(response.data.decode('utf-8'))
 
+    # Print result for debugging
+    print("Result:", result)
+
+    # Assert the type of result
+    assert isinstance(result, float), "Expected result to be a float"
+
     # Assert the result based on expected calculations
-    assert round(result["ar_sista_ack_nuvarde"], 2) == 883397.62
+    expected_value = 883397.62
+    actual_value = round(result, 2)
+    assert actual_value == expected_value, f"Expected value {expected_value}, but got {result['ar_sista_ack_nuvarde']}"
+
