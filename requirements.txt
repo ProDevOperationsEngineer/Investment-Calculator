@@ -1,2 +1,5 @@
 xlsxwriter
 pytest-mock
+flask
+requests
+openpyxl
