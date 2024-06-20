@@ -1,6 +1,7 @@
 """App konfiguration för att placera värden till variablar
 """
 import json
+import os
 import subprocess
 from flask import Flask, request, render_template, redirect, url_for
 
@@ -41,8 +42,18 @@ def submit():
             json.dump(htmldata, f)
 
         # Run the other Python script using subprocess
+        if os.getenv('GITHUB_ACTIONS') == 'true':
+            # GitHub Actions environment
+            local_path = (
+                "https://github.com/ProDevOperationsEngineer/"
+                "Investmentcalculator/blob/main/excel_creator.py"
+            )
+        else:
+            # Local environment
+            local_path = "excel_creator.py"
+
         subprocess.run(
-            ['python', 'excel_skapare_test.py'],
+            ['python', local_path],
             capture_output=True,
             text=True,
             check=True

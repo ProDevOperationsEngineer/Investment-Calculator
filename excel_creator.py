@@ -3,6 +3,7 @@ we shall see how it goes...
 """
 from typing import Union
 import json
+import os
 import string
 import subprocess
 import xlsxwriter
@@ -229,9 +230,26 @@ excel_sheet.write("B15", skattesats)
 
 excel_document.close()
 
-subprocess.run(
-        ['python', 'excel_colorizer.py'],
-        capture_output=True,
-        text=True,
-        check=True
-    )
+
+def run_colorizer_script():
+    """Function to run the correct path to the script for colorizing"""
+    # Check if running in a GitHub environment
+    if os.getenv('GITHUB_ACTIONS') == 'true':
+        # GitHub Actions environment
+        local_path = (
+            "https://github.com/ProDevOperationsEngineer/"
+            "Investmentcalculator/blob/main/excel_colorizer.py"
+        )
+    else:
+        # Local environment
+        local_path = "excel_colorizer.py"
+
+    try:
+        subprocess.run(
+            ['python', local_path], capture_output=True, text=True, check=True
+        )
+    except subprocess.CalledProcessError as e:
+        print("Error executing excel_colorizer.py:", e)
+
+
+run_colorizer_script()
