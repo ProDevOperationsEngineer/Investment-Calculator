@@ -1,0 +1,52 @@
+
+h1 {
+    color: #0ca03e;
+    padding: 40px 80px;
+    font-size: 48px;
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  /* Selectors */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Layout */
+  .header {
+    background-color: #ff23ff;
+    padding: 10px;
+  }
+  
+  .footer {
+    background-color: #3f3f3f;
+    padding: 10px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+  }
+  
+  /* Animations */
+  .btn {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #005F6B;
+  }

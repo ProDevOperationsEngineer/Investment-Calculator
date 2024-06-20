@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investeringskalkyl</title>
+    <meta charset="UTF-8">
+    <title>Data Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
+</head>
+<body>
+    <h1>Nettonuvärde: <span class="number">{{ "{:,.2f}".format(data["ar_sista_ack_nuvarde"]) | replace(',', ' ') }}</span> SEK</h1>
+    <div class="container">
+        <p class="text-item">Projektets livslängd: <span class="number">{{ "{:,}".format(data['År']) | replace(',', ' ') }}år</span></p>
+        <p class="text-item">Grundinvestering: <span class="number">{{ "{:,.0f}".format(data['Grundinvestering']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Utbetalningar för år 0: <span class="number">{{ "{:,.0f}".format(data['Utbetalningar_0']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Årliga utbetalningar(från år 1): <span class="number">{{ "{:,.0f}".format(data['Utbetalningar']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Årliga inbetalningar(från år 1): <span class="number">{{ "{:,.0f}".format(data['Inbetalningar']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Rest: <span class="number">{{ "{:,.0f}".format(data['Rest']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Rörelsebindandekapital: <span class="number">{{ "{:,.0f}".format(data['Rörelsebindandekapital']) | replace(',', ' ') }}kr</span></p>
+        <p class="text-item">Kalkylräntan: <span class="number">{{ "{:,.2%}".format(data['Kalkylräntan']) | replace(',', ' ') }}</span></p>
+        <p class="text-item">Skattesats: <span class="number">{{ "{:,.2%}".format(data['Skattesats']) | replace(',', ' ') }}</span></p>
+    </div>
+</body>
+</html>
+</html>

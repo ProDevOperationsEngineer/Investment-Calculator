@@ -1,0 +1,31 @@
+h1 {
+    color: #0ca03e;
+    padding: 40px 80px;
+    font-size: 144px;
+    text-align: center;
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+
+p {
+    color: blueviolet;
+    font-size: 36px;
+}
+
+.number {
+    color: rgb(0, 0, 0); /* Change to your desired color */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-item {
+    text-align: right;
+}
