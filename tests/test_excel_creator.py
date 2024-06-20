@@ -1,6 +1,6 @@
 """Pytest 1"""
 import json
-from flask import Flask, jsonify
+from flask import Flask
 import pytest
 
 # Load shared data
@@ -14,6 +14,7 @@ app = Flask(__name__)
 # Define the route and its logic
 @app.route('/test', methods=['POST'])
 def test_route():
+    """Creating a test route to be able to mock the form data"""
     # Perform calculations using request form data
     result = data["ar_sista_ack_nuvarde"]
     return json.dumps(result)
@@ -29,11 +30,6 @@ def client():
 
 # Test function
 def test_perform_calculations(client):
-    perform_calculations(client)
-
-
-# Function to perform the calculations
-def perform_calculations(client):
     """Testing the basic logic of the calculations"""
     # Mock the form data as it would be received in a request
     form_data = {
@@ -68,5 +64,4 @@ def perform_calculations(client):
     # Assert the result based on expected calculations
     expected_value = 883397.62
     actual_value = round(result, 2)
-    assert actual_value == expected_value, f"Expected value {expected_value}, but got {result['ar_sista_ack_nuvarde']}"
-
+    assert actual_value == expected_value
