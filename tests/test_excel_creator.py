@@ -18,7 +18,7 @@ app = Flask(__name__)
 @app.route('/test', methods=['POST'])
 def test_route():
     """Creating a test route to be able to mock the form data"""
-    result = project["ar_sista_ack_nuvarde"]
+    result = project["net_present_value"]
     return json.dumps(result)
 
 
@@ -67,6 +67,6 @@ def test_perform_calculations(client):
     assert isinstance(result, float), "Expected result to be a float"
 
     # Assert the result based on expected calculations
-    expected_value = round(project["ar_sista_ack_nuvarde"], 2)
+    expected_value = round(project["net_present_value"], 2)
     actual_value = round(result, 2)
     assert actual_value == expected_value
