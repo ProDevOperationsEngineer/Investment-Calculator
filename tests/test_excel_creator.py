@@ -1,19 +1,9 @@
 """Pytest 1"""
 import json
-import os
 from flask import Flask
 import pytest
 
-# Load shared data
-if os.getenv('GITHUB_ACTIONS') == 'true':
-    # GitHub Actions environment
-    file_path = (
-        "https://github.com/ProDevOperationsEngineer/"
-        "Investmentcalculator/blob/main/shared_data.json"
-    )
-else:
-    # Local environment
-    file_path = "shared_data.json"
+file_path: str = "shared_data.json"
 
 with open(file_path, 'r', encoding='utf-8') as f:
     project_list_dict = json.load(f)
