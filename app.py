@@ -83,8 +83,18 @@ def submit():
 @app.route("/nettonuvarde")
 def nettonuvarde():
     """Nettonuvärde på investering"""
-    if os.path.getsize("shared_data.json") > 0:
-        with open("shared_data.json", 'r', encoding='utf-8') as f:
+    if os.getenv('GITHUB_ACTIONS') == 'true':
+        # GitHub Actions environment
+        file_path = (
+            "https://github.com/ProDevOperationsEngineer/"
+            "Investmentcalculator/blob/main/shared_data.json"
+        )
+    else:
+        # Local environment
+        file_path = "shared_data.json"
+
+    if os.path.getsize(file_path) > 0:
+        with open(file_path, 'r', encoding='utf-8') as f:
             project_list_dict = json.load(f)
             project = project_list_dict["projects"][-1]
     else:

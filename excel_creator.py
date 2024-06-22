@@ -14,7 +14,15 @@ from modules.invester import Invester
 excel_document = xlsxwriter.Workbook("InvestmentCalc.xlsx")
 excel_sheet = excel_document.add_worksheet("Project 1")
 
-file_path: str = "shared_data.json"
+if os.getenv('GITHUB_ACTIONS') == 'true':
+    # GitHub Actions environment
+    file_path: str = (
+        "https://github.com/ProDevOperationsEngineer/"
+        "Investmentcalculator/blob/main/shared_data.json"
+    )
+else:
+    # Local environment
+    file_path = "shared_data.json"
 
 if os.path.getsize(file_path) > 0:
     with open(file_path, 'r', encoding='utf-8') as f:

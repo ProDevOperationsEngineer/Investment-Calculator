@@ -1,11 +1,23 @@
 """Pytest 1"""
 import json
+import os
 from flask import Flask
 import pytest
 
 # Load shared data
-with open('shared_data.json', 'r', encoding="utf-8") as f:
-    data = json.load(f)
+if os.getenv('GITHUB_ACTIONS') == 'true':
+    # GitHub Actions environment
+    file_path = (
+        "https://github.com/ProDevOperationsEngineer/"
+        "Investmentcalculator/blob/main/shared_data.json"
+    )
+else:
+    # Local environment
+    file_path = "shared_data.json"
+
+with open(file_path, 'r', encoding='utf-8') as f:
+    project_list_dict = json.load(f)
+    project = project_list_dict["projects"][-1]
 
 # Assuming app is already defined globally
 app = Flask(__name__)
@@ -15,7 +27,7 @@ app = Flask(__name__)
 @app.route('/test', methods=['POST'])
 def test_route():
     """Creating a test route to be able to mock the form data"""
-    result = data["ar_sista_ack_nuvarde"]
+    result = project["ar_sista_ack_nuvarde"]
     return json.dumps(result)
 
 
