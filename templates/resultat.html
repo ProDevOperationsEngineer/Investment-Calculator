@@ -7,92 +7,101 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
 </head>
 <body>
-    <h1>Nettonuvärde: 
+    <h1>Net present Value: 
         <span class="number">
-            {% if "ar_sista_ack_nuvarde" in data and data["ar_sista_ack_nuvarde"] is not none %}
-                {{ "{:,.2f}".format(data["ar_sista_ack_nuvarde"]) | replace(',', ' ') }}
+            {% if "net_present_value" in data and data["net_present_value"] is not none %}
+                {{ "{:,.2f}".format(data["net_present_value"]) | replace(',', ' ') }}
             {% else %}
                 Data not available
             {% endif %}
         </span> SEK
     </h1>
     <div class="container">
-        <p class="text-item">Projektets livslängd: 
+        <p class="text-item">Project has a: 
             <span class="number">
-                {% if "År" in data and data["År"] is not none %}
-                    {{ "{:,}".format(data['År']) | replace(',', ' ') }}år
+                {% if "year" in data and data["year"] is not none %}
+                    {{ "{:,}".format(data["year"]) | replace(',', ' ') }} year life expectancy
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Grundinvestering: 
+        <p class="text-item">Initial Investment: 
             <span class="number">
-                {% if "Grundinvestering" in data and data["Grundinvestering"] is not none %}
-                    {{ "{:,.0f}".format(data['Grundinvestering']) | replace(',', ' ') }}kr
+                {% if "initial_investment" in data and data["initial_investment"] is not none %}
+                    {{ "{:,.0f}".format(data["initial_investment"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Utbetalningar för år 0: 
+        <p class="text-item">Depreciation: 
             <span class="number">
-                {% if "Utbetalningar_0" in data and data["Utbetalningar_0"] is not none %}
-                    {{ "{:,.0f}".format(data['Utbetalningar_0']) | replace(',', ' ') }}kr
+                {% if "depreciation" in data and data["depreciation"] is not none %}
+                    {{ "{:,.0f}".format(data["depreciation"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Årliga utbetalningar(från år 1): 
+        <p class="text-item">Outgoing Payments (for year 0): 
             <span class="number">
-                {% if "Utbetalningar" in data and data["Utbetalningar"] is not none %}
-                    {{ "{:,.0f}".format(data['Utbetalningar']) | replace(',', ' ') }}kr
+                {% if "outgoing_payments_0" in data and data["outgoing_payments_0"] is not none %}
+                    {{ "{:,.0f}".format(data["outgoing_payments_0"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Årliga inbetalningar(från år 1): 
+        <p class="text-item">Yearly Outgoing Payments (from year 1): 
             <span class="number">
-                {% if "Inbetalningar" in data and data["Inbetalningar"] is not none %}
-                    {{ "{:,.0f}".format(data['Inbetalningar']) | replace(',', ' ') }}kr
+                {% if "outgoing_payments" in data and data["outgoing_payments"] is not none %}
+                    {{ "{:,.0f}".format(data["outgoing_payments"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Rest: 
+        <p class="text-item">Yearly Incoming Payments (from year 1): 
             <span class="number">
-                {% if "Rest" in data and data["Rest"] is not none %}
-                    {{ "{:,.0f}".format(data['Rest']) | replace(',', ' ') }}kr
+                {% if "incoming_payments" in data and data["incoming_payments"] is not none %}
+                    {{ "{:,.0f}".format(data["incoming_payments"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Rörelsebindandekapital: 
+        <p class="text-item">Residual: 
             <span class="number">
-                {% if "Rörelsebindandekapital" in data and data["Rörelsebindandekapital"] is not none %}
-                    {{ "{:,.0f}".format(data['Rörelsebindandekapital']) | replace(',', ' ') }}kr
+                {% if "residual" in data and data["residual"] is not none %}
+                    {{ "{:,.0f}".format(data["residual"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Kalkylräntan: 
+        <p class="text-item">Restricted equity: 
             <span class="number">
-                {% if "Kalkylräntan" in data and data["Kalkylräntan"] is not none %}
-                    {{ "{:,.2%}".format(data['Kalkylräntan']) | replace(',', ' ') }}
+                {% if "restricted_equity" in data and data["restricted_equity"] is not none %}
+                    {{ "{:,.0f}".format(data["restricted_equity"]) | replace(',', ' ') }}kr
                 {% else %}
                     Data not available
                 {% endif %}
             </span>
         </p>
-        <p class="text-item">Skattesats: 
+        <p class="text-item">Discount Rate: 
             <span class="number">
-                {% if "Skattesats" in data and data["Skattesats"] is not none %}
-                    {{ "{:,.2%}".format(data['Skattesats']) | replace(',', ' ') }}
+                {% if "discount_rate" in data and data["discount_rate"] is not none %}
+                    {{ "{:,.2%}".format(data["discount_rate"]) | replace(',', ' ') }}
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Tax Rate: 
+            <span class="number">
+                {% if "tax_rate" in data and data["tax_rate"] is not none %}
+                    {{ "{:,.2%}".format(data["tax_rate"]) | replace(',', ' ') }}
                 {% else %}
                     Data not available
                 {% endif %}

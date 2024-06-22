@@ -1,28 +1,36 @@
+"""designating the classes Invester and
+nestled within the class Project"""
 from dataclasses import dataclass, field, asdict
 from typing import List, Optional
 
 
 @dataclass
 class Invester:
-    projects: List['Invester.Project'] = field(default_factory=list)
+    """Class that contains all relevant info to a individual"""
+    projects: List["Invester.Project"] = field(default_factory=list)
 
     def add_project(self, project_data: dict):
+        """Add a project to the list"""
         project = self.Project(**project_data)
         self.projects.append(project)
 
-    def get_project(self, index: int) -> Optional['Invester.Project']:
+    def get_project(self, index: int) -> Optional["Invester.Project"]:
+        """Retrieves given project based on index"""
         if 0 <= index < len(self.projects):
             return self.projects[index]
         return None
 
-    def list_projects(self) -> List['Invester.Project']:
+    def list_projects(self) -> List["Invester.Project"]:
+        """Function to make list of projects"""
         return self.projects
 
     def to_dict(self):
+        """Converts class instance into dictionary"""
         return asdict(self)
 
     @classmethod
     def from_dict(cls, data: dict):
+        """Returns dictionary into class instance"""
         invester = cls()
         for project_data in data["projects"]:
             invester.add_project(project_data)
@@ -30,14 +38,16 @@ class Invester:
 
     @dataclass
     class Project:
-        År: int
-        Grundinvestering: float
-        Inbetalningar: float
-        Utbetalningar: float
-        Rest: float
-        Rörelsebindandekapital: float
-        Kalkylräntan: float
-        Skattesats: float
-        Utbetalningar_0: Optional[float] = 0.0
-        Avskrivningar: float = 0.0
-        ar_sista_ack_nuvarde: int = 0
+        """Contains all the different projects a
+        individual invester have in their portfolio"""
+        year: int
+        initial_investment: float
+        incoming_payments: float
+        outgoing_payments: float
+        residual: float
+        restricted_equity: float
+        discount_rate: float
+        tax_rate: float
+        outgoing_payments_0: Optional[float] = 0.0
+        depreciation: float = 0.0
+        net_present_value: int = 0

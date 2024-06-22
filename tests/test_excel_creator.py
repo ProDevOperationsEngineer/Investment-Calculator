@@ -35,8 +35,8 @@ def test_perform_calculations(client):
     """Testing the basic logic of the calculations"""
     # Mock the form data as it would be received in a request
     form_data = {
-        "År": '10',
-        "Grundinvestering": '2000000',
+        "year": '10',
+        "initial_investment": '2000000',
         "Inbetalningar": '1000000',
         "Utbetalningar": '300000',
         "Utbetalningar_0": '500000',

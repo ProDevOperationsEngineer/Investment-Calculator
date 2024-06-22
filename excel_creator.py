@@ -14,28 +14,33 @@ from modules.invester import Invester
 excel_document = xlsxwriter.Workbook("InvestmentCalc.xlsx")
 excel_sheet = excel_document.add_worksheet("Project 1")
 
+
+# Loads the dictionary from shared data
 if os.getenv('GITHUB_ACTIONS') == 'true':
     # GitHub Actions environment
-    file_path: str = (
+    FILE_PATH = (
         "https://github.com/ProDevOperationsEngineer/"
         "Investmentcalculator/blob/main/shared_data.json"
     )
 else:
     # Local environment
-    file_path = "shared_data.json"
+    FILE_PATH = "shared_data.json"
 
-if os.path.getsize(file_path) > 0:
-    with open(file_path, 'r', encoding='utf-8') as f:
+if os.path.getsize(FILE_PATH) > 0:
+    with open(FILE_PATH, 'r', encoding='utf-8') as f:
         invester_dict = json.load(f)
 else:
-    print(f"Error: File '{file_path}' is empty.")
+    print(f"Error: File '{FILE_PATH}' is empty.")
+
 
 # Convert the dictionary back to an Invester instance
 invester = Invester.from_dict(invester_dict)
 
+
 # Check the number of existing projects
 existing_projects = invester.list_projects()
 num_projects = len(existing_projects)
+
 
 # If there are existing projects, assign project to be the next one
 if num_projects > 0:
@@ -45,17 +50,16 @@ else:
 
 
 # Dynamiska variablar
-projekt_tid = project.År
-skattesats = project.Skattesats
-kalkylrantan = project.Kalkylräntan
-inbet = project.Inbetalningar
-utbet = project.Utbetalningar * -1
-utbet_ar_noll = project.Utbetalningar_0 * -1
-rest = project.Rest
-grundinvestering = project.Grundinvestering * -1
+projekt_tid = project.year
+skattesats = project.tax_rate
+kalkylrantan = project.discount_rate
+inbet = project.incoming_payments
+utbet = project.outgoing_payments * -1
+utbet_ar_noll = project.outgoing_payments_0 * -1
+rest = project.residual
+grundinvestering = project.initial_investment * -1
 avskrivningar = ((-grundinvestering) / projekt_tid) * skattesats
-project.Avskrivningar = avskrivningar
-rorelsebindandekapital = project.Rörelsebindandekapital * -1
+rorelsebindandekapital = project.restricted_equity * -1
 
 
 # Skattepålägg funktion
@@ -241,8 +245,8 @@ excel_sheet.write(ar_sista_ack_nuvarde_row, ar_sista_ack_nuvarde)
 excel_sheet.write("B11", ar_sista_ack_nuvarde, bold_centered_economic_format)
 
 # Sparar datan till en JSON fil
-project.ar_sista_ack_nuvarde = ar_sista_ack_nuvarde
-project.Avskrivningar = avskrivningar
+project.net_present_value = ar_sista_ack_nuvarde
+project.depreciation = avskrivningar
 
 with open('shared_data.json', 'w', encoding='utf-8') as f:
     json.dump(invester.to_dict(), f, ensure_ascii=False, indent=4)

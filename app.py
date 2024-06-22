@@ -27,15 +27,15 @@ def submit():
     try:
         # Retrieve data from the form
         htmldata = {
-            "År": int(request.form['year']),
-            "Grundinvestering": float(request.form['investment']),
-            "Inbetalningar": float(request.form['inflows']),
-            "Utbetalningar": float(request.form['outflows']),
-            "Utbetalningar_0": float(request.form['outflow_0']),
-            "Rest": float(request.form['residual']),
-            "Rörelsebindandekapital": float(request.form['work_cap']),
-            "Kalkylräntan": float(request.form['discount_rate']),
-            "Skattesats": float(request.form['tax_rate'])
+            "year": int(request.form['year']),
+            "initial_investment": float(request.form['investment']),
+            "incoming_payments": float(request.form['inflows']),
+            "outgoing_payments": float(request.form['outflows']),
+            "outgoing_payments_0": float(request.form['outflow_0']),
+            "residual": float(request.form['residual']),
+            "restricted_equity": float(request.form['work_cap']),
+            "discount_rate": float(request.form['discount_rate']),
+            "tax_rate": float(request.form['tax_rate'])
         }
 
         # Creates instance of invester class and saves submit values
@@ -74,7 +74,7 @@ def submit():
             print("Error Output:", e.stderr)
 
     # Redirect to a success page or the same form with a success message
-        return redirect(url_for('nettonuvarde'))
+        return redirect(url_for("nettonuvarde"))
     except ValueError as e:
         # Handle invalid input
         return f"Invalid input: {e}"

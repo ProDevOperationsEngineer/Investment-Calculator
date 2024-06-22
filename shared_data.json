@@ -1,17 +1,17 @@
 {
     "projects": [
         {
-            "År": 10,
-            "Grundinvestering": 1000000.0,
-            "Inbetalningar": 700000.0,
-            "Utbetalningar": 200000.0,
-            "Rest": 200000.0,
-            "Rörelsebindandekapital": 300000.0,
-            "Kalkylräntan": 0.15,
-            "Skattesats": 0.3,
-            "Utbetalningar_0": 200000.0,
-            "Avskrivningar": 30000.0,
-            "ar_sista_ack_nuvarde": 1007731.1407560965
+            "year": 15,
+            "initial_investment": 2000000.0,
+            "incoming_payments": 1000000.0,
+            "outgoing_payments": 200000.0,
+            "residual": 500000.0,
+            "restricted_equity": 200000.0,
+            "discount_rate": 0.15,
+            "tax_rate": 0.3,
+            "outgoing_payments_0": 200000.0,
+            "depreciation": 40000.0,
+            "net_present_value": 2219301.3863397823
         }
     ]
 }
