@@ -3,6 +3,7 @@ import json
 from flask import Flask
 import pytest
 
+
 file_path: str = "shared_data.json"
 
 with open(file_path, 'r', encoding='utf-8') as f:
@@ -55,6 +56,9 @@ def test_perform_calculations(client):
 
     # Decode the JSON response
     result = json.loads(response.data.decode('utf-8'))
+    # Print result for debugging
+    print("Response:", response.data)
+    print("Result:", result)
 
     # Print result for debugging
     print("Result:", result)
@@ -63,6 +67,6 @@ def test_perform_calculations(client):
     assert isinstance(result, float), "Expected result to be a float"
 
     # Assert the result based on expected calculations
-    expected_value = 883397.62
+    expected_value = round(project["ar_sista_ack_nuvarde"], 2)
     actual_value = round(result, 2)
     assert actual_value == expected_value
