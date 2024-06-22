@@ -8,7 +8,7 @@ from openpyxl.styles import PatternFill
 
 
 # Load the workbook and select the active worksheet
-wb = openpyxl.load_workbook("Investeringkalkyl.xlsx")
+wb = openpyxl.load_workbook("InvestmentCalc.xlsx")
 ws = wb.active
 
 # Define the colors for positive and negative values
@@ -31,4 +31,4 @@ for row in ws.iter_rows(
                 cell.fill = red_fill
 
 # Save the workbook with changes
-wb.save("Investeringkalkyl.xlsx")
+wb.save("InvestmentCalc.xlsx")

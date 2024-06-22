@@ -7,18 +7,97 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
 </head>
 <body>
-    <h1>Nettonuvärde: <span class="number">{{ "{:,.2f}".format(data["ar_sista_ack_nuvarde"]) | replace(',', ' ') }}</span> SEK</h1>
+    <h1>Nettonuvärde: 
+        <span class="number">
+            {% if "ar_sista_ack_nuvarde" in data and data["ar_sista_ack_nuvarde"] is not none %}
+                {{ "{:,.2f}".format(data["ar_sista_ack_nuvarde"]) | replace(',', ' ') }}
+            {% else %}
+                Data not available
+            {% endif %}
+        </span> SEK
+    </h1>
     <div class="container">
-        <p class="text-item">Projektets livslängd: <span class="number">{{ "{:,}".format(data['År']) | replace(',', ' ') }}år</span></p>
-        <p class="text-item">Grundinvestering: <span class="number">{{ "{:,.0f}".format(data['Grundinvestering']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Utbetalningar för år 0: <span class="number">{{ "{:,.0f}".format(data['Utbetalningar_0']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Årliga utbetalningar(från år 1): <span class="number">{{ "{:,.0f}".format(data['Utbetalningar']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Årliga inbetalningar(från år 1): <span class="number">{{ "{:,.0f}".format(data['Inbetalningar']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Rest: <span class="number">{{ "{:,.0f}".format(data['Rest']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Rörelsebindandekapital: <span class="number">{{ "{:,.0f}".format(data['Rörelsebindandekapital']) | replace(',', ' ') }}kr</span></p>
-        <p class="text-item">Kalkylräntan: <span class="number">{{ "{:,.2%}".format(data['Kalkylräntan']) | replace(',', ' ') }}</span></p>
-        <p class="text-item">Skattesats: <span class="number">{{ "{:,.2%}".format(data['Skattesats']) | replace(',', ' ') }}</span></p>
+        <p class="text-item">Projektets livslängd: 
+            <span class="number">
+                {% if "År" in data and data["År"] is not none %}
+                    {{ "{:,}".format(data['År']) | replace(',', ' ') }}år
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Grundinvestering: 
+            <span class="number">
+                {% if "Grundinvestering" in data and data["Grundinvestering"] is not none %}
+                    {{ "{:,.0f}".format(data['Grundinvestering']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Utbetalningar för år 0: 
+            <span class="number">
+                {% if "Utbetalningar_0" in data and data["Utbetalningar_0"] is not none %}
+                    {{ "{:,.0f}".format(data['Utbetalningar_0']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Årliga utbetalningar(från år 1): 
+            <span class="number">
+                {% if "Utbetalningar" in data and data["Utbetalningar"] is not none %}
+                    {{ "{:,.0f}".format(data['Utbetalningar']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Årliga inbetalningar(från år 1): 
+            <span class="number">
+                {% if "Inbetalningar" in data and data["Inbetalningar"] is not none %}
+                    {{ "{:,.0f}".format(data['Inbetalningar']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Rest: 
+            <span class="number">
+                {% if "Rest" in data and data["Rest"] is not none %}
+                    {{ "{:,.0f}".format(data['Rest']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Rörelsebindandekapital: 
+            <span class="number">
+                {% if "Rörelsebindandekapital" in data and data["Rörelsebindandekapital"] is not none %}
+                    {{ "{:,.0f}".format(data['Rörelsebindandekapital']) | replace(',', ' ') }}kr
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Kalkylräntan: 
+            <span class="number">
+                {% if "Kalkylräntan" in data and data["Kalkylräntan"] is not none %}
+                    {{ "{:,.2%}".format(data['Kalkylräntan']) | replace(',', ' ') }}
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
+        <p class="text-item">Skattesats: 
+            <span class="number">
+                {% if "Skattesats" in data and data["Skattesats"] is not none %}
+                    {{ "{:,.2%}".format(data['Skattesats']) | replace(',', ' ') }}
+                {% else %}
+                    Data not available
+                {% endif %}
+            </span>
+        </p>
     </div>
 </body>
-</html>
 </html>

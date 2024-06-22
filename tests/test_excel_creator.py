@@ -15,12 +15,11 @@ app = Flask(__name__)
 @app.route('/test', methods=['POST'])
 def test_route():
     """Creating a test route to be able to mock the form data"""
-    # Perform calculations using request form data
     result = data["ar_sista_ack_nuvarde"]
     return json.dumps(result)
 
 
-# Global client fixture
+# Global klient fixture
 @pytest.fixture
 def client():
     """A test client for the Flask app."""
@@ -28,7 +27,7 @@ def client():
         yield client
 
 
-# Test function
+# Test funktion
 def test_perform_calculations(client):
     """Testing the basic logic of the calculations"""
     # Mock the form data as it would be received in a request

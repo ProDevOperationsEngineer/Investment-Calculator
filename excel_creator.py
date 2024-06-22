@@ -7,26 +7,47 @@ import os
 import string
 import subprocess
 import xlsxwriter
+from modules.invester import Invester
 
 
 # Grundläggande skapandet av excel dokument och sida
-excel_document = xlsxwriter.Workbook("Investeringkalkyl.xlsx")
-excel_sheet = excel_document.add_worksheet("Projekt 1")
+excel_document = xlsxwriter.Workbook("InvestmentCalc.xlsx")
+excel_sheet = excel_document.add_worksheet("Project 1")
 
-with open('shared_data.json', 'r', encoding="utf-8") as f:
-    htmldata = json.load(f)
+file_path: str = "shared_data.json"
+
+if os.path.getsize(file_path) > 0:
+    with open(file_path, 'r', encoding='utf-8') as f:
+        invester_dict = json.load(f)
+else:
+    print(f"Error: File '{file_path}' is empty.")
+
+# Convert the dictionary back to an Invester instance
+invester = Invester.from_dict(invester_dict)
+
+# Check the number of existing projects
+existing_projects = invester.list_projects()
+num_projects = len(existing_projects)
+
+# If there are existing projects, assign project to be the next one
+if num_projects > 0:
+    project = invester.get_project(num_projects - 1)
+else:
+    project = invester.get_project(num_projects)
+
 
 # Dynamiska variablar
-projekt_tid = htmldata["År"]
-skattesats = htmldata["Skattesats"]
-kalkylrantan = htmldata["Kalkylräntan"]
-inbet = htmldata["Inbetalningar"]
-utbet = htmldata["Utbetalningar"] * -1
-utbet_ar_noll = htmldata["Utbetalningar_0"] * -1
-rest = htmldata["Rest"]
-grundinvestering = htmldata["Grundinvestering"] * -1
+projekt_tid = project.År
+skattesats = project.Skattesats
+kalkylrantan = project.Kalkylräntan
+inbet = project.Inbetalningar
+utbet = project.Utbetalningar * -1
+utbet_ar_noll = project.Utbetalningar_0 * -1
+rest = project.Rest
+grundinvestering = project.Grundinvestering * -1
 avskrivningar = ((-grundinvestering) / projekt_tid) * skattesats
-rorelsebindandekapital = htmldata["Rörelsebindandekapital"] * -1
+project.Avskrivningar = avskrivningar
+rorelsebindandekapital = project.Rörelsebindandekapital * -1
 
 
 # Skattepålägg funktion
@@ -42,7 +63,7 @@ def skatte_funktion(
     Union[int, float],
     Union[int, float],
     Union[int, float],
-    Union[int, float]
+    Union[int, float],
 ]:
     """Modifierar värderna på belopp som ska tas hänsyn till skatt och
     returerar de nya värderna som sedan manuellts blir
@@ -211,11 +232,14 @@ excel_sheet.write(ar_sista_ack_nuvarde_row, ar_sista_ack_nuvarde)
 # Placerar ut värdet för nettonuvärde
 excel_sheet.write("B11", ar_sista_ack_nuvarde, bold_centered_economic_format)
 
-# Save the data to a JSON file
-htmldata["ar_sista_ack_nuvarde"] = ar_sista_ack_nuvarde
+# Sparar datan till en JSON fil
+project.ar_sista_ack_nuvarde = ar_sista_ack_nuvarde
+project.Avskrivningar = avskrivningar
 
-with open('shared_data.json', 'w', encoding="utf-8") as f:
-    json.dump(htmldata, f)
+with open('shared_data.json', 'w', encoding='utf-8') as f:
+    json.dump(invester.to_dict(), f, ensure_ascii=False, indent=4)
+
+print("Data successfully saved to shared_data.json")
 
 # Placerar ut värdet för nominella kalkylräntan
 excel_sheet.write("B13", kalkylrantan / (1-skattesats))

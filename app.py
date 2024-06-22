@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 from flask import Flask, request, render_template, redirect, url_for
+from modules.invester import Invester
 
 app = Flask(__name__)
 
@@ -37,9 +38,16 @@ def submit():
             "Skattesats": float(request.form['tax_rate'])
         }
 
+        # Creates instance of invester class and saves submit values
+        invester = Invester()
+        invester.add_project(htmldata)
+
+        # Converts class instance into a dict
+        invester_dict = invester.to_dict()
+
         # Save the data to a JSON file
-        with open('shared_data.json', 'w', encoding="utf-8") as f:
-            json.dump(htmldata, f)
+        with open('shared_data.json', 'w', encoding='utf-8') as f:
+            json.dump(invester_dict, f, ensure_ascii=False, indent=4)
 
         # Run the other Python script using subprocess
         if os.getenv('GITHUB_ACTIONS') == 'true':
@@ -52,12 +60,18 @@ def submit():
             # Local environment
             local_path = "excel_creator.py"
 
-        subprocess.run(
-            ['python', local_path],
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        try:
+            result = subprocess.run(
+                ['python', local_path],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            print("Output:", result.stdout)
+        except subprocess.CalledProcessError as e:
+            print("Error:", e)
+            print("Output:", e.stdout)
+            print("Error Output:", e.stderr)
 
     # Redirect to a success page or the same form with a success message
         return redirect(url_for('nettonuvarde'))
@@ -69,9 +83,18 @@ def submit():
 @app.route("/nettonuvarde")
 def nettonuvarde():
     """Nettonuvärde på investering"""
-    with open('shared_data.json', 'r', encoding="utf-8") as f:
+    if os.path.getsize("shared_data.json") > 0:
+        with open("shared_data.json", 'r', encoding='utf-8') as f:
+            project_list_dict = json.load(f)
+            project = project_list_dict["projects"][-1]
+    else:
+        print("Error: File shared_data.json is empty.")
+
+    with open("shared_data.json", 'r', encoding='utf-8') as f:
         data = json.load(f)
-    return render_template("resultat.html", data=data)
+        print(json.dumps(data, indent=4, ensure_ascii=False))
+
+    return render_template("resultat.html", data=project)
 
 
 if __name__ == '__main__':
