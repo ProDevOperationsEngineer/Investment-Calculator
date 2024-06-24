@@ -7,6 +7,9 @@ from typing import List, Optional
 @dataclass
 class Invester:
     """Class that contains all relevant info to a individual"""
+
+    username: str | int
+    password: str | int
     projects: List["Invester.Project"] = field(default_factory=list)
 
     def add_project(self, project_data: dict):
@@ -31,7 +34,7 @@ class Invester:
     @classmethod
     def from_dict(cls, data: dict):
         """Returns dictionary into class instance"""
-        invester = cls()
+        invester = cls(username=data["username"], password=data["password"])
         for project_data in data["projects"]:
             invester.add_project(project_data)
         return invester

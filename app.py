@@ -27,6 +27,12 @@ def kalkyl():
     return render_template("index.html")
 
 
+@app.route("/account")
+def account():
+    """Page to create or log into account"""
+    return render_template("account.html")
+
+
 @app.route("/diagram")
 def diagram():
     """Creating a diagram with the y-axel as
@@ -86,7 +92,12 @@ def diagram():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    """Submit form to collect data from the user"""
+    """Submit form to collect investment data from the user"""
+
+    with open("shared_data.json", 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        print(json.dumps(data, indent=4, ensure_ascii=False))
+
     try:
         # Retrieve data from the form
         htmldata = {
@@ -102,7 +113,7 @@ def submit():
         }
 
         # Creates instance of invester class and saves submit values
-        invester = Invester()
+        invester = Invester(data["username"], data["password"])
         invester.add_project(htmldata)
 
         # Converts class instance into a dict
@@ -141,6 +152,30 @@ def submit():
     except ValueError as e:
         # Handle invalid input
         return f"Invalid input: {e}"
+
+
+@app.route("/submit/account", methods=["POST"])
+def submit_account():
+    """Submit form to collect invester data"""
+    try:
+        # Retrieve data from the form
+        userdata = {
+            "username": str(request.form["username"]),
+            "password": str(request.form["password"]),
+        }
+        invester = Invester(userdata["username"], userdata["password"])
+
+        # Converts class instance into a dict
+        invester_dict = invester.to_dict()
+
+        # Save the data to a JSON file
+        with open('shared_data.json', 'w', encoding='utf-8') as f:
+            json.dump(invester_dict, f, ensure_ascii=False, indent=4)
+
+    except ValueError as e:
+        # Handle invalid input
+        return f"Invalid input: {e}"
+    return redirect(url_for("home"))
 
 
 @app.route("/netpresentvalue")
