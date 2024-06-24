@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Investeringskalkyl</title>
+    <title>Investment Calculus</title>
     <meta charset="UTF-8">
     <title>Data Form</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
 </head>
 <body>
-    <h1>Net present Value: 
+    <h1>Net Present Value: 
         <span class="number">
             {% if "net_present_value" in data and data["net_present_value"] is not none %}
                 {{ "{:,.2f}".format(data["net_present_value"]) | replace(',', ' ') }}
@@ -107,6 +107,7 @@
                 {% endif %}
             </span>
         </p>
+        <a href="/diagram" class="btn">Accumulated Net Present Value Diagram</a>
     </div>
 </body>
 </html>

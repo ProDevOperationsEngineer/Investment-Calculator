@@ -10,7 +10,7 @@ import xlsxwriter
 from modules.invester import Invester
 
 
-# Grundläggande skapandet av excel dokument och sida
+# Creation of excel document and sheet
 excel_document = xlsxwriter.Workbook("InvestmentCalc.xlsx")
 excel_sheet = excel_document.add_worksheet("Project 1")
 
@@ -49,7 +49,7 @@ else:
     project = invester.get_project(num_projects)
 
 
-# Dynamiska variablar
+# Dynamic variables
 projekt_tid = project.year
 skattesats = project.tax_rate
 kalkylrantan = project.discount_rate
@@ -60,10 +60,11 @@ rest = project.residual
 grundinvestering = project.initial_investment * -1
 avskrivningar = ((-grundinvestering) / projekt_tid) * skattesats
 rorelsebindandekapital = project.restricted_equity * -1
+acc_list = project.accumulated_net_value_list
 
 
-# Skattepålägg funktion
-def skatte_funktion(
+# Applies taxes to correct variables
+def taxes(
     inb: Union[int, float],
     utb: Union[int, float],
     utb_ar_noll: Union[int, float],
@@ -89,7 +90,7 @@ def skatte_funktion(
     return inb, utb, utb_ar_noll, re, kalk
 
 
-inbet, utbet, rest, utbet_ar_noll, kalkylrantan = skatte_funktion(
+inbet, utbet, rest, utbet_ar_noll, kalkylrantan = taxes(
     inbet,
     utbet,
     rest,
@@ -98,7 +99,7 @@ inbet, utbet, rest, utbet_ar_noll, kalkylrantan = skatte_funktion(
     skattesats
 )
 
-# Icke-dynamiska variablar
+# Static variables (after taxes)
 alfabet: str = string.ascii_uppercase
 count: int = 1
 ar_noll_netto: int | float = (
@@ -108,7 +109,7 @@ ar_noll_netto: int | float = (
 )
 ack_mellan_nuvarde: int | float = ar_noll_netto
 
-# Formatering
+# Designing excel document
 bold_format = excel_document.add_format({"bold": True})
 italic_format = excel_document.add_format({"italic": True})
 bold_centered__colored_format = excel_document.add_format({
@@ -129,60 +130,60 @@ bold_centered_economic_format = excel_document.add_format({
 excel_sheet.set_column("A:A", 25)
 excel_sheet.set_column("B:T", 15, center_economic_format)
 
-# Grundläggande rubriker/kostnadsställen
-excel_sheet.write("A1", "År", bold_format)
-excel_sheet.write("A2", "Grundinvestering")
-excel_sheet.write("A3", "Avskrivningar")
-excel_sheet.write("A4", "Inbetalningar")
-excel_sheet.write("A5", "Utbetalningar")
-excel_sheet.write("A6", "Rest")
-excel_sheet.write("A7", "Rörelsebindandekapital")
-excel_sheet.write("A8", "Årligt netto")
-excel_sheet.write("A9", "Nuvärde")
-excel_sheet.write("A10", "Ackumelerat nuvärde")
-excel_sheet.write("A11", "Nettonuvärde", bold_format)
-excel_sheet.write("A13", "Nominell Kalkylräntan", italic_format)
-excel_sheet.write("A14", "Kalkylräntan efter skatt", italic_format)
-excel_sheet.write("A15", "Skattesats", italic_format)
+# Headlines for all relevant data
+excel_sheet.write("A1", "Year", bold_format)
+excel_sheet.write("A2", "Initial Investment")
+excel_sheet.write("A3", "Depreciation")
+excel_sheet.write("A4", "Incoming Payments")
+excel_sheet.write("A5", "Outgoing Payments")
+excel_sheet.write("A6", "Residual")
+excel_sheet.write("A7", "restricted Equity")
+excel_sheet.write("A8", "Yearly Net")
+excel_sheet.write("A9", "Present Value")
+excel_sheet.write("A10", "Accumulated Present Value")
+excel_sheet.write("A11", "Net Present Value", bold_format)
+excel_sheet.write("A13", "Nominal Discount Rate", italic_format)
+excel_sheet.write("A14", "Discount Rate After TaX", italic_format)
+excel_sheet.write("A15", "Tax Rate", italic_format)
 
-# Skapar lika många kolummer som projektets estimerade livstid
+# Creates as many columns as the estimated lifetime of the project
 for letter in alfabet[1:projekt_tid + 2]:
     ar_row_string: str = letter + "1"
     excel_sheet.write(ar_row_string, count - 1, bold_centered__colored_format)
     count += 1
 
 
-# Grundinvestering utplacering
+# Initial investment deployment
 excel_sheet.write("B2", grundinvestering)
 
-# Placerar ut värdet för avskrivningarna
+# Places the value of the depreciation
 for letter in alfabet[2:projekt_tid + 2]:
     avskriv_row_string: str = letter + "3"
     excel_sheet.write(avskriv_row_string, avskrivningar)
 
-# Placerar ut värdet för inbetalningar
+# Places the value for incoming payments
 for letter in alfabet[2:projekt_tid + 2]:
     inbetal_row_string: str = letter + "4"
     excel_sheet.write(inbetal_row_string, inbet)
 
-# Placerar ut värdet för utbetalningar
+# Places the value for outgoing payments
 excel_sheet.write("B5", utbet_ar_noll)
 
 for letter in alfabet[2:projekt_tid + 2]:
     utbetal_row_string: str = letter + "5"
     excel_sheet.write(utbetal_row_string, utbet)
 
-# Placerar ut värdet för rest
+# Places the value for residual
 rest_row: str = str(alfabet[projekt_tid + 1]) + "6"
 excel_sheet.write(rest_row, rest)
 
 
-# Placerar ut värdet för rörelsebindandekapital
+# Places the value for restricted equity
 rorelse_row: str = str(alfabet[projekt_tid + 1]) + "7"
 excel_sheet.write("B7", rorelsebindandekapital)
 excel_sheet.write(rorelse_row, -rorelsebindandekapital)
 
-# Placerar ut värdet för årligt netto
+# Places the value for yearly net
 excel_sheet.write("B8", ar_noll_netto, bold_centered_economic_format)
 
 ar_mellan_netto: int | float = inbet + utbet + avskrivningar
@@ -205,7 +206,7 @@ excel_sheet.write(
 )
 
 
-# Placerar ut värdet för nuvärde
+# Places the value for present value
 excel_sheet.write("B9", ar_noll_netto)
 
 counter: int = 1
@@ -224,8 +225,9 @@ ar_sista_nuvarde: int | float = (
 )
 excel_sheet.write(ar_sista_nuvarde_row, ar_sista_nuvarde)
 
-# Placerar ut värdet för ackumelerat nuvärde
+# Places the value for accumulated present value
 excel_sheet.write("B10", ar_noll_netto)
+acc_list.append(ar_noll_netto)
 
 counter_ett: int = 1
 for letter in alfabet[2:projekt_tid + 1]:
@@ -235,34 +237,37 @@ for letter in alfabet[2:projekt_tid + 1]:
     )
     counter_ett += 1
     ack_mellan_nuvarde += ar_mellan_nuvarde
+    acc_list.append(ack_mellan_nuvarde)
     excel_sheet.write(mellan_ack_nuvarde_row, ack_mellan_nuvarde)
 
 ar_sista_ack_nuvarde: int | float = ack_mellan_nuvarde + ar_sista_nuvarde
+acc_list.append(ar_sista_ack_nuvarde)
 ar_sista_ack_nuvarde_row: str = str(alfabet[projekt_tid + 1]) + "10"
 excel_sheet.write(ar_sista_ack_nuvarde_row, ar_sista_ack_nuvarde)
 
-# Placerar ut värdet för nettonuvärde
+# Places the value for net present value
 excel_sheet.write("B11", ar_sista_ack_nuvarde, bold_centered_economic_format)
 
-# Sparar datan till en JSON fil
+# Saves data to json file
 project.net_present_value = ar_sista_ack_nuvarde
 project.depreciation = avskrivningar
+project.accumulated_net_value_list = acc_list
 
 with open('shared_data.json', 'w', encoding='utf-8') as f:
     json.dump(invester.to_dict(), f, ensure_ascii=False, indent=4)
 
 print("Data successfully saved to shared_data.json")
 
-# Placerar ut värdet för nominella kalkylräntan
+# Places the value for nominell discount rate
 excel_sheet.write("B13", kalkylrantan / (1-skattesats))
 
-# Placerar ut värdet för reala kalkylräntan
+# Places the value for real discount rate
 excel_sheet.write("B14", kalkylrantan)
 
-# Placerar ut värdet för skattesats
+# Places the value for tax rate
 excel_sheet.write("B15", skattesats)
 
-# Korrigerar bakgrunden för positiva och negativa värden
+# Corrects the background for positive and negative values
 
 excel_document.close()
 

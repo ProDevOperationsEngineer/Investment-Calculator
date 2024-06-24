@@ -1,17 +1,30 @@
 {
     "projects": [
         {
-            "year": 15,
-            "initial_investment": 2000000.0,
+            "year": 10,
+            "initial_investment": 1500000.0,
             "incoming_payments": 1000000.0,
-            "outgoing_payments": 200000.0,
-            "residual": 500000.0,
+            "outgoing_payments": 500000.0,
+            "residual": 200000.0,
             "restricted_equity": 200000.0,
-            "discount_rate": 0.15,
+            "discount_rate": 0.12,
             "tax_rate": 0.3,
-            "outgoing_payments_0": 200000.0,
-            "depreciation": 40000.0,
-            "net_present_value": 2219301.3863397823
+            "outgoing_payments_0": 300000.0,
+            "depreciation": 45000.0,
+            "net_present_value": 845090.3570310108,
+            "accumulated_net_value_list": [
+                -1910000.0,
+                -1545608.856088561,
+                -1209454.6642883404,
+                -899349.321299207,
+                -613274.281641335,
+                -349367.4184883165,
+                -105910.90266449878,
+                118679.97909179065,
+                325867.1393835705,
+                516999.2060734044,
+                845090.3570310108
+            ]
         }
     ]
 }

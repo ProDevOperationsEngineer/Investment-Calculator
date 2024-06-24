@@ -51,3 +51,4 @@ class Invester:
         outgoing_payments_0: Optional[float] = 0.0
         depreciation: float = 0.0
         net_present_value: int = 0
+        accumulated_net_value_list: list = field(default_factory=list)

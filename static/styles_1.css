@@ -29,3 +29,13 @@ p {
 .text-item {
     text-align: right;
 }
+
+.btn {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }

@@ -3,7 +3,10 @@ h1 {
     color: #0ca03e;
     padding: 40px 80px;
     font-size: 48px;
+    text-align: center;
 }
+
+
 
 /* Basic styling */
 body {
@@ -13,9 +16,8 @@ body {
   
   /* Selectors */
   .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    position: relative;
+    height: 100vh; /* Full viewport height, adjust as needed */
   }
 
   /* Layout */
@@ -35,18 +37,27 @@ body {
       display: none;
     }
   }
-  
+
   /* Animations */
   .btn {
     background-color: #008CBA;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 20px 40px;
+    border-radius: 40px;
     text-align: center;
     display: inline-block;
     transition: background-color 0.3s ease;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   
   .btn:hover {
     background-color: #005F6B;
   }
+
+  .text-item {
+    text-align: center;
+    font-size: 24px;
+}
