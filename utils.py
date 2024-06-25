@@ -57,7 +57,7 @@ def load_shared_data() -> dict:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
             invester_dict = json.load(f)
     else:
-        print(f"Error: File '{"shared_data.json"}' is empty.")
+        print("Error: File is empty.")
 
     return invester_dict
 
@@ -68,7 +68,7 @@ def load_last_shared_data() -> dict:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
             project_list_dict = json.load(f)
     else:
-        print("Error: File shared_data.json is empty.")
+        print("Error: File is empty.")
     return project_list_dict["projects"][-1]
 
 
