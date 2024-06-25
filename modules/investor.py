@@ -5,25 +5,25 @@ from typing import List, Optional
 
 
 @dataclass
-class Invester:
+class Investor:
     """Class that contains all relevant info to a individual"""
 
     username: str | int
     password: str | int
-    projects: List["Invester.Project"] = field(default_factory=list)
+    projects: List["Investor.Project"] = field(default_factory=list)
 
     def add_project(self, project_data: dict):
         """Add a project to the list"""
         project = self.Project(**project_data)
         self.projects.append(project)
 
-    def get_project(self, index: int) -> Optional["Invester.Project"]:
+    def get_project(self, index: int) -> Optional["Investor.Project"]:
         """Retrieves given project based on index"""
         if 0 <= index < len(self.projects):
             return self.projects[index]
         return None
 
-    def list_projects(self) -> List["Invester.Project"]:
+    def list_projects(self) -> List["Investor.Project"]:
         """Function to make list of projects"""
         return self.projects
 
@@ -34,10 +34,10 @@ class Invester:
     @classmethod
     def from_dict(cls, data: dict):
         """Returns dictionary into class instance"""
-        invester = cls(username=data["username"], password=data["password"])
+        investor = cls(username=data["username"], password=data["password"])
         for project_data in data["projects"]:
-            invester.add_project(project_data)
-        return invester
+            investor.add_project(project_data)
+        return investor
 
     @dataclass
     class Project:

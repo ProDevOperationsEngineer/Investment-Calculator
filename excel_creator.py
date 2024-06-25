@@ -1,13 +1,11 @@
 """This is the first attempt at creating something useful out of my studies,
 we shall see how it goes...
 """
-from typing import Union
 import json
-import os
 import string
-import subprocess
 import xlsxwriter
-from modules.invester import Invester
+from modules.investor import Investor
+from utils import run_colorizer_script, load_shared_data, taxes
 
 
 # Creation of excel document and sheet
@@ -16,37 +14,22 @@ excel_sheet = excel_document.add_worksheet("Project 1")
 
 
 # Loads the dictionary from shared data
-if os.getenv('GITHUB_ACTIONS') == 'true':
-    # GitHub Actions environment
-    FILE_PATH = (
-        "https://github.com/ProDevOperationsEngineer/"
-        "Investmentcalculator/blob/main/shared_data.json"
-    )
-else:
-    # Local environment
-    FILE_PATH = "shared_data.json"
-
-if os.path.getsize(FILE_PATH) > 0:
-    with open(FILE_PATH, 'r', encoding='utf-8') as f:
-        invester_dict = json.load(f)
-else:
-    print(f"Error: File '{FILE_PATH}' is empty.")
-
+investor_dict = load_shared_data()
 
 # Convert the dictionary back to an Invester instance
-invester = Invester.from_dict(invester_dict)
+investor = Investor.from_dict(investor_dict)
 
 
 # Check the number of existing projects
-existing_projects = invester.list_projects()
+existing_projects = investor.list_projects()
 num_projects = len(existing_projects)
 
 
 # If there are existing projects, assign project to be the next one
 if num_projects > 0:
-    project = invester.get_project(num_projects - 1)
+    project = investor.get_project(num_projects - 1)
 else:
-    project = invester.get_project(num_projects)
+    project = investor.get_project(num_projects)
 
 
 # Dynamic variables
@@ -64,32 +47,6 @@ acc_list = project.accumulated_net_value_list
 
 
 # Applies taxes to correct variables
-def taxes(
-    inb: Union[int, float],
-    utb: Union[int, float],
-    utb_ar_noll: Union[int, float],
-    re: Union[int, float],
-    kalk: Union[int, float],
-    skatt: Union[int, float]
-) -> tuple[
-    Union[int, float],
-    Union[int, float],
-    Union[int, float],
-    Union[int, float],
-    Union[int, float],
-]:
-    """Modifierar värderna på belopp som ska tas hänsyn till skatt och
-    returerar de nya värderna som sedan manuellts blir
-    tilldelade de gamla variablarna
-    """
-    inb *= (1-skatt)
-    utb *= (1-skatt)
-    utb_ar_noll *= (1-skatt)
-    kalk *= (1-skatt)
-    re *= (1-skatt)
-    return inb, utb, utb_ar_noll, re, kalk
-
-
 inbet, utbet, rest, utbet_ar_noll, kalkylrantan = taxes(
     inbet,
     utbet,
@@ -115,8 +72,6 @@ italic_format = excel_document.add_format({"italic": True})
 bold_centered__colored_format = excel_document.add_format({
     "bold": True,
     "align": "center"
-    # "font_color": "white",
-    # "bg_color": "azeal"
 })
 center_economic_format = excel_document.add_format({
     "align": "center",
@@ -254,7 +209,7 @@ project.depreciation = avskrivningar
 project.accumulated_net_value_list = acc_list
 
 with open('shared_data.json', 'w', encoding='utf-8') as f:
-    json.dump(invester.to_dict(), f, ensure_ascii=False, indent=4)
+    json.dump(investor.to_dict(), f, ensure_ascii=False, indent=4)
 
 print("Data successfully saved to shared_data.json")
 
@@ -268,29 +223,7 @@ excel_sheet.write("B14", kalkylrantan)
 excel_sheet.write("B15", skattesats)
 
 # Corrects the background for positive and negative values
-
 excel_document.close()
-
-
-def run_colorizer_script():
-    """Function to run the correct path to the script for colorizing"""
-    # Check if running in a GitHub environment
-    if os.getenv('GITHUB_ACTIONS') == 'true':
-        # GitHub Actions environment
-        local_path = (
-            "https://github.com/ProDevOperationsEngineer/"
-            "Investmentcalculator/blob/main/excel_colorizer.py"
-        )
-    else:
-        # Local environment
-        local_path = "excel_colorizer.py"
-
-    try:
-        subprocess.run(
-            ['python', local_path], capture_output=True, text=True, check=True
-        )
-    except subprocess.CalledProcessError as e:
-        print("Error executing excel_colorizer.py:", e)
 
 
 run_colorizer_script()

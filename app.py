@@ -1,7 +1,6 @@
 """App configuration
 """
 import json
-import os
 import subprocess
 import io
 import base64
@@ -9,7 +8,13 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 from flask import Flask, request, render_template, redirect, url_for
-from modules.invester import Invester
+from modules.investor import Investor
+from utils import (
+    file_path_creator,
+    load_shared_data,
+    load_last_shared_data,
+    save_to_csv
+)
 
 app = Flask(__name__)
 
@@ -18,13 +23,24 @@ app = Flask(__name__)
 def home():
     """Route to  an introduction in
     investment calculation and basic info"""
-    return render_template("info.html")
+    investor = load_shared_data()
+    return render_template("info.html", investor=investor)
 
 
 @app.route("/calculus")
 def kalkyl():
     """Route to investment calculation form"""
     return render_template("index.html")
+
+
+@app.route("/saveproject")
+def save_project():
+    """save current project to list of projects"""
+    investor = load_shared_data()
+    save_to_csv(investor, "myproject.csv")
+    print("Investor data:", investor)  # Print the investor data for debugging
+
+    return render_template("info.html", investor=investor)
 
 
 @app.route("/account")
@@ -37,22 +53,8 @@ def account():
 def diagram():
     """Creating a diagram with the y-axel as
     accumulated net value and x-axel as number of years"""
-    if os.getenv("GITHUB_ACTIONS") == "true":
-        # GitHub Actions environment
-        file_path = (
-            "https://github.com/ProDevOperationsEngineer/"
-            "Investmentcalculator/blob/main/shared_data.json"
-        )
-    else:
-        # Local environment
-        file_path = "shared_data.json"
 
-    if os.path.getsize(file_path) > 0:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            project_list_dict = json.load(f)
-            project = project_list_dict["projects"][-1]
-    else:
-        print("Error: File shared_data.json is empty.")
+    project = load_last_shared_data()
 
     # Diagram construction
     y_axel_list = project["accumulated_net_value_list"]
@@ -87,16 +89,25 @@ def diagram():
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode()
 
-    return render_template("diagram.html", plot_url=plot_url)
+    # Calculate key assessment data
+    count = 0
+    for i in project["accumulated_net_value_list"]:
+        count += 1
+        print(i)
+        if i > 0:
+            break
+    break_even = count - 1
+    return render_template(
+        "diagram.html",
+        plot_url=plot_url,
+        break_even=break_even
+    )
 
 
 @app.route("/submit", methods=["POST"])
 def submit():
     """Submit form to collect investment data from the user"""
-
-    with open("shared_data.json", 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        print(json.dumps(data, indent=4, ensure_ascii=False))
+    data = load_shared_data()
 
     try:
         # Retrieve data from the form
@@ -113,26 +124,17 @@ def submit():
         }
 
         # Creates instance of invester class and saves submit values
-        invester = Invester(data["username"], data["password"])
-        invester.add_project(htmldata)
+        investor = Investor(data["username"], data["password"])
+        investor.add_project(htmldata)
 
         # Converts class instance into a dict
-        invester_dict = invester.to_dict()
+        investor_dict = investor.to_dict()
 
         # Save the data to a JSON file
         with open('shared_data.json', 'w', encoding='utf-8') as f:
-            json.dump(invester_dict, f, ensure_ascii=False, indent=4)
+            json.dump(investor_dict, f, ensure_ascii=False, indent=4)
 
-        # Run the other Python script using subprocess
-        if os.getenv('GITHUB_ACTIONS') == 'true':
-            # GitHub Actions environment
-            local_path = (
-                "https://github.com/ProDevOperationsEngineer/"
-                "Investmentcalculator/blob/main/excel_creator.py"
-            )
-        else:
-            # Local environment
-            local_path = "excel_creator.py"
+        local_path = file_path_creator()
 
         try:
             result = subprocess.run(
@@ -163,14 +165,14 @@ def submit_account():
             "username": str(request.form["username"]),
             "password": str(request.form["password"]),
         }
-        invester = Invester(userdata["username"], userdata["password"])
+        investor = Investor(userdata["username"], userdata["password"])
 
         # Converts class instance into a dict
-        invester_dict = invester.to_dict()
+        investor_dict = investor.to_dict()
 
         # Save the data to a JSON file
         with open('shared_data.json', 'w', encoding='utf-8') as f:
-            json.dump(invester_dict, f, ensure_ascii=False, indent=4)
+            json.dump(investor_dict, f, ensure_ascii=False, indent=4)
 
     except ValueError as e:
         # Handle invalid input
@@ -181,27 +183,7 @@ def submit_account():
 @app.route("/netpresentvalue")
 def netpresentvalue():
     """Net present value of investment"""
-    if os.getenv('GITHUB_ACTIONS') == 'true':
-        # GitHub Actions environment
-        file_path = (
-            "https://github.com/ProDevOperationsEngineer/"
-            "Investmentcalculator/blob/main/shared_data.json"
-        )
-    else:
-        # Local environment
-        file_path = "shared_data.json"
-
-    if os.path.getsize(file_path) > 0:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            project_list_dict = json.load(f)
-            project = project_list_dict["projects"][-1]
-    else:
-        print("Error: File shared_data.json is empty.")
-
-    with open("shared_data.json", 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        print(json.dumps(data, indent=4, ensure_ascii=False))
-
+    project = load_last_shared_data()
     return render_template("result.html", data=project)
 
 

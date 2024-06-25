@@ -1,5 +1,5 @@
-"""Korrigerar negativa värden till att synas i röd färg
-samt positiva i grön färg.
+"""Corrects negative values to appear in red color
+and positive in green
 """
 
 
