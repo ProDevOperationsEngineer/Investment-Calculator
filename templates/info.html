@@ -21,7 +21,12 @@
     <div class="ui container custom-theme">
         <h1 class="ui header">The project has been developed to simplify and clarify investment calculation</h1>
         <p>Fill in the values to obtain a net present value</p>
-        <p>Username: </p>
+        {% if "username" in current_investor %}
+        <p>Username: {{ current_investor["username"]}}</p>
+        <br>
+        {% else %}
+        <p>No Data</p>
+        {% endif %}
         <div class="ui two column centered grid">
             <div class="ui attached stackable menu">
                 <div class="ui container">
@@ -36,15 +41,16 @@
             </div>
           </div>
     </div>
+    {% if list_of_projects|length > 0 %}
     <div class="ui centered divided items">
         <div class="item">
           <div class="image">
             <img src="/images/wireframe/image.png">
           </div>
           <div class="content">
-            <a class="header">Project:</a>
+            <a class="header">Project:  {{ list_of_projects[0] }}</a>
             <div class="meta">
-              <span class="cinema">Union Square 14</span>
+              <span class="cinema">Net Present Value: {{ list_of_npv[0] }}kr</span>
             </div>
             <div class="description">
               <p></p>
@@ -55,14 +61,18 @@
             </div>
           </div>
         </div>
+        {% else %}
+          <br>
+        {% endif %}
+        {% if list_of_projects|length > 1 %}
         <div class="item">
           <div class="image">
             <img src="/images/wireframe/image.png">
           </div>
           <div class="content">
-            <a class="header">Project:</a>
+            <a class="header">Project: {{ list_of_projects[1] }}</a>
             <div class="meta">
-              <span class="cinema">IFC Cinema</span>
+              <span class="cinema">Net Present Value: {{ list_of_npv[1] }}kr</span>
             </div>
             <div class="description">
               <p></p>
@@ -76,14 +86,18 @@
             </div>
           </div>
         </div>
+        {% else %}
+          <br>
+        {% endif %}
+        {% if list_of_projects|length > 2 %}
         <div class="item">
           <div class="image">
             <img src="/images/wireframe/image.png">
           </div>
           <div class="content">
-            <a class="header">Project: </a>
+            <a class="header">Project: {{ list_of_projects[2] }}</a>
             <div class="meta">
-              <span class="cinema">IFC</span>
+              <span class="cinema">Net Present Value: {{ list_of_npv[2] }}kr</span>
             </div>
             <div class="description">
               <p></p>
@@ -96,6 +110,9 @@
             </div>
           </div>
         </div>
+        {% else %}
+          <br>
+        {% endif %}
       </div>
 </body>
 </html>

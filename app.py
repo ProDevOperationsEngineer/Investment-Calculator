@@ -28,10 +28,27 @@ def home():
     investment calculation and basic info"""
     if os.path.isfile("user_database.csv") is True:
         investor = load_from_csv("user_database.csv")
-        print(f"investor type: {type(investor)}")
+        current_investor = investor[-1]
+        project = load_from_csv("project_database.csv")
+        list_of_projects = []
+        list_of_npv = []
+        for item in project:
+            project_name = item["project_name"]
+            net_present_value = round(float(item["net_present_value"]))
+            net_present_value_str = "{:,.0f}".format(net_present_value)
+
+            # Replace commas with spaces
+            net_present_value_formatted = net_present_value_str.replace(
+                ",", " "
+            )
+            list_of_npv.append(net_present_value_formatted)
+            list_of_projects.append(project_name)
         return render_template(
             "info.html",
-            investor=investor)
+            current_investor=current_investor,
+            list_of_projects=list_of_projects,
+            list_of_npv=list_of_npv
+        )
     else:
         return render_template("info.html")
 

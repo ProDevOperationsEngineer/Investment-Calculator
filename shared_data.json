@@ -1,32 +1,27 @@
 {
-    "username": "hello",
-    "password": "hambo",
+    "username": "Bumbate",
+    "password": "heloomsosoos",
     "projects": [
         {
-            "project_name": "missamericanpie",
-            "year": 10,
-            "initial_investment": 1000000.0,
-            "incoming_payments": 1000000.0,
+            "project_name": "BigProject",
+            "year": 5,
+            "initial_investment": 2000000.0,
+            "incoming_payments": 1500000.0,
             "outgoing_payments": 500000.0,
-            "residual": 200000.0,
-            "restricted_equity": 300000.0,
+            "residual": 100000.0,
+            "restricted_equity": 200000.0,
             "discount_rate": 0.12,
             "tax_rate": 0.3,
             "outgoing_payments_0": 200000.0,
-            "depreciation": 30000.0,
-            "net_present_value": 1260868.3442744187,
+            "depreciation": 120000.0,
+            "net_present_value": 1080186.2528883428,
             "accumulated_net_value_list": [
-                -1440000.0,
-                -1089446.4944649446,
-                -766057.6517204286,
-                -467728.4609967054,
-                -192517.0304397652,
-                61368.053099847515,
-                295579.384778457,
-                511641.49887311517,
-                710960.7923183718,
-                894834.6792604905,
-                1260868.3442744187
+                -2340000.0,
+                -1583542.4354243544,
+                -885703.3537125041,
+                -241940.36320341728,
+                351936.9343141905,
+                1080186.2528883428
             ]
         }
     ]
