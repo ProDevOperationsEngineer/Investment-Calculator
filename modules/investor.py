@@ -43,6 +43,7 @@ class Investor:
     class Project:
         """Contains all the different projects a
         individual invester have in their portfolio"""
+        project_name: str
         year: int
         initial_investment: float
         incoming_payments: float

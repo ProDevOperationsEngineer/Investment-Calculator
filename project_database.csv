@@ -1,0 +1,2 @@
+project_name,year,initial_investment,incoming_payments,outgoing_payments,outgoing_payments_0,restricted_equity,residual,discount_rate,tax_rate,net_present_value,depreciation
+missamericanpie,10,1000000.0,1000000.0,500000.0,200000.0,300000.0,200000.0,0.12,0.3,1260868.3442744187,30000.0

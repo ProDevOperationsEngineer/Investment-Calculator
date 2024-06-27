@@ -3,6 +3,7 @@
 import json
 import subprocess
 import io
+import os
 import base64
 import math
 import matplotlib.pyplot as plt
@@ -13,7 +14,9 @@ from utils import (
     file_path_creator,
     load_shared_data,
     load_last_shared_data,
-    save_to_csv
+    save_to_csv_user,
+    save_to_csv_project,
+    load_from_csv
 )
 
 app = Flask(__name__)
@@ -21,10 +24,16 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    """Route to  an introduction in
+    """Route to an introduction in
     investment calculation and basic info"""
-    investor = load_shared_data()
-    return render_template("info.html", investor=investor)
+    if os.path.isfile("user_database.csv") is True:
+        investor = load_from_csv("user_database.csv")
+        print(f"investor type: {type(investor)}")
+        return render_template(
+            "info.html",
+            investor=investor)
+    else:
+        return render_template("info.html")
 
 
 @app.route("/calculus")
@@ -37,10 +46,14 @@ def kalkyl():
 def save_project():
     """save current project to list of projects"""
     investor = load_shared_data()
-    save_to_csv(investor, "myproject.csv")
-    print("Investor data:", investor)  # Print the investor data for debugging
-
-    return render_template("info.html", investor=investor)
+    investor_user = {
+        "username": investor["username"], "password": investor["password"]
+    }
+    investor_project_dict = investor["projects"][-1]
+    del investor["projects"][-1]["accumulated_net_value_list"]
+    save_to_csv_user(investor_user, "user_database.csv")
+    save_to_csv_project(investor_project_dict, "project_database.csv")
+    return redirect(url_for("home"))
 
 
 @app.route("/account")
@@ -53,17 +66,13 @@ def account():
 def diagram():
     """Creating a diagram with the y-axel as
     accumulated net value and x-axel as number of years"""
-
     project = load_last_shared_data()
 
     # Diagram construction
     y_axel_list = project["accumulated_net_value_list"]
     t = np.arange(project["year"] + 1)
-
     fig, ax = plt.subplots(figsize=(15, 10), layout='constrained')
-
     colors = ['green' if value >= 0 else '#B22222' for value in y_axel_list]
-
     bars = ax.bar(t, y_axel_list, color=colors)
 
     # Add the values on top of the bars
@@ -100,7 +109,8 @@ def diagram():
     return render_template(
         "diagram.html",
         plot_url=plot_url,
-        break_even=break_even
+        break_even=break_even,
+        project=project
     )
 
 
@@ -112,15 +122,16 @@ def submit():
     try:
         # Retrieve data from the form
         htmldata = {
-            "year": int(request.form['year']),
-            "initial_investment": float(request.form['investment']),
-            "incoming_payments": float(request.form['inflows']),
-            "outgoing_payments": float(request.form['outflows']),
-            "outgoing_payments_0": float(request.form['outflow_0']),
-            "residual": float(request.form['residual']),
-            "restricted_equity": float(request.form['work_cap']),
-            "discount_rate": float(request.form['discount_rate']),
-            "tax_rate": float(request.form['tax_rate'])
+            "project_name": str(request.form["project_name"]),
+            "year": int(request.form["year"]),
+            "initial_investment": float(request.form["investment"]),
+            "incoming_payments": float(request.form["inflows"]),
+            "outgoing_payments": float(request.form["outflows"]),
+            "outgoing_payments_0": float(request.form["outflow_0"]),
+            "residual": float(request.form["residual"]),
+            "restricted_equity": float(request.form["work_cap"]),
+            "discount_rate": float(request.form["discount_rate"]),
+            "tax_rate": float(request.form["tax_rate"])
         }
 
         # Creates instance of invester class and saves submit values

@@ -12,6 +12,12 @@ h1 {
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    display: grid;
+    place-items: center;
+  }
+
+  .content {
+    text-align: center;
   }
   
   /* Selectors */
@@ -57,7 +63,29 @@ body {
     background-color: #005F6B;
   }
 
-  .text-item {
-    text-align: center;
-    font-size: 24px;
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Three columns of equal width */
+  grid-gap: 10px; /* Gap between grid items */
+  /* Optionally, you can define grid-template-rows for row layout */
+}
+
+.grid-item {
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: left;
+  font-size: x-large;
+  font-style: italic;
+}
+
+
+input[type="submit"] {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 20px 40px; /* Padding */
+  border: none; /* No border */
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  font-size: 24px; /* Larger font size */
 }

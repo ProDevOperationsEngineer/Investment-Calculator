@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Please sign in to access your portfolio of investments</h1>
-    <form action="/submit/account" method="POST">
+    <form id="myForm" action="/submit/account" method="POST">
         <div class="ui placeholder segment">
             <div class="ui two column very relaxed stackable grid">
               <div class="column">
@@ -26,7 +26,7 @@
                       <i class="lock icon"></i>
                     </div>
                   </div>
-                  <div class="ui blue submit button">Login</div>
+                  <div class="ui blue submit button" onclick="submitForm()">Login</div>
                 </div>
               </div>
               <div class="middle aligned column">
@@ -40,9 +40,13 @@
               Or
             </div>
           </div>
-            <input type="submit" value="Submit">
         </div>
     </form>
+    <script>
+      function submitForm() {
+        document.getElementById("myForm").submit();
+      }
+    </script>
 </body>
 </html>
  

@@ -97,29 +97,46 @@ def taxes(
     return inb, utb, utb_ar_noll, re, kalk
 
 
-def save_to_csv(data, filename, mode='a'):
+def save_to_csv_user(data, filename, mode='a'):
     """Saves a dictionary to a CSV file, optionally in append mode"""
-    # Ensure data is a dictionary
-    if not isinstance(data, dict):
-        raise ValueError("data must be a dictionary")
-    print("Data to be written to CSV:", data)
-    # Extract and serialize projects list
-    projects = data.pop('projects', None)
-    if projects is not None:
-        data['projects'] = json.dumps(projects)
 
-    fieldnames = [
-        "username", "password", "projects", "name", "description",
-        "restricted_equity", "residual", "discount_rate",
-        "net_present_value", "incoming_payments", "outgoing_payments_0",
-        "initial_investment", "outgoing_payments", "tax_rate",
-        "depreciation", "accumulated_net_value_list", "year"
-    ]
-    print("Data to be written to CSV:", data)
+    fieldnames = ["username", "password"]
+
+    file_exists = os.path.isfile(filename)
 
     with open(filename, mode, newline='', encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         # Only write the header if the file is new (write mode)
-        if mode == 'w':
+        if not file_exists:
             writer.writeheader()
         writer.writerow(data)
+
+
+def save_to_csv_project(data, filename, mode='a'):
+    """Saves a dictionary to a CSV file, optionally in append mode"""
+
+    fieldnames = [
+        "project_name", "year", "initial_investment", "incoming_payments",
+        "outgoing_payments", "outgoing_payments_0", "restricted_equity",
+        "residual", "discount_rate", "tax_rate", "net_present_value",
+        "depreciation",
+    ]
+
+    file_exists = os.path.isfile(filename)
+
+    with open(filename, mode, newline='', encoding="utf-8") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        # Only write the header if the file is new (write mode)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(data)
+
+
+def load_from_csv(filename) -> list:
+    """Loads data from a CSV file and returns a list of dictionaries."""
+    data_list = []
+    with open(filename, mode="r", newline='', encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            data_list.append(row)
+    return data_list
