@@ -33,7 +33,7 @@ else:
 
 
 # Dynamic variables
-projekt_tid = project.year
+projekt_tid = project.lifetime
 skattesats = project.tax_rate
 kalkylrantan = project.discount_rate
 inbet = project.incoming_payments
@@ -86,7 +86,7 @@ excel_sheet.set_column("A:A", 25)
 excel_sheet.set_column("B:T", 15, center_economic_format)
 
 # Headlines for all relevant data
-excel_sheet.write("A1", "Year", bold_format)
+excel_sheet.write("A1", "Project lifetime", bold_format)
 excel_sheet.write("A2", "Initial Investment")
 excel_sheet.write("A3", "Depreciation")
 excel_sheet.write("A4", "Incoming Payments")

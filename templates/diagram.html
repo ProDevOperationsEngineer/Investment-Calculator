@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Diagram</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
 </head>
 <body>
-    <h1>Accumulated Net Value of {{ project["project_name"] }}</h1>
-    <img src="data:image/png;base64,{{ plot_url }}" alt="Diagram">
-        <h2>In how many years will your investment break even: {{ break_even }}</h>
+    <h1 class="ui header">Accumulated Net Value of {{ project["project_name"] }}</h1>
+    <div class="ui two column centered grid">
+        <div class="column">
+            <br>
+            <br>
+            <br>
+            <br>
+            <img src="data:image/png;base64,{{ bar_plot_url }}" alt="Bar Diagram">
+        </div>
+        <div class="column">
+            <img src="data:image/png;base64,{{ line_plot_url }}" alt="Line Diagram">
+        </div>
+        <div>
+    </div>
+    <h3 class="ui header">In how many years will your investment break even: {{ break_even }}</h3>       
 </body>
 </html>

@@ -2,14 +2,15 @@
 nestled within the class Project"""
 from dataclasses import dataclass, field, asdict
 from typing import List, Optional
+# from utils import generate_random_id
 
 
 @dataclass
 class Investor:
     """Class that contains all relevant info to a individual"""
-
     username: str | int
     password: str | int
+    # user_id: str = field(init=False)
     projects: List["Investor.Project"] = field(default_factory=list)
 
     def add_project(self, project_data: dict):
@@ -44,7 +45,7 @@ class Investor:
         """Contains all the different projects a
         individual invester have in their portfolio"""
         project_name: str
-        year: int
+        lifetime: int
         initial_investment: float
         incoming_payments: float
         outgoing_payments: float

@@ -3,8 +3,16 @@ the project can be found here"""
 import csv
 import os
 import json
+import random
+import string
 import subprocess
 from typing import Union
+
+
+def generate_random_id(length=8):
+    """Generate a random string of fixed length."""
+    letters_and_digits = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters_and_digits) for i in range(length))
 
 
 def file_path_colorizer() -> str:
@@ -116,7 +124,7 @@ def save_to_csv_project(data, filename, mode='a'):
     """Saves a dictionary to a CSV file, optionally in append mode"""
 
     fieldnames = [
-        "project_name", "year", "initial_investment", "incoming_payments",
+        "project_name", "lifetime", "initial_investment", "incoming_payments",
         "outgoing_payments", "outgoing_payments_0", "restricted_equity",
         "residual", "discount_rate", "tax_rate", "net_present_value",
         "depreciation",
@@ -132,11 +140,32 @@ def save_to_csv_project(data, filename, mode='a'):
         writer.writerow(data)
 
 
+def save_to_csv_image(data, csv_filename, mode="a"):
+    """Saves image in byte64data to a CSV file"""
+    file_exists = os.path.isfile(csv_filename)
+    with open(csv_filename, mode, newline='', encoding="utf-8") as csv_file:
+        writer = csv.writer(csv_file)
+        if not file_exists:
+            writer.writerow(['ImageName', 'Base64Data'])
+        for image_name, base64_data in data.items():
+            writer.writerow([image_name, base64_data])
+
+
 def load_from_csv(filename) -> list:
     """Loads data from a CSV file and returns a list of dictionaries."""
     data_list = []
     with open(filename, mode="r", newline='', encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
+        for row in reader:
+            data_list.append(row)
+    return data_list
+
+
+def load_from_csv_image(filename) -> list:
+    """Loads byte64data image from a CSV file and returns a list."""
+    data_list = []
+    with open(filename, mode="r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.reader(csvfile)
         for row in reader:
             data_list.append(row)
     return data_list

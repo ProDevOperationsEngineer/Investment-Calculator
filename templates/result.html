@@ -19,8 +19,8 @@
     <div class="container">
         <p class="text-item">Project has a: 
             <span class="number">
-                {% if "year" in data and data["year"] is not none %}
-                    {{ "{:,}".format(data["year"]) | replace(',', ' ') }} year life expectancy
+                {% if "lifetime" in data and data["lifetime"] is not none %}
+                    {{ "{:,}".format(data["lifetime"]) | replace(',', ' ') }} Project life expectancy
                 {% else %}
                     Data not available
                 {% endif %}

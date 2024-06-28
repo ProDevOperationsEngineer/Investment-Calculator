@@ -16,7 +16,9 @@ from utils import (
     load_last_shared_data,
     save_to_csv_user,
     save_to_csv_project,
-    load_from_csv
+    save_to_csv_image,
+    load_from_csv,
+    load_from_csv_image
 )
 
 app = Flask(__name__)
@@ -26,30 +28,52 @@ app = Flask(__name__)
 def home():
     """Route to an introduction in
     investment calculation and basic info"""
-    if os.path.isfile("user_database.csv") is True:
+    if os.path.isfile("user_database.csv"):
         investor = load_from_csv("user_database.csv")
-        current_investor = investor[-1]
-        project = load_from_csv("project_database.csv")
-        list_of_projects = []
-        list_of_npv = []
-        for item in project:
-            project_name = item["project_name"]
-            net_present_value = round(float(item["net_present_value"]))
-            net_present_value_str = "{:,.0f}".format(net_present_value)
+        print("Investor data loaded:", investor)
+        if not investor:
+            return render_template("info.html")
 
-            # Replace commas with spaces
-            net_present_value_formatted = net_present_value_str.replace(
-                ",", " "
+        current_investor = investor[-1]
+        print("Current investor:", current_investor)
+
+        if os.path.isfile("project_database.csv"):
+            project = load_from_csv("project_database.csv")
+            project_diagrams = load_from_csv_image("image_database.csv")
+            if not project:
+                return render_template(
+                    "info.html",
+                    current_investor=current_investor)
+
+            list_of_projects = []
+            list_of_npv = []
+            for item in project:
+                project_name = item["project_name"]
+                net_present_value = round(float(item["net_present_value"]))
+                net_present_value_str = "{:,.0f}".format(net_present_value)
+
+                # Replace commas with spaces
+                net_present_value_formatted = net_present_value_str.replace(
+                    ",", " "
+                )
+                list_of_npv.append(net_present_value_formatted)
+                list_of_projects.append(project_name)
+
+            return render_template(
+                "info.html",
+                current_investor=current_investor,
+                project_diagrams=project_diagrams,
+                list_of_projects=list_of_projects,
+                list_of_npv=list_of_npv
             )
-            list_of_npv.append(net_present_value_formatted)
-            list_of_projects.append(project_name)
-        return render_template(
-            "info.html",
-            current_investor=current_investor,
-            list_of_projects=list_of_projects,
-            list_of_npv=list_of_npv
-        )
+        else:
+            print("Project database file not found.")
+            return render_template(
+                "info.html",
+                current_investor=current_investor
+            )
     else:
+        print("User database file not found.")
         return render_template("info.html")
 
 
@@ -66,8 +90,8 @@ def save_project():
     investor_user = {
         "username": investor["username"], "password": investor["password"]
     }
-    investor_project_dict = investor["projects"][-1]
     del investor["projects"][-1]["accumulated_net_value_list"]
+    investor_project_dict = investor["projects"][-1]
     save_to_csv_user(investor_user, "user_database.csv")
     save_to_csv_project(investor_project_dict, "project_database.csv")
     return redirect(url_for("home"))
@@ -84,11 +108,10 @@ def diagram():
     """Creating a diagram with the y-axel as
     accumulated net value and x-axel as number of years"""
     project = load_last_shared_data()
-
     # Diagram construction
     y_axel_list = project["accumulated_net_value_list"]
-    t = np.arange(project["year"] + 1)
-    fig, ax = plt.subplots(figsize=(15, 10), layout='constrained')
+    t = np.arange(project["lifetime"] + 1)
+    fig, ax = plt.subplots(figsize=(12, 8), layout='constrained')
     colors = ['green' if value >= 0 else '#B22222' for value in y_axel_list]
     bars = ax.bar(t, y_axel_list, color=colors)
 
@@ -101,11 +124,12 @@ def diagram():
                     xytext=(0, 3),  # 3 points vertical offset
                     textcoords="offset points",
                     ha='center', va='bottom')
+
     # Set x-axis ticks and labels
     ax.set_xticks(t)
     ax.set_xticklabels(t)
     ax.yaxis.set_ticks([])
-    ax.set_title("Accumulated Net Value of Investment by Year")
+    ax.set_title("Net Value of Investment by Year")
     ax.set_xlabel("Year")
     ax.set_ylabel("Accumulated Net Value")
 
@@ -113,9 +137,29 @@ def diagram():
     img = io.BytesIO()
     fig.savefig(img, format='png')
     img.seek(0)
-    plot_url = base64.b64encode(img.getvalue()).decode()
+    bar_plot_url = base64.b64encode(img.getvalue()).decode()
 
-    # Calculate key assessment data
+    # Diagram construction for line plot
+    fig_line, ax_line = plt.subplots(figsize=(12, 9))
+    ax_line.plot(t, y_axel_list, marker='o', linestyle='-', color='purple')
+
+    # Set x-axis and y-axis labels for line plot
+    ax_line.set_title("Net Value of Investment by Year")
+    ax_line.set_xlabel("Year")
+    ax_line.set_ylabel("Accumulated Net Value")
+
+    # Set y-axis ticks to display only minimum and maximum values
+    min_value = min(y_axel_list)
+    max_value = max(y_axel_list)
+    ax_line.yaxis.set_ticks([min_value, max_value])
+
+    # Convert the line plot to a PNG image and encode it to base64
+    img_line = io.BytesIO()
+    fig_line.savefig(img_line, format='png')
+    img_line.seek(0)
+    line_plot_url = base64.b64encode(img_line.getvalue()).decode()
+
+    # Calculate break-even point
     count = 0
     for i in project["accumulated_net_value_list"]:
         count += 1
@@ -123,9 +167,16 @@ def diagram():
         if i > 0:
             break
     break_even = count - 1
+    project_name = str(project["project_name"])
+
+    # Save byte64data image to CVS file
+    byte64_dict = {project_name: line_plot_url}
+    save_to_csv_image(byte64_dict, "image_database.csv")
+
     return render_template(
         "diagram.html",
-        plot_url=plot_url,
+        bar_plot_url=bar_plot_url,
+        line_plot_url=line_plot_url,
         break_even=break_even,
         project=project
     )
@@ -140,7 +191,7 @@ def submit():
         # Retrieve data from the form
         htmldata = {
             "project_name": str(request.form["project_name"]),
-            "year": int(request.form["year"]),
+            "lifetime": int(request.form["lifetime"]),
             "initial_investment": float(request.form["investment"]),
             "incoming_payments": float(request.form["inflows"]),
             "outgoing_payments": float(request.form["outflows"]),
@@ -197,6 +248,11 @@ def submit_account():
 
         # Converts class instance into a dict
         investor_dict = investor.to_dict()
+        investor_user = {
+            "username": investor_dict["username"],
+            "password": investor_dict["password"]
+        }
+        save_to_csv_user(investor_user, "user_database.csv")
 
         # Save the data to a JSON file
         with open('shared_data.json', 'w', encoding='utf-8') as f:
