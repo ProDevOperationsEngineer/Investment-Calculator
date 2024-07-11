@@ -1,5 +1,33 @@
 {
     "username": "hello",
     "password": "",
-    "projects": []
+    "projects": [
+        {
+            "project_name": "hello",
+            "lifetime": 10,
+            "initial_investment": 500000.0,
+            "incoming_payments": 1000000.0,
+            "outgoing_payments": 3000000.0,
+            "residual": 100000.0,
+            "restricted_equity": 200000.0,
+            "discount_rate": 0.12,
+            "tax_rate": 0.3,
+            "outgoing_payments_0": 500000.0,
+            "depreciation": 15000.0,
+            "net_present_value": -10057574.483641014,
+            "accumulated_net_value_list": [
+                -1050000.0,
+                -2327675.276752767,
+                -3506342.50622949,
+                -4593673.898735692,
+                -5596747.139055066,
+                -6522091.456692865,
+                -7375730.126100428,
+                -8163219.67352438,
+                -8889686.045686696,
+                -9559857.975725733,
+                -10057574.483641014
+            ]
+        }
+    ]
 }
