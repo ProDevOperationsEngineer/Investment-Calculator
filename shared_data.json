@@ -1,33 +1,5 @@
 {
-    "username": "Hugemungus",
-    "password": "Dungus",
-    "projects": [
-        {
-            "project_name": "3 one is the charm ",
-            "lifetime": 10,
-            "initial_investment": 2000000.0,
-            "incoming_payments": 500000.0,
-            "outgoing_payments": 200000.0,
-            "residual": 100000.0,
-            "restricted_equity": 200000.0,
-            "discount_rate": 0.12,
-            "tax_rate": 0.3,
-            "outgoing_payments_0": 400000.0,
-            "depreciation": 60000.0,
-            "net_present_value": -579991.9574803256,
-            "accumulated_net_value_list": [
-                -2480000.0,
-                -2230922.5092250924,
-                -2001146.2262224099,
-                -1789175.4854450277,
-                -1593630.5216282543,
-                -1413238.4885869506,
-                -1246825.1739732018,
-                -1093307.3560638395,
-                -951685.7528264204,
-                -821038.5173675466,
-                -579991.9574803256
-            ]
-        }
-    ]
+    "username": "hello",
+    "password": "",
+    "projects": []
 }
