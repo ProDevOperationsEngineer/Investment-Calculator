@@ -40,6 +40,16 @@ class Investor:
             investor.add_project(project_data)
         return investor
 
+    @classmethod
+    def from_list(cls, data: list):
+        """Return last list entry into class instance"""
+        investor = cls(
+            username=data[-1]["username"], password=data[-1]["password"]
+        )
+        for project_data in data[-1]["projects"]:
+            investor.add_project(project_data)
+        return investor
+
     @dataclass
     class Project:
         """Contains all the different projects a

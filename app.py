@@ -1,6 +1,5 @@
 """App configuration
 """
-import json
 import subprocess
 import io
 import os
@@ -18,7 +17,8 @@ from utils import (
     save_to_csv_project,
     save_to_csv_image,
     load_from_csv,
-    load_from_csv_image
+    load_from_csv_image,
+    json_file_amender
 )
 
 app = Flask(__name__)
@@ -29,12 +29,10 @@ def home():
     """Route to an introduction in
     investment calculation and basic info"""
     if os.path.isfile("user_database.csv"):
-        investor = load_from_csv("user_database.csv")
-        print("Investor data loaded:", investor)
-        if not investor:
+        current_investor = load_last_shared_data()
+        if not current_investor:
             return render_template("info.html")
 
-        current_investor = investor[-1]
         print("Current investor:", current_investor)
 
         if os.path.isfile("project_database.csv"):
@@ -50,7 +48,7 @@ def home():
             for item in project:
                 project_name = item["project_name"]
                 net_present_value = round(float(item["net_present_value"]))
-                net_present_value_str = "{:,.0f}".format(net_present_value)
+                net_present_value_str = f"{net_present_value:,.0f}"
 
                 # Replace commas with spaces
                 net_present_value_formatted = net_present_value_str.replace(
@@ -80,7 +78,8 @@ def home():
 @app.route("/calculus")
 def kalkyl():
     """Route to investment calculation form"""
-    return render_template("index.html")
+    user_dict = load_from_csv("user_database.csv")
+    return render_template("index.html", user_dict=user_dict)
 
 
 @app.route("/saveproject")
@@ -203,15 +202,14 @@ def submit():
         }
 
         # Creates instance of invester class and saves submit values
-        investor = Investor(data["username"], data["password"])
+        investor = Investor(data[-1]["username"], data[-1]["password"])
         investor.add_project(htmldata)
 
         # Converts class instance into a dict
         investor_dict = investor.to_dict()
 
         # Save the data to a JSON file
-        with open('shared_data.json', 'w', encoding='utf-8') as f:
-            json.dump(investor_dict, f, ensure_ascii=False, indent=4)
+        json_file_amender("shared_data.json", investor_dict)
 
         local_path = file_path_creator()
 
@@ -254,21 +252,57 @@ def submit_account():
         }
         save_to_csv_user(investor_user, "user_database.csv")
 
-        # Save the data to a JSON file
-        with open('shared_data.json', 'w', encoding='utf-8') as f:
-            json.dump(investor_dict, f, ensure_ascii=False, indent=4)
+        json_file_amender("shared_data.json", investor_dict)
 
     except ValueError as e:
         # Handle invalid input
         return f"Invalid input: {e}"
+
     return redirect(url_for("home"))
+
+
+@app.route("/submit/login", methods=["POST"])
+def submit_login():
+    """Submit form to check login credentials"""
+    try:
+        userdata = {
+            "temp_user": str(request.form["temp_user"]),
+            "temp_pswd": str(request.form["temp_pswd"])
+        }
+        investor = Investor(userdata["temp_user"], userdata["temp_pswd"])
+
+    except ValueError as e:
+        # Handle invalid input
+        return f"Invalid input: {e}"
+
+    if os.path.isfile("user_database.csv"):
+        accounts = load_from_csv("user_database.csv")
+
+        if any(
+            user["username"] == userdata["temp_user"] and
+            user["password"] == userdata["temp_pswd"]
+            for user in accounts
+        ):
+            investor_dict = investor.to_dict()
+            json_file_amender("shared_data.json", investor_dict)
+            return redirect(url_for("home"))
+        else:
+            print("No account with that username or password can be found")
+            print(investor)
+            print(userdata["temp_user"])
+    else:
+        print("No accounts found")
+
+    return redirect(url_for("account"))
 
 
 @app.route("/netpresentvalue")
 def netpresentvalue():
     """Net present value of investment"""
     project = load_last_shared_data()
-    return render_template("result.html", data=project)
+    current_project = project["projects"][-1]
+    print("Current project: ", current_project)
+    return render_template("result.html", current_project=current_project)
 
 
 if __name__ == '__main__':

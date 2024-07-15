@@ -1,11 +1,15 @@
 """This is the first attempt at creating something useful out of my studies,
 we shall see how it goes...
 """
-import json
 import string
 import xlsxwriter
 from modules.investor import Investor
-from utils import run_colorizer_script, load_shared_data, taxes
+from utils import (
+    run_colorizer_script,
+    load_last_shared_data,
+    taxes,
+    json_file_amender
+)
 
 
 # Creation of excel document and sheet
@@ -14,7 +18,7 @@ excel_sheet = excel_document.add_worksheet("Project 1")
 
 
 # Loads the dictionary from shared data
-investor_dict = load_shared_data()
+investor_dict = load_last_shared_data()
 
 # Convert the dictionary back to an Invester instance
 investor = Investor.from_dict(investor_dict)
@@ -208,10 +212,7 @@ project.net_present_value = ar_sista_ack_nuvarde
 project.depreciation = avskrivningar
 project.accumulated_net_value_list = acc_list
 
-with open('shared_data.json', 'w', encoding='utf-8') as f:
-    json.dump(investor.to_dict(), f, ensure_ascii=False, indent=4)
-
-print("Data successfully saved to shared_data.json")
+json_file_amender("shared_data.json", investor.to_dict())
 
 # Places the value for nominell discount rate
 excel_sheet.write("B13", kalkylrantan / (1-skattesats))
@@ -224,6 +225,4 @@ excel_sheet.write("B15", skattesats)
 
 # Corrects the background for positive and negative values
 excel_document.close()
-
-
 run_colorizer_script()

@@ -7,8 +7,10 @@ import pytest
 file_path: str = "shared_data.json"
 
 with open(file_path, 'r', encoding='utf-8') as f:
-    project_list_dict = json.load(f)
-    project = project_list_dict["projects"][-1]
+    project_list = json.load(f)
+
+project = project_list[-1]["projects"][-1]
+print(project)
 
 # Assuming app is already defined globally
 app = Flask(__name__)
@@ -37,13 +39,13 @@ def test_perform_calculations(client):
     form_data = {
         "year": '10',
         "initial_investment": '2000000',
-        "Inbetalningar": '1000000',
-        "Utbetalningar": '300000',
-        "Utbetalningar_0": '500000',
-        "Rest": '200000',
-        "Rörelsebindandekapital": '200000',
-        "Kalkylräntan": '0.15',
-        "Skattesats": '0.3'
+        "incoming_payments": '1000000',
+        "outgoing_payments": '300000',
+        "outgoing_payments_0": '500000',
+        "residual": '200000',
+        "restricted_equity": '200000',
+        "discount_rate": '0.15',
+        "tax_rate": '0.3'
     }
     # Simulate a POST request with form data
     response = client.post(

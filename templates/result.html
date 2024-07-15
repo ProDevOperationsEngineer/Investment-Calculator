@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ data["project_name" ]}}</title>
+    <title>{{ current_project["project_name" ]}}</title>
     <meta charset="UTF-8">
     <title>Data Form</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
@@ -9,101 +9,101 @@
 <body>
     <h1>Net Present Value: 
         <span class="number">
-            {% if "net_present_value" in data and data["net_present_value"] is not none %}
-                {{ "{:,.2f}".format(data["net_present_value"]) | replace(',', ' ') }}
+            {% if "net_present_value" in current_project and current_project["net_present_value"] is not none %}
+                {{ "{:,.2f}".format(current_project["net_present_value"]) | replace(',', ' ') }}
             {% else %}
-                Data not available
+                Failed to load data
             {% endif %}
         </span> SEK
     </h1>
     <div class="container">
         <p class="text-item">Project has a: 
             <span class="number">
-                {% if "lifetime" in data and data["lifetime"] is not none %}
-                    {{ "{:,}".format(data["lifetime"]) | replace(',', ' ') }} Project life expectancy
+                {% if "lifetime" in current_project and current_project["lifetime"] is not none %}
+                    {{ "{:,}".format(current_project["lifetime"]) | replace(',', ' ') }} Project life expectancy
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Initial Investment: 
             <span class="number">
-                {% if "initial_investment" in data and data["initial_investment"] is not none %}
-                    {{ "{:,.0f}".format(data["initial_investment"]) | replace(',', ' ') }}kr
+                {% if "initial_investment" in current_project and current_project["initial_investment"] is not none %}
+                    {{ "{:,.0f}".format(current_project["initial_investment"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    ailed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Depreciation: 
             <span class="number">
-                {% if "depreciation" in data and data["depreciation"] is not none %}
-                    {{ "{:,.0f}".format(data["depreciation"]) | replace(',', ' ') }}kr
+                {% if "depreciation" in current_project and current_project["depreciation"] is not none %}
+                    {{ "{:,.0f}".format(current_project["depreciation"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Outgoing Payments (for year 0): 
             <span class="number">
-                {% if "outgoing_payments_0" in data and data["outgoing_payments_0"] is not none %}
-                    {{ "{:,.0f}".format(data["outgoing_payments_0"]) | replace(',', ' ') }}kr
+                {% if "outgoing_payments_0" in current_project and current_project["outgoing_payments_0"] is not none %}
+                    {{ "{:,.0f}".format(current_project["outgoing_payments_0"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Yearly Outgoing Payments (from year 1): 
             <span class="number">
-                {% if "outgoing_payments" in data and data["outgoing_payments"] is not none %}
-                    {{ "{:,.0f}".format(data["outgoing_payments"]) | replace(',', ' ') }}kr
+                {% if "outgoing_payments" in current_project and current_project["outgoing_payments"] is not none %}
+                    {{ "{:,.0f}".format(current_project["outgoing_payments"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Yearly Incoming Payments (from year 1): 
             <span class="number">
-                {% if "incoming_payments" in data and data["incoming_payments"] is not none %}
-                    {{ "{:,.0f}".format(data["incoming_payments"]) | replace(',', ' ') }}kr
+                {% if "incoming_payments" in current_project and current_project["incoming_payments"] is not none %}
+                    {{ "{:,.0f}".format(current_project["incoming_payments"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Residual: 
             <span class="number">
-                {% if "residual" in data and data["residual"] is not none %}
-                    {{ "{:,.0f}".format(data["residual"]) | replace(',', ' ') }}kr
+                {% if "residual" in current_project and current_project["residual"] is not none %}
+                    {{ "{:,.0f}".format(current_project["residual"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Restricted equity: 
             <span class="number">
-                {% if "restricted_equity" in data and data["restricted_equity"] is not none %}
-                    {{ "{:,.0f}".format(data["restricted_equity"]) | replace(',', ' ') }}kr
+                {% if "restricted_equity" in current_project and current_project["restricted_equity"] is not none %}
+                    {{ "{:,.0f}".format(current_project["restricted_equity"]) | replace(',', ' ') }}kr
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Discount Rate: 
             <span class="number">
-                {% if "discount_rate" in data and data["discount_rate"] is not none %}
-                    {{ "{:,.2%}".format(data["discount_rate"]) | replace(',', ' ') }}
+                {% if "discount_rate" in current_project and current_project["discount_rate"] is not none %}
+                    {{ "{:,.2%}".format(current_project["discount_rate"]) | replace(',', ' ') }}
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>
         <p class="text-item">Tax Rate: 
             <span class="number">
-                {% if "tax_rate" in data and data["tax_rate"] is not none %}
-                    {{ "{:,.2%}".format(data["tax_rate"]) | replace(',', ' ') }}
+                {% if "tax_rate" in current_project and current_project["tax_rate"] is not none %}
+                    {{ "{:,.2%}".format(current_project["tax_rate"]) | replace(',', ' ') }}
                 {% else %}
-                    Data not available
+                    Failed to load data
                 {% endif %}
             </span>
         </p>

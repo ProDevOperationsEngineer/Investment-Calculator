@@ -74,10 +74,11 @@ def load_last_shared_data() -> dict:
     """Loads the last dictionary from shared data"""
     if os.path.getsize("shared_data.json") > 0:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
-            project_list_dict = json.load(f)
+            shared_data_list = json.load(f)
+            print(shared_data_list)
     else:
         print("Error: File is empty.")
-    return project_list_dict["projects"][-1]
+    return shared_data_list[-1]
 
 
 def taxes(
@@ -169,3 +170,27 @@ def load_from_csv_image(filename) -> list:
         for row in reader:
             data_list.append(row)
     return data_list
+
+
+def json_file_amender(filename, investor_data) -> list:
+    """Loads json file if it exist and amends it with new data"""
+    # Check if the file exists
+    if os.path.exists(filename):
+        # Read existing data
+        with open(filename, "r", encoding="utf-8") as f:
+            try:
+                data = json.load(f)
+                print(data)
+            except json.JSONDecodeError:
+                data = []  # If file is empty, initialize as an empty list
+    else:
+        data = []  # If file does not exist, initialize as an empty list
+
+    # Add new data
+    data.append(investor_data)
+
+    # Write the updated data back to the JSON file
+    with open("shared_data.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+    return data
