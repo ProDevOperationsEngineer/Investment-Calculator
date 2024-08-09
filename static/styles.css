@@ -67,7 +67,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Three columns of equal width */
-  grid-gap: 10px; /* Gap between grid items */
+  grid-gap: 150px; /* Gap between grid items */
   /* Optionally, you can define grid-template-rows for row layout */
 }
 
@@ -76,7 +76,7 @@ body {
   padding: 20px;
   text-align: left;
   font-size: x-large;
-  font-style: italic;
+  font-style: "Arial", sans-serif;
 }
 
 

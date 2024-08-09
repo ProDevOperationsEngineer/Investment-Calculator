@@ -1,19 +1,19 @@
 [
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": []
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "DooliDad",
+                "lifetime": 20,
                 "initial_investment": 2000000.0,
                 "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
+                "outgoing_payments": 1000000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
@@ -26,45 +26,55 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "DooliDad",
+                "lifetime": 20,
                 "initial_investment": 2000000.0,
                 "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
+                "outgoing_payments": 1000000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
                 "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "depreciation": 30000.0,
+                "net_present_value": -1850146.7331392502,
                 "accumulated_net_value_list": [
                     -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -2142324.7232472324,
+                    -2116794.025135823,
+                    -2093241.7206050027,
+                    -2071514.502403139,
+                    -2051470.9431763273,
+                    -2032980.5748859108,
+                    -2015923.0395626484,
+                    -2000187.305869602,
+                    -1985670.9463741714,
+                    -1972279.4708248815,
+                    -1959925.7110930642,
+                    -1948529.2537758895,
+                    -1938015.9167674258,
+                    -1928317.2663906142,
+                    -1919370.171947061,
+                    -1911116.3947851118,
+                    -1903502.2092113576,
+                    -1896478.0527780051,
+                    -1889998.2036697464,
+                    -1850146.7331392502
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "DooliDad",
+                "lifetime": 20,
                 "initial_investment": 2000000.0,
                 "incoming_payments": 1000000.0,
                 "outgoing_payments": 100000.0,
@@ -72,7 +82,7 @@
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 1000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -80,12 +90,12 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "DooliDad",
+                "lifetime": 20,
                 "initial_investment": 2000000.0,
                 "incoming_payments": 1000000.0,
                 "outgoing_payments": 100000.0,
@@ -93,40 +103,50 @@
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 1000000.0,
+                "depreciation": 30000.0,
+                "net_present_value": 3525423.1219671336,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -2800000.0,
+                    -2191143.9114391143,
+                    -1629468.552988113,
+                    -1111317.8533100674,
+                    -633319.052869066,
+                    -192360.7498792124,
+                    214427.3525099514,
+                    589693.1296217261,
+                    935879.2708687508,
+                    1255239.17976822,
+                    1549851.6418526012,
+                    1821634.3559525837,
+                    2072356.4169304275,
+                    2303649.83111663,
+                    2517020.139406485,
+                    2713856.217164654,
+                    2895439.31472754,
+                    3062951.3973501287,
+                    3217482.8388838824,
+                    3360039.519265574,
+                    3525423.1219671336
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "Hobooo",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
+                "initial_investment": 5000000.0,
+                "incoming_payments": 2000000.0,
+                "outgoing_payments": 500000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 1000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -134,53 +154,58 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Hung",
+        "password": "Mung",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "Hobooo",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
+                "initial_investment": 5000000.0,
+                "incoming_payments": 2000000.0,
+                "outgoing_payments": 500000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 1000000.0,
+                "depreciation": 150000.0,
+                "net_present_value": 2184706.195117373,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -5800000.0,
+                    -4692988.929889299,
+                    -3671761.0054329326,
+                    -2729668.8242001226,
+                    -1860580.0961255748,
+                    -1058837.7270531137,
+                    -319222.9954364522,
+                    363078.4174940473,
+                    992507.7652159104,
+                    1573162.1450331272,
+                    2184706.195117373
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
+        "projects": []
+    },
+    {
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "BumbaDumba",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
+                "initial_investment": 1500000.0,
                 "incoming_payments": 1000000.0,
                 "outgoing_payments": 100000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 1000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -188,53 +213,53 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "BumbaDumba",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
+                "initial_investment": 1500000.0,
                 "incoming_payments": 1000000.0,
                 "outgoing_payments": 100000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 1000000.0,
+                "depreciation": 45000.0,
+                "net_present_value": 2224596.934552804,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -2300000.0,
+                    -1677306.2730627307,
+                    -1102865.5655560247,
+                    -572938.713612569,
+                    -84076.30407063576,
+                    366903.77853262366,
+                    782937.0650669958,
+                    1166731.609840402,
+                    1520785.61793395,
+                    1847403.7065811343,
+                    2224596.934552804
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "DimDim",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
-                "residual": 100000.0,
-                "restricted_equity": 100000.0,
+                "initial_investment": 1000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 1000000.0,
+                "restricted_equity": 1000000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 10000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -242,53 +267,53 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "DimDim",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
-                "residual": 100000.0,
-                "restricted_equity": 100000.0,
+                "initial_investment": 1000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 1000000.0,
+                "restricted_equity": 1000000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 10000000.0,
+                "depreciation": 30000.0,
+                "net_present_value": 33477881.93707639,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -9000000.0,
+                    -3160516.6051660525,
+                    2226460.69634128,
+                    7195996.952344353,
+                    11780439.992937595,
+                    16009630.989794828,
+                    19911098.69907272,
+                    23510238.652281106,
+                    26830478.461513933,
+                    29893430.315049753,
+                    33477881.93707639
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "DimDimDom",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
-                "residual": 100000.0,
-                "restricted_equity": 100000.0,
+                "initial_investment": 1000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 1000000.0,
+                "restricted_equity": 1000000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 10000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -296,53 +321,73 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Yuppy",
+        "password": "Muppy",
         "projects": [
             {
-                "project_name": "MoMBomB",
+                "project_name": "DimDimDom",
                 "lifetime": 10,
-                "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
-                "residual": 100000.0,
-                "restricted_equity": 100000.0,
+                "initial_investment": 1000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 1000000.0,
+                "restricted_equity": 1000000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 10000000.0,
+                "depreciation": 30000.0,
+                "net_present_value": 33477881.93707639,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -9000000.0,
+                    -3160516.6051660525,
+                    2226460.69634128,
+                    7195996.952344353,
+                    11780439.992937595,
+                    16009630.989794828,
+                    19911098.69907272,
+                    23510238.652281106,
+                    26830478.461513933,
+                    29893430.315049753,
+                    33477881.93707639
                 ]
             }
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Red",
+        "password": "Blue",
+        "projects": []
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": []
+    },
+    {
+        "username": "Ding",
+        "password": "Ping",
+        "projects": []
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
+        "projects": []
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "LollipopLand",
+                "lifetime": 15,
                 "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
-                "outgoing_payments": 100000.0,
-                "residual": 100000.0,
-                "restricted_equity": 100000.0,
+                "incoming_payments": 3000000.0,
+                "outgoing_payments": 300000.0,
+                "residual": 300000.0,
+                "restricted_equity": 300000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
+                "outgoing_payments_0": 3000000.0,
                 "depreciation": 0.0,
                 "net_present_value": 0,
                 "accumulated_net_value_list": []
@@ -350,36 +395,336 @@
         ]
     },
     {
-        "username": "Mister Black",
-        "password": "Hiyyaaa",
+        "username": "Biggus",
+        "password": "Dickus",
         "projects": [
             {
-                "project_name": "MoMBomB",
-                "lifetime": 10,
+                "project_name": "LollipopLand",
+                "lifetime": 15,
                 "initial_investment": 2000000.0,
-                "incoming_payments": 1000000.0,
+                "incoming_payments": 3000000.0,
+                "outgoing_payments": 300000.0,
+                "residual": 300000.0,
+                "restricted_equity": 300000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 3000000.0,
+                "depreciation": 40000.0,
+                "net_present_value": 11875952.876946133,
+                "accumulated_net_value_list": [
+                    -4400000.0,
+                    -2619557.1955719558,
+                    -977082.2837379668,
+                    538115.9744114694,
+                    1935900.3453980342,
+                    3225369.3223229093,
+                    4414916.349006373,
+                    5512284.454802927,
+                    6524616.655722257,
+                    7458502.44992828,
+                    8320020.71026594,
+                    9114779.253012858,
+                    9847951.340417765,
+                    10524309.354628934,
+                    11148255.862203812,
+                    11875952.876946133
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
+        "projects": [
+            {
+                "project_name": "GoldenPopLand",
+                "lifetime": 10,
+                "initial_investment": 8000000.0,
+                "incoming_payments": 5000000.0,
+                "outgoing_payments": 500000.0,
+                "residual": 500000.0,
+                "restricted_equity": 500000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
+        "projects": [
+            {
+                "project_name": "GoldenPopLand",
+                "lifetime": 10,
+                "initial_investment": 8000000.0,
+                "incoming_payments": 5000000.0,
+                "outgoing_payments": 500000.0,
+                "residual": 500000.0,
+                "restricted_equity": 500000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 240000.0,
+                "net_present_value": 10721844.937351579,
+                "accumulated_net_value_list": [
+                    -12000000.0,
+                    -8872693.72693727,
+                    -5987724.840348035,
+                    -3326314.4283653465,
+                    -871138.7715547485,
+                    1393783.4210749543,
+                    3483195.037892023,
+                    5410696.529420684,
+                    7188834.436734947,
+                    8829183.059718585,
+                    10721844.937351579
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": []
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "LatinMasterCourse",
+                "lifetime": 5,
+                "initial_investment": 2000000.0,
+                "incoming_payments": 1500000.0,
+                "outgoing_payments": 300000.0,
+                "residual": 200000.0,
+                "restricted_equity": 200000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 500000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "LatinMasterCourse",
+                "lifetime": 5,
+                "initial_investment": 2000000.0,
+                "incoming_payments": 1500000.0,
+                "outgoing_payments": 300000.0,
+                "residual": 200000.0,
+                "restricted_equity": 200000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 500000.0,
+                "depreciation": 120000.0,
+                "net_present_value": 1470090.1562613733,
+                "accumulated_net_value_list": [
+                    -2550000.0,
+                    -1664391.1439114392,
+                    -847408.8043463462,
+                    -93735.0593600981,
+                    601535.9230995403,
+                    1470090.1562613733
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
+        "projects": []
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": []
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "DiosMiosGrill",
+                "lifetime": 20,
+                "initial_investment": 800000.0,
+                "incoming_payments": 500000.0,
+                "outgoing_payments": 200000.0,
+                "residual": 100000.0,
+                "restricted_equity": 100000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 300000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "DiosMiosGrill",
+                "lifetime": 20,
+                "initial_investment": 800000.0,
+                "incoming_payments": 500000.0,
+                "outgoing_payments": 200000.0,
+                "residual": 100000.0,
+                "restricted_equity": 100000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 300000.0,
+                "depreciation": 12000.0,
+                "net_present_value": 1040122.1750836476,
+                "accumulated_net_value_list": [
+                    -1110000.0,
+                    -905202.9520295203,
+                    -716275.7860050926,
+                    -541988.7324770227,
+                    -381207.31778323126,
+                    -232884.97950482595,
+                    -96056.25415574358,
+                    30169.50723639883,
+                    146613.9365649435,
+                    254034.9968311286,
+                    353131.915895875,
+                    444549.7379113237,
+                    528883.5220584166,
+                    606682.2159210484,
+                    678452.2287094542,
+                    744660.7275917473,
+                    805738.6785901727,
+                    862083.6518359525,
+                    914062.4094427605,
+                    962013.2928438749,
+                    1040122.1750836476
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "DooDleeDoo",
+                "lifetime": 10,
+                "initial_investment": 500000.0,
+                "incoming_payments": 500000.0,
                 "outgoing_payments": 100000.0,
                 "residual": 100000.0,
                 "restricted_equity": 100000.0,
                 "discount_rate": 0.12,
                 "tax_rate": 0.3,
-                "outgoing_payments_0": 100000.0,
-                "depreciation": 60000.0,
-                "net_present_value": 2453457.199140363,
+                "outgoing_payments_0": 200000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "DooDleeDoo",
+                "lifetime": 10,
+                "initial_investment": 500000.0,
+                "incoming_payments": 500000.0,
+                "outgoing_payments": 100000.0,
+                "residual": 100000.0,
+                "restricted_equity": 100000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 200000.0,
+                "depreciation": 15000.0,
+                "net_present_value": 1280136.8983346396,
                 "accumulated_net_value_list": [
-                    -2170000.0,
-                    -1533468.6346863469,
-                    -946262.5781239363,
-                    -404559.5739150705,
-                    95166.44472779462,
-                    556168.3069444598,
-                    981446.7776240401,
-                    1373770.0900590774,
-                    1735691.9649991486,
-                    2069568.2333940482,
-                    2453457.199140363
+                    -740000.0,
+                    -467859.778597786,
+                    -216807.91383559594,
+                    14789.747384136514,
+                    228440.72636912955,
+                    425535.72543277626,
+                    607357.6802885389,
+                    775090.1109672867,
+                    929824.8256155781,
+                    1072569.027320644,
+                    1280136.8983346396
                 ]
             }
         ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "PingPongProductions",
+                "lifetime": 10,
+                "initial_investment": 2500000.0,
+                "incoming_payments": 2000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 200000.0,
+                "restricted_equity": 200000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 1500000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Red",
+        "password": "Blue",
+        "projects": [
+            {
+                "project_name": "PingPongProductions",
+                "lifetime": 10,
+                "initial_investment": 2500000.0,
+                "incoming_payments": 2000000.0,
+                "outgoing_payments": 1000000.0,
+                "residual": 200000.0,
+                "restricted_equity": 200000.0,
+                "discount_rate": 0.12,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 1500000.0,
+                "depreciation": 75000.0,
+                "net_present_value": 1509550.393249175,
+                "accumulated_net_value_list": [
+                    -3750000.0,
+                    -3035055.3505535056,
+                    -2375512.316008769,
+                    -1767077.7822959125,
+                    -1205791.3120811004,
+                    -687999.3653884693,
+                    -210331.51788604207,
+                    230321.47796490556,
+                    636827.9317019421,
+                    1011833.8853338946,
+                    1509550.393249175
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Biggus",
+        "password": "Dickus",
+        "projects": []
     }
 ]

@@ -9,11 +9,14 @@ h1 {
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    text-align: left;
   }
 
 p {
     color: blueviolet;
-    font-size: 24px;
+    font-size: 32px;
+    text-align: left;
+    font-style: "Arial", sans-serif;
 }
 
 .number {
@@ -23,11 +26,26 @@ p {
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Three columns of equal width */
+    grid-gap: 150px; /* Gap between grid items */
+    /* Optionally, you can define grid-template-rows for row layout */
+}
+  
+.grid-item {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: left;
+    font-size: x-large;
+    font-style: "Arial", sans-serif;
 }
 
 .text-item {
-    text-align: right;
+    text-align: left;
 }
 
 .btn {

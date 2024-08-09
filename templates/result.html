@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ current_project["project_name" ]}}</title>
+    <title>{{ project["project_name" ]}}</title>
     <meta charset="UTF-8">
     <title>Data Form</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_1.css') }}">
@@ -9,108 +9,120 @@
 <body>
     <h1>Net Present Value: 
         <span class="number">
-            {% if "net_present_value" in current_project and current_project["net_present_value"] is not none %}
-                {{ "{:,.2f}".format(current_project["net_present_value"]) | replace(',', ' ') }}
+            {% if "net_present_value" in project and project["net_present_value"] is not none %}
+                {{ "{:,.2f}".format(project["net_present_value"]) | replace(',', ' ') }}
             {% else %}
                 Failed to load data
             {% endif %}
         </span> SEK
     </h1>
-    <div class="container">
-        <p class="text-item">Project has a: 
-            <span class="number">
-                {% if "lifetime" in current_project and current_project["lifetime"] is not none %}
-                    {{ "{:,}".format(current_project["lifetime"]) | replace(',', ' ') }} Project life expectancy
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Initial Investment: 
-            <span class="number">
-                {% if "initial_investment" in current_project and current_project["initial_investment"] is not none %}
-                    {{ "{:,.0f}".format(current_project["initial_investment"]) | replace(',', ' ') }}kr
-                {% else %}
-                    ailed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Depreciation: 
-            <span class="number">
-                {% if "depreciation" in current_project and current_project["depreciation"] is not none %}
-                    {{ "{:,.0f}".format(current_project["depreciation"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Outgoing Payments (for year 0): 
-            <span class="number">
-                {% if "outgoing_payments_0" in current_project and current_project["outgoing_payments_0"] is not none %}
-                    {{ "{:,.0f}".format(current_project["outgoing_payments_0"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Yearly Outgoing Payments (from year 1): 
-            <span class="number">
-                {% if "outgoing_payments" in current_project and current_project["outgoing_payments"] is not none %}
-                    {{ "{:,.0f}".format(current_project["outgoing_payments"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Yearly Incoming Payments (from year 1): 
-            <span class="number">
-                {% if "incoming_payments" in current_project and current_project["incoming_payments"] is not none %}
-                    {{ "{:,.0f}".format(current_project["incoming_payments"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Residual: 
-            <span class="number">
-                {% if "residual" in current_project and current_project["residual"] is not none %}
-                    {{ "{:,.0f}".format(current_project["residual"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Restricted equity: 
-            <span class="number">
-                {% if "restricted_equity" in current_project and current_project["restricted_equity"] is not none %}
-                    {{ "{:,.0f}".format(current_project["restricted_equity"]) | replace(',', ' ') }}kr
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Discount Rate: 
-            <span class="number">
-                {% if "discount_rate" in current_project and current_project["discount_rate"] is not none %}
-                    {{ "{:,.2%}".format(current_project["discount_rate"]) | replace(',', ' ') }}
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <p class="text-item">Tax Rate: 
-            <span class="number">
-                {% if "tax_rate" in current_project and current_project["tax_rate"] is not none %}
-                    {{ "{:,.2%}".format(current_project["tax_rate"]) | replace(',', ' ') }}
-                {% else %}
-                    Failed to load data
-                {% endif %}
-            </span>
-        </p>
-        <a href="/diagram" class="btn">Accumulated Net Present Value Diagram</a>
-        <p>
-        </p>
-        <a href="/saveproject" class="btn">Save project to your portfolio</a>
+    <div class="grid-container">
+        <div class="grid-item">
+            <p class="text-item">Project has a: 
+                <span class="number">
+                    {% if "lifetime" in project and project["lifetime"] is not none %}
+                        {{ "{:,}".format(project["lifetime"]) | replace(',', ' ') }} years life expectancy
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Initial Investment: 
+                <span class="number">
+                    {% if "initial_investment" in project and project["initial_investment"] is not none %}
+                        {{ "{:,.0f}".format(project["initial_investment"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Depreciation: 
+                <span class="number">
+                    {% if "depreciation" in project and project["depreciation"] is not none %}
+                        {{ "{:,.0f}".format(project["depreciation"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Outgoing Payments (for year 0): 
+                <span class="number">
+                    {% if "outgoing_payments_0" in project and project["outgoing_payments_0"] is not none %}
+                        {{ "{:,.0f}".format(project["outgoing_payments_0"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Yearly Outgoing Payments (from year 1): 
+                <span class="number">
+                    {% if "outgoing_payments" in project and project["outgoing_payments"] is not none %}
+                        {{ "{:,.0f}".format(project["outgoing_payments"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Yearly Incoming Payments (from year 1): 
+                <span class="number">
+                    {% if "incoming_payments" in project and project["incoming_payments"] is not none %}
+                        {{ "{:,.0f}".format(project["incoming_payments"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Residual: 
+                <span class="number">
+                    {% if "residual" in project and project["residual"] is not none %}
+                        {{ "{:,.0f}".format(project["residual"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Restricted equity: 
+                <span class="number">
+                    {% if "restricted_equity" in project and project["restricted_equity"] is not none %}
+                        {{ "{:,.0f}".format(project["restricted_equity"]) | replace(',', ' ') }}kr
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Discount Rate: 
+                <span class="number">
+                    {% if "discount_rate" in project and project["discount_rate"] is not none %}
+                        {{ "{:,.2%}".format(project["discount_rate"]) | replace(',', ' ') }}
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Tax Rate: 
+                <span class="number">
+                    {% if "tax_rate" in project and project["tax_rate"] is not none %}
+                        {{ "{:,.2%}".format(project["tax_rate"]) | replace(',', ' ') }}
+                    {% else %}
+                        Failed to load data
+                    {% endif %}
+                </span>
+            </p>
+            <p class="text-item">Break even after: 
+                <span class="number"> 
+                    {{ break_even }} years
+                </span>
+            </p>
+            <p>
+            </p>
+            <a href="/saveproject" class="btn">Save project to your portfolio</a>
+        </div>
+        <div class="grid-container">
+            <img src="data:image/png;base64,{{ bar_plot_url }}" alt="Bar Diagram">
+            <br>
+            <img src="data:image/png;base64,{{ line_plot_url }}" alt="Derivative">
+            <br>
+        </div>
     </div>
 </body>
 </html>

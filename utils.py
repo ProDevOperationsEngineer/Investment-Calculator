@@ -75,7 +75,6 @@ def load_last_shared_data() -> dict:
     if os.path.getsize("shared_data.json") > 0:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
             shared_data_list = json.load(f)
-            print(shared_data_list)
     else:
         print("Error: File is empty.")
     return shared_data_list[-1]
@@ -113,43 +112,89 @@ def save_to_csv_user(data, filename, mode='a'):
 
     file_exists = os.path.isfile(filename)
 
-    with open(filename, mode, newline='', encoding="utf-8") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        # Only write the header if the file is new (write mode)
-        if not file_exists:
+    if file_exists:
+        project_list = load_from_csv(filename)
+        user_exist = 0
+        for projects in project_list:
+            if projects["username"] == data["username"]:
+                user_exist = 1
+        if user_exist == 0:
+            with open(
+                filename, mode, newline='', encoding="utf-8"
+            ) as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writerow(data)
+    else:
+        with open(
+            filename, mode, newline='', encoding="utf-8"
+        ) as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-        writer.writerow(data)
+            writer.writerow(data)
 
 
 def save_to_csv_project(data, filename, mode='a'):
     """Saves a dictionary to a CSV file, optionally in append mode"""
 
     fieldnames = [
-        "project_name", "lifetime", "initial_investment", "incoming_payments",
-        "outgoing_payments", "outgoing_payments_0", "restricted_equity",
-        "residual", "discount_rate", "tax_rate", "net_present_value",
-        "depreciation",
+        "username", "project_name", "lifetime", "initial_investment",
+        "incoming_payments", "outgoing_payments", "outgoing_payments_0",
+        "restricted_equity", "residual", "discount_rate", "tax_rate",
+        "net_present_value", "depreciation",
     ]
 
     file_exists = os.path.isfile(filename)
 
-    with open(filename, mode, newline='', encoding="utf-8") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        # Only write the header if the file is new (write mode)
-        if not file_exists:
+    if file_exists:
+        project_list = load_from_csv(filename)
+        project_exist = 0
+        for projects in project_list:
+            if data["project_name"] == projects["project_name"]:
+                project_exist = 1
+
+        if project_exist == 0:
+            with open(
+                filename, mode, newline='', encoding="utf-8"
+            ) as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writerow(data)
+    else:
+        with open(
+            filename, mode, newline='', encoding="utf-8"
+        ) as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-        writer.writerow(data)
+            writer.writerow(data)
 
 
 def save_to_csv_image(data, csv_filename, mode="a"):
     """Saves image in byte64data to a CSV file"""
     file_exists = os.path.isfile(csv_filename)
-    with open(csv_filename, mode, newline='', encoding="utf-8") as csv_file:
-        writer = csv.writer(csv_file)
-        if not file_exists:
-            writer.writerow(['ImageName', 'Base64Data'])
-        for image_name, base64_data in data.items():
-            writer.writerow([image_name, base64_data])
+
+    if file_exists:
+        project_list = load_from_csv(csv_filename)
+        project_exist = 0
+        for projects in project_list:
+            if projects["project_name"] == data["project_name"]:
+                project_exist = 1
+        if project_exist == 0:
+            with open(
+                csv_filename, mode, newline='', encoding="utf-8"
+            ) as csv_file:
+                writer = csv.writer(csv_file)
+                if not file_exists:
+                    writer.writerow(
+                        ["username", "project_name", "Base64Data"]
+                    )
+                writer.writerow(data.values())
+    else:
+        with open(
+            csv_filename, mode, newline='', encoding="utf-8"
+        ) as csv_file:
+            writer = csv.writer(csv_file)
+            if not file_exists:
+                writer.writerow(["username", "project_name", "Base64Data"])
+            writer.writerow(data.values())
 
 
 def load_from_csv(filename) -> list:
@@ -163,10 +208,10 @@ def load_from_csv(filename) -> list:
 
 
 def load_from_csv_image(filename) -> list:
-    """Loads byte64data image from a CSV file and returns a list."""
+    """Loads image data from a CSV file and returns a list of dictionaries."""
     data_list = []
     with open(filename, mode="r", newline="", encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile)
+        reader = csv.DictReader(csvfile)
         for row in reader:
             data_list.append(row)
     return data_list
@@ -180,7 +225,6 @@ def json_file_amender(filename, investor_data) -> list:
         with open(filename, "r", encoding="utf-8") as f:
             try:
                 data = json.load(f)
-                print(data)
             except json.JSONDecodeError:
                 data = []  # If file is empty, initialize as an empty list
     else:

@@ -20,7 +20,7 @@
 <body>
     <div class="ui container custom-theme">
         <h1 class="ui header">The project has been developed to simplify and clarify investment calculation</h1>
-        <p>Fill in the values to obtain a net present value</p>
+        <p>Click on the Investment Calculus icon to begin the process of obtaining a net present value for your future investments</p>
         {% if "username" in current_investor %}
         <p>Username: {{ current_investor["username"] }}</p>
         <br>
@@ -34,7 +34,7 @@
                         <i class="calculator icon"></i> Investment Calculus
                     </a>
                     <a href="/account" class="item">
-                        <i class="address card outline icon"></i> Sign in
+                        <i class="address card outline icon"></i> Sign in or create account
                     </a>
                 </div>
               </div>
@@ -45,7 +45,7 @@
     <div class="ui centered divided items">
         <div class="item">
           <div class="image">
-            <img src="data:image/png;base64,{{ project_diagrams[1][1] }}">
+            <img src="data:image/png;base64,{{ list_of_diagrams[0] }}">
           </div>
           <div class="content">
             <a class="header">Project:  {{ list_of_projects[0] }}</a>
@@ -57,11 +57,10 @@
             </div>
             <div class="extra">
               <div class="ui right floated primary button">
-                Check Estimates
+                Download Excel File
                 <i class="right chevron icon"></i>
               </div>
-              <div class="ui label">IMAX</div>
-              <div class="ui label"><i class="globe icon"></i> Additional Languages</div>
+              <div class="ui label">Break even point: </div>
             </div>
           </div>
         </div>
@@ -71,7 +70,7 @@
         {% if list_of_projects|length > 1 %}
         <div class="item">
           <div class="image">
-            <img src="data:image/png;base64,{{ project_diagrams[2][1] }}">
+            <img src="data:image/png;base64,{{ list_of_diagrams[1] }}">
           </div>
           <div class="content">
             <a class="header">Project: {{ list_of_projects[1] }}</a>
@@ -83,10 +82,10 @@
             </div>
             <div class="extra">
               <div class="ui right floated primary button">
-                Check Estimates
+                Download Excel File
                 <i class="right chevron icon"></i>
               </div>
-              <div class="ui label">Limited</div>
+              <div class="ui label">Break even point: </div>
             </div>
           </div>
         </div>
@@ -96,7 +95,7 @@
         {% if list_of_projects|length > 2 %}
         <div class="item">
           <div class="image">
-            <img src="data:image/png;base64,{{ project_diagrams[3][1] }}">
+            <img src="data:image/png;base64,{{ list_of_diagrams[2] }}">
           </div>
           <div class="content">
             <a class="header">Project: {{ list_of_projects[2] }}</a>
@@ -108,7 +107,7 @@
             </div>
             <div class="extra">
               <div class="ui right floated primary button">
-                Check estimates
+                Download Excel File
                 <i class="right chevron icon"></i>
               </div>
             </div>
