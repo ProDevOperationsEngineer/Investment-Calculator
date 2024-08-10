@@ -7,7 +7,7 @@ import base64
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, session
 from modules.investor import Investor
 from utils import (
     file_path_creator,
@@ -22,6 +22,7 @@ from utils import (
 )
 
 app = Flask(__name__)
+app.secret_key = "Secret_Key_For_The_Win"
 
 
 @app.route("/")
@@ -104,7 +105,10 @@ def save_project():
 @app.route("/account")
 def account():
     """Page to create or log into account"""
-    return render_template("account.html")
+    user = session.get("user", 0)
+    print(user)
+
+    return render_template("account.html", user=user)
 
 
 @app.route("/submit", methods=["POST"])
@@ -211,12 +215,12 @@ def submit_login():
         ):
             investor_dict = investor.to_dict()
             json_file_amender("shared_data.json", investor_dict)
+            session.pop("user", 0)
             return redirect(url_for("home"))
         else:
             print("No account with that username or password can be found")
-    else:
-        print("No accounts found")
-
+            session["user"] = 1
+            os.remove("shared_data.json")
     return redirect(url_for("account"))
 
 

@@ -81,6 +81,15 @@
         </div>
       </form>
     </div>
+    {% if user %}
+      <div class="ui message" onclick="closeBox()">
+        <i class="close icon"></i>
+        <div class="header">
+          Wrong password or username
+        </div>
+        <p>please try again</p>
+      </div>
+    {% endif %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     <script>
@@ -95,10 +104,16 @@
         .modal('show')
         ;
       }
-      function login() {
-        fetch('../user_data.json');
+      function closeBox() {
+        $('.message .close')
+        .on('click', function() {
+        $(this)
+        .closest('.message')
+        .transition('fade')
+        ;
+        })
+        ;
       }
-      
     </script>
 </body>
 </html>
