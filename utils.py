@@ -5,29 +5,45 @@ import os
 import json
 import random
 import string
-import subprocess
 from typing import Union
+import openpyxl
+from openpyxl.styles import PatternFill
+
+
+def colorizer():
+    """simple function to help distinguish negative values from
+    positive in the excel document"""
+    # Load the workbook and select the active worksheet
+    wb = openpyxl.load_workbook("investment_portfolio.xlsx")
+    ws = wb.active
+
+    # Define the colors for positive and negative values
+    green_fill = PatternFill(
+        start_color='FF00FF00', end_color='FF00FF00', fill_type='solid'
+    )
+    red_fill = PatternFill(
+        start_color='FFFF0000', end_color='FFFF0000', fill_type='solid'
+        )
+
+    # Iterate through each row and column in the worksheet
+    for row in ws.iter_rows(
+        min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max_column
+    ):
+        for cell in row:
+            if isinstance(cell.value, (int, float)):
+                if cell.value > 0:
+                    cell.fill = green_fill
+                elif cell.value < 0:
+                    cell.fill = red_fill
+
+    # Save the workbook with changes
+    wb.save("investment_portfolio.xlsx")
 
 
 def generate_random_id(length=8):
     """Generate a random string of fixed length."""
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(length))
-
-
-def file_path_colorizer() -> str:
-    """handles the conditions for githubs testing environment,
-    filepath colorizer"""
-    if os.getenv("GITHUB_ACTIONS") == "true":
-        # GitHub Actions environment
-        local_path = (
-            "https://github.com/ProDevOperationsEngineer/"
-            "Investmentcalculator/blob/main/excel_colorizer.py"
-        )
-    else:
-        # Local environment
-        local_path = "excel_colorizer.py"
-    return local_path
 
 
 def file_path_creator() -> str:
@@ -37,25 +53,12 @@ def file_path_creator() -> str:
         # GitHub Actions environment
         local_path = (
             "https://github.com/ProDevOperationsEngineer/"
-            "Investmentcalculator/blob/main/excel_creator.py"
+            "Investmentcalculator/blob/main/calculator.py"
         )
     else:
         # Local environment
-        local_path = "excel_creator.py"
+        local_path = "calculator.py"
     return local_path
-
-
-def run_colorizer_script():
-    """Function to run the script for colorizing the excel sheet"""
-
-    local_path = file_path_colorizer()
-
-    try:
-        subprocess.run(
-            ['python', local_path], capture_output=True, text=True, check=True
-        )
-    except subprocess.CalledProcessError as e:
-        print("Error executing excel_colorizer.py:", e)
 
 
 def load_shared_data() -> dict:

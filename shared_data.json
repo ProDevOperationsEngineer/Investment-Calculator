@@ -126,5 +126,72 @@
         "username": "Biggus",
         "password": "Dickus",
         "projects": []
+    },
+    {
+        "username": "Trixie",
+        "password": "Dixie",
+        "projects": []
+    },
+    {
+        "username": "Trixie",
+        "password": "Dixie",
+        "projects": [
+            {
+                "project_name": "Legoland v2",
+                "lifetime": 18,
+                "initial_investment": 30000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 5000000.0,
+                "residual": 6000000.0,
+                "restricted_equity": 5000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 0.0,
+                "net_present_value": 0,
+                "accumulated_net_value_list": []
+            }
+        ]
+    },
+    {
+        "username": "Trixie",
+        "password": "Dixie",
+        "projects": [
+            {
+                "project_name": "Legoland v2",
+                "lifetime": 18,
+                "initial_investment": 30000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 5000000.0,
+                "residual": 6000000.0,
+                "restricted_equity": 5000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 500000.0,
+                "net_present_value": -12814549.974349827,
+                "accumulated_net_value_list": [
+                    -38500000.0,
+                    -35012641.67393199,
+                    -31972224.650333036,
+                    -29321468.744841356,
+                    -27010434.82549377,
+                    -24995583.98037818,
+                    -23238957.262753427,
+                    -21707460.560377877,
+                    -20372241.116284113,
+                    -19208143.954912044,
+                    -18193237.97289629,
+                    -17308402.766256575,
+                    -16536968.409988295,
+                    -15864401.403651522,
+                    -15278030.866304727,
+                    -14766809.8224104,
+                    -14321107.081438884,
+                    -13932525.790269298,
+                    -12814549.974349827
+                ]
+            }
+        ]
     }
 ]

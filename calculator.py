@@ -1,11 +1,9 @@
-"""This is the first attempt at creating something useful out of my studies,
-we shall see how it goes...
-"""
+"""Main functionality of the calculator. Outputs the data to excel files"""
 import string
 import xlsxwriter
 from modules.investor import Investor
 from utils import (
-    run_colorizer_script,
+    colorizer,
     load_last_shared_data,
     taxes,
     json_file_amender
@@ -13,7 +11,7 @@ from utils import (
 
 
 # Creation of excel document and sheet
-excel_document = xlsxwriter.Workbook("InvestmentCalc.xlsx")
+excel_document = xlsxwriter.Workbook("investment_portfolio.xlsx")
 excel_sheet = excel_document.add_worksheet("Project 1")
 
 
@@ -96,7 +94,7 @@ excel_sheet.write("A3", "Depreciation")
 excel_sheet.write("A4", "Incoming Payments")
 excel_sheet.write("A5", "Outgoing Payments")
 excel_sheet.write("A6", "Residual")
-excel_sheet.write("A7", "restricted Equity")
+excel_sheet.write("A7", "Restricted Equity")
 excel_sheet.write("A8", "Yearly Net")
 excel_sheet.write("A9", "Present Value")
 excel_sheet.write("A10", "Accumulated Present Value")
@@ -225,4 +223,4 @@ excel_sheet.write("B15", skattesats)
 
 # Corrects the background for positive and negative values
 excel_document.close()
-run_colorizer_script()
+colorizer()
