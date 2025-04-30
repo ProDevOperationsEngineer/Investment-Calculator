@@ -60,14 +60,13 @@ def run_colorizer_script():
 
 def load_shared_data() -> dict:
     """Loads the dictionary from shared data"""
-
     if os.path.getsize("shared_data.json") > 0:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
             invester_dict = json.load(f)
+        return invester_dict
     else:
         print("Error: File is empty.")
-
-    return invester_dict
+        return {}
 
 
 def load_last_shared_data() -> dict:
@@ -75,9 +74,10 @@ def load_last_shared_data() -> dict:
     if os.path.getsize("shared_data.json") > 0:
         with open("shared_data.json", 'r', encoding='utf-8') as f:
             shared_data_list = json.load(f)
+        return shared_data_list[-1]
     else:
         print("Error: File is empty.")
-    return shared_data_list[-1]
+        return {}
 
 
 def taxes(

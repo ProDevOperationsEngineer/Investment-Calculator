@@ -1,0 +1,7 @@
+*.json
+!shared_data.json
+__pycache__/
+image_database.csv
+InvestmentCalc.xlsx
+project_database.csv
+user_database.csv
