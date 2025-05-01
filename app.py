@@ -7,7 +7,15 @@ import base64
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import (
+    Flask,
+    request,
+    render_template,
+    redirect,
+    url_for,
+    session,
+    abort
+)
 from modules.investor import Investor
 from utils import (
     file_path_creator,
@@ -37,7 +45,6 @@ def home():
         if os.path.isfile("project_database.csv"):
             project = load_from_csv("project_database.csv")
             project_diagrams = load_from_csv_image("image_database.csv")
-            print(project_diagrams)
             if not project:
                 return render_template(
                     "info.html",
@@ -87,6 +94,31 @@ def kalkyl():
     return render_template("index.html", user_dict=user_dict)
 
 
+@app.route('/project/<username>/<project_name>')
+def view_project(username, project_name):
+    """User individual projects page"""
+    projects = load_from_csv('project_database.csv')
+    images = load_from_csv('image_database.csv')
+
+    # Find the matching project
+    for p in projects:
+        if (p['username'], p['project_name']) == (username, project_name):
+            # Try to find matching image
+            for i in images:
+                if (
+                    i['username'], i['project_name']
+                ) == (
+                    username, project_name
+                ):
+                    p['image_base64'] = i['Base64Data']
+                    break
+            else:
+                p['image_base64'] = None  # No image found
+            return render_template("project_view.html", p=p)
+
+    abort(404, description="Project not found")
+
+
 @app.route("/saveproject")
 def save_project():
     """save current project to list of projects"""
@@ -106,8 +138,6 @@ def save_project():
 def account():
     """Page to create or log into account"""
     user = session.get("user", 0)
-    print(user)
-
     return render_template("account.html", user=user)
 
 
@@ -144,13 +174,12 @@ def submit():
         local_path = file_path_creator()
 
         try:
-            result = subprocess.run(
+            subprocess.run(
                 ['python', local_path],
                 capture_output=True,
                 text=True,
                 check=True
             )
-            print("Output:", result.stdout)
         except subprocess.CalledProcessError as e:
             print("Error:", e)
             print("Output:", e.stdout)

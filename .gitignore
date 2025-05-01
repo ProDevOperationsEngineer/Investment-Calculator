@@ -1,5 +1,4 @@
 *.json
-!shared_data.json
 __pycache__/
 image_database.csv
 investment_portfolio.xlsx
