@@ -50,6 +50,7 @@ def home():
                     "info.html",
                     current_investor=current_investor)
 
+            # list_of_break_even = []
             list_of_projects = []
             list_of_npv = []
             list_of_diagrams = []
@@ -57,6 +58,7 @@ def home():
             for item in project:
                 if current_investor["username"] == item["username"]:
                     project_name = item["project_name"]
+                    # break_even = item["break_even"]
                     net_present_value = round(float(item["net_present_value"]))
                     npv_str = f"{net_present_value:,.0f}"
 
@@ -64,6 +66,7 @@ def home():
                     net_present_value_formatted = npv_str.replace(
                         ",", " "
                     )
+                    # list_of_break_even.append(break_even)
                     list_of_npv.append(net_present_value_formatted)
                     list_of_projects.append(project_name)
 
@@ -74,9 +77,10 @@ def home():
             return render_template(
                 "info.html",
                 current_investor=current_investor,
+                # list_of_break_even=list_of_break_even,
                 list_of_diagrams=list_of_diagrams,
+                list_of_npv=list_of_npv,
                 list_of_projects=list_of_projects,
-                list_of_npv=list_of_npv
             )
         else:
             return render_template(
@@ -310,7 +314,7 @@ def netpresentvalue():
     img_line.seek(0)
     line_plot_url = base64.b64encode(img_line.getvalue()).decode()
 
-    # Calculate break-even point
+    # Calculate break-even point and save to CSV project database
     count = 0
     for i in project["accumulated_net_value_list"]:
         count += 1
@@ -319,8 +323,11 @@ def netpresentvalue():
     break_even = count - 1
     project_name = str(project["project_name"])
     username = data["username"]
+    # Add line for break even variable to be added to project dictionary
+    del project["accumulated_net_value_list"]
+    save_to_csv_project(project, "project_database.csv")
 
-    # Save byte64data image to CVS file
+    # Save byte64data image to CSV image database
     byte64_dict = {
         "username": username,
         "project_name": project_name,

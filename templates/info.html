@@ -13,37 +13,48 @@
           background-color: #4CAF50;
           color: white;
           padding: 20px;
-          border-radius: 5px;
-      }
+          border-radius: 0; /* Optional: remove rounded corners */
+          overflow: visible;
+          height: 420px
+        }
     </style>
 </head>
 <body>
-    <div style="position: relative; display: flex; justify-content: center; margin-bottom: 20px;">
-
-      <!-- Logo: Positioned absolutely in the white space on the left -->
-      <img src="{{ url_for('static', filename='investment_calculator.png') }}"
-          alt="Logo"
-          style="position: absolute; left: 0; top: 0; height: 400px;">
+    <div class="custom-theme" style="width: 100%; box-sizing: border-box;">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 40px;">
   
-      <!-- Green header: centered and fixed width -->
-      <div class="ui container custom-theme" style="width: 900px;">
-          <h1 class="ui header">The project has been developed to simplify and clarify investment calculation</h1>
-          <p>Click on the Investment Calculus icon to begin the process of obtaining a net present value for your future investments</p>
+        <!-- Logo on the left -->
+        <img src="{{ url_for('static', filename='investment_calculator.png') }}"
+           alt="Logo"
+           style="height: 353px;">
   
-          {% if "username" in current_investor %}
-          <p>Username: {{ current_investor["username"] }}</p>
+        <!-- Title and intro text -->
+        <div style="position: absolute; left: 50%; transform: translateX(-50%); text-align: center; color: white;">
+          <h1 class="ui header" style="color: white;">The project has been developed to simplify and clarify investment calculation</h1>
+          <p style="color: white;">Click on the Investment Calculus icon to begin the process of obtaining a net present value for your future investments</p>
+        
+          {% if current_investor %}
+            <p style="color: white; font-style: italic; font-size: 2em;">Current Investor Logged In: {{ current_investor["username"] }}</p>
           {% endif %}
+        </div>
   
-          <div class="ui attached stackable menu">
-              <div class="ui container">
-                  <a href="/calculus" class="item">
-                      <i class="calculator icon"></i> Investment Calculus
-                  </a>
-                  <a href="/account" class="item">
-                      <i class="address card outline icon"></i> Sign in or create account
-                  </a>
-              </div>
-          </div>
+        <!-- Excel download icon on the right -->
+        <img src="{{ url_for('static', filename='excel_download.png') }}"
+            alt="Download Excel"
+            style="height: 353px;">
+  
+      </div>
+  
+      <!-- Menu bar -->
+      <div style="display: flex; justify-content: center;">
+        <div class="ui attached stackable menu" style="width: 900px;">
+          <a href="/calculus" class="item">
+            <i class="calculator icon"></i> Investment Calculus
+          </a>
+          <a href="/account" class="item">
+            <i class="address card outline icon"></i> Sign in or create account
+          </a>
+        </div>
       </div>
     </div>
     {% if list_of_projects|length > 0 %}
@@ -67,7 +78,7 @@
                 Download Excel File
                 <i class="right chevron icon"></i>
               </div>
-              <div class="ui label">Break even point: </div>
+              <div class="ui label">Break even point:  years</div>
             </div>
           </div>
         </div>
@@ -94,7 +105,7 @@
                 Download Excel File
                 <i class="right chevron icon"></i>
               </div>
-              <div class="ui label">Break even point: </div>
+              <div class="ui label">Break even point:  years </div>
             </div>
           </div>
         </div>
@@ -121,12 +132,67 @@
                 Download Excel File
                 <i class="right chevron icon"></i>
               </div>
+              <div class="ui label">Break even point:  years</div>
             </div>
           </div>
         </div>
         {% else %}
           <br>
         {% endif %}
+        {% if list_of_projects|length > 3 %}
+        <div class="item">
+          <div class="image">
+            <img src="data:image/png;base64,{{ list_of_diagrams[3] }}">
+          </div>
+          <div class="content">
+            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[3]) }}">
+              Project: {{ list_of_projects[3] }}
+            </a>
+            <div class="meta">
+              <span class="cinema">Net Present Value: {{ list_of_npv[3] }}$</span>
+            </div>
+            <div class="description">
+              <p></p>
+            </div>
+            <div class="extra">
+              <div class="ui right floated primary button">
+                Download Excel File
+                <i class="right chevron icon"></i>
+              </div>
+              <div class="ui label">Break even point: years</div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <br>
+        {% endif %}
+        {% if list_of_projects|length > 4 %}
+        <div class="item">
+          <div class="image">
+            <img src="data:image/png;base64,{{ list_of_diagrams[4] }}">
+          </div>
+          <div class="content">
+            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[4]) }}">
+              Project: {{ list_of_projects[4] }}
+            </a>
+            <div class="meta">
+              <span class="cinema">Net Present Value: {{ list_of_npv[4] }}$</span>
+            </div>
+            <div class="description">
+              <p></p>
+            </div>
+            <div class="extra">
+              <div class="ui right floated primary button">
+                Download Excel File
+                <i class="right chevron icon"></i>
+              </div>
+              <div class="ui label">Break even point:  years</div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <br>
+        {% endif %}        
       </div>
 </body>
 </html>

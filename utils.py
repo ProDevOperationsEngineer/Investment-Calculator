@@ -75,6 +75,7 @@ def json_file_amender(filename, investor_data) -> list:
         data = []  # If file does not exist, initialize as an empty list
 
     # Add new data
+    print("Json data: ", investor_data)
     data.append(investor_data)
 
     # Write the updated data back to the JSON file
@@ -112,7 +113,7 @@ def load_last_shared_data() -> dict:
     # Create the file if it doesn't exist
     if not os.path.exists(file_path):
         with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump([], f)
+            json.dump({}, f)
 
     # Check if the file is non-empty
     if os.path.getsize(file_path) > 0:
@@ -128,28 +129,29 @@ def load_last_shared_data() -> dict:
     return {}  # Return an empty dict if no valid data is found
 
 
-def load_shared_data() -> dict:
+def load_shared_data() -> list:
     """Loads the dictionary from shared data,
     creating the file if it doesn't exist."""
     file_path = "shared_data.json"
 
-    # Create the file if it doesn't exist
     if not os.path.exists(file_path):
         with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump({}, f)
+            json.dump([], f)
 
-    # Check if the file is non-empty
-    if os.path.getsize(file_path) > 0:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            invester_dict = json.load(f)
-            if isinstance(invester_dict, dict):
-                return invester_dict
+    if os.path.getsize(file_path) == 0:
+        return []
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        try:
+            data = json.load(f)
+            if isinstance(data, list):
+                return data
             else:
-                print("Warning: File does not contain a dictionary.")
-    else:
-        print("Warning: File is empty.")
-
-    return {}  # Return empty dict as fallback
+                print("Warning: shared_data.json is not a list.")
+                return []
+        except json.JSONDecodeError:
+            print("Warning: shared_data.json is corrupted.")
+            return []
 
 
 def save_to_csv_image(data, csv_filename, mode="a"):
@@ -182,9 +184,8 @@ def save_to_csv_image(data, csv_filename, mode="a"):
             writer.writerow(data.values())
 
 
-def save_to_csv_project(data, filename, mode='a'):
-    """Saves a dictionary to a CSV file, optionally in append mode"""
-
+def save_to_csv_project(data, filename):
+    """Saves or updates a project in a CSV file."""
     fieldnames = [
         "username", "project_name", "lifetime", "initial_investment",
         "incoming_payments", "outgoing_payments", "outgoing_payments_0",
@@ -192,28 +193,31 @@ def save_to_csv_project(data, filename, mode='a'):
         "net_present_value", "depreciation",
     ]
 
-    file_exists = os.path.isfile(filename)
+    data = {key: data.get(key, "") for key in fieldnames}
 
-    if file_exists:
-        project_list = load_from_csv(filename)
-        project_exist = 0
-        for projects in project_list:
-            if data["project_name"] == projects["project_name"]:
-                project_exist = 1
+    project_list = []
+    updated = False
 
-        if project_exist == 0:
-            with open(
-                filename, mode, newline='', encoding="utf-8"
-            ) as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writerow(data)
+    if os.path.isfile(filename):
+        with open(filename, mode="r", newline='', encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["project_name"] == data["project_name"]:
+                    project_list.append(data)
+                    updated = True
+                else:
+                    project_list.append(row)
     else:
-        with open(
-            filename, mode, newline='', encoding="utf-8"
-        ) as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerow(data)
+        project_list = [data]
+        updated = True
+
+    if not updated:
+        project_list.append(data)
+
+    with open(filename, mode="w", newline='', encoding="utf-8") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(project_list)
 
 
 def save_to_csv_user(data, filename, mode='a'):

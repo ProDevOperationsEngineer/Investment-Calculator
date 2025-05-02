@@ -21,7 +21,6 @@ investor_dict = load_last_shared_data()
 # Convert the dictionary back to an Invester instance
 investor = Investor.from_dict(investor_dict)
 
-
 # Check the number of existing projects
 existing_projects = investor.list_projects()
 num_projects = len(existing_projects)
