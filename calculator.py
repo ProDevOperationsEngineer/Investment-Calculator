@@ -1,5 +1,6 @@
 """Main functionality of the calculator. Outputs the data to excel files"""
 import string
+import sys
 import xlsxwriter
 from modules.investor import Investor
 from utils import (
@@ -203,11 +204,14 @@ excel_sheet.write(ar_sista_ack_nuvarde_row, ar_sista_ack_nuvarde)
 
 # Places the value for net present value
 excel_sheet.write("B11", ar_sista_ack_nuvarde, bold_centered_economic_format)
-
 # Saves data to json file
 project.net_present_value = ar_sista_ack_nuvarde
 project.depreciation = avskrivningar
 project.accumulated_net_value_list = acc_list
+investor_projects_dict = investor.to_dict()
+investor_last_project = investor_projects_dict['projects'][-1]
+investor.add_project(investor_last_project)
+sys.stdout.flush()
 
 json_file_amender("shared_data.json", investor.to_dict())
 

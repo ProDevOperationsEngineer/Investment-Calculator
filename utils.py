@@ -1,5 +1,5 @@
-"""main functions to be utilized throughout
-the project can be found here"""
+"""Main functions to be utilized throughout
+the project can be found here."""
 import csv
 import os
 import json
@@ -11,8 +11,8 @@ from openpyxl.styles import PatternFill
 
 
 def colorizer():
-    """simple function to help distinguish negative values from
-    positive in the excel document"""
+    """Simple function to help distinguish negative values from
+    positive in the excel document."""
     # Load the workbook and select the active worksheet
     wb = openpyxl.load_workbook("investment_portfolio.xlsx")
     ws = wb.active
@@ -42,7 +42,7 @@ def colorizer():
 
 def file_path_creator() -> str:
     """handles the conditions for githubs testing environment,
-    filepath creator"""
+    filepath creator."""
     if os.getenv('GITHUB_ACTIONS') == 'true':
         # GitHub Actions environment
         local_path = (
@@ -62,25 +62,40 @@ def generate_random_id(length=8):
 
 
 def json_file_amender(filename, investor_data) -> list:
-    """Loads json file if it exist and amends it with new data"""
-    # Check if the file exists
+    """Amends JSON file by overwriting projects with the same name."""
+
+    # Load or init
     if os.path.exists(filename):
-        # Read existing data
         with open(filename, "r", encoding="utf-8") as f:
             try:
                 data = json.load(f)
             except json.JSONDecodeError:
-                data = []  # If file is empty, initialize as an empty list
+                data = []
     else:
-        data = []  # If file does not exist, initialize as an empty list
+        data = []
 
-    # Add new data
-    print("Json data: ", investor_data)
-    data.append(investor_data)
+    if data:
+        latest_entry = data[-1]
 
-    # Write the updated data back to the JSON file
-    with open("shared_data.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        if latest_entry.get("username") == investor_data.get("username"):
+            existing_projects = latest_entry["projects"]
+            new_projects = investor_data["projects"]
+
+            for new_project in new_projects:
+                # Remove any existing project with the same name
+                existing_projects[:] = [
+                    p for p in existing_projects
+                    if p.get("project_name") != new_project.get("project_name")
+                ]
+                # Add the new version
+                existing_projects.append(new_project)
+        else:
+            data.append(investor_data)
+    else:
+        data.append(investor_data)
+
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
 
     return data
 
