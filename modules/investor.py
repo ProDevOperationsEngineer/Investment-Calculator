@@ -75,3 +75,4 @@ class Investor:
         depreciation: float = 0.0
         net_present_value: int = 0
         accumulated_net_value_list: list = field(default_factory=list)
+        break_even: Optional[int] = None

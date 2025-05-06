@@ -6,6 +6,7 @@ import json
 import random
 import string
 from typing import Union
+import pandas as pd
 import xlsxwriter
 from openpyxl.styles import PatternFill
 from openpyxl import load_workbook
@@ -379,6 +380,77 @@ def load_shared_data() -> list:
         except json.JSONDecodeError:
             print("Warning: shared_data.json is corrupted.")
             return []
+
+
+def save_to_csv_excel(
+    excel_filename,
+    sheetname,
+    csv_filename,
+    username=None
+):
+    """
+    Converts a project sheet from an Excel file to CSV, preserving structure
+    but rounding all numeric values to whole integers.
+    """
+    if not os.path.exists(excel_filename):
+        raise FileNotFoundError(
+            f"Excel file '{excel_filename}' does not exist."
+        )
+
+    try:
+        df = pd.read_excel(excel_filename, sheet_name=sheetname, dtype=object)
+    except ValueError as exc:
+        raise ValueError(
+            f"Sheet '{sheetname}' not found in '{excel_filename}'."
+        ) from exc
+
+    # Add metadata columns (optional, but reversible)
+    df.insert(0, "project", sheetname)
+    if username:
+        df.insert(0, "username", username)
+
+    if os.path.exists(csv_filename):
+        columns = ["project"]
+        if username:
+            columns.append("username")
+
+        existing_df = pd.read_csv(csv_filename, usecols=columns)
+
+        if username:
+            match = (
+                (
+                    existing_df["project"] == sheetname
+                ) & (
+                    existing_df["username"] == username)
+            ).any()
+        else:
+            match = (existing_df["project"] == sheetname).any()
+        if match:
+            print(
+                f" Project '{sheetname}' already exists in '{csv_filename}'"
+            )
+            os.remove(excel_filename)
+            print(f"Deleted Excel file '{excel_filename}'")
+            return  # Skip writing
+
+    # Fix header label if needed
+    if len(df.columns) > 2 and df.columns[2] != "object title":
+        df.columns.values[2] = "object title"
+
+    # Round all numeric values to nearest integer (preserve labels and headers)
+    for col in df.columns:
+        if pd.api.types.is_numeric_dtype(df[col]):
+            df[col] = df[col].round(0).astype("Int64")
+
+    # Append to CSV
+    file_exists = os.path.exists(csv_filename)
+    df.to_csv(csv_filename, mode="a", header=not file_exists, index=False)
+
+    print(f" Saved sheet '{sheetname}' to '{csv_filename}'")
+
+    # Delete the source Excel file to save memory (optional)
+    os.remove(excel_filename)
+    print(f" Deleted Excel file '{excel_filename}'")
 
 
 def save_to_csv_image(data, csv_filename, mode="a"):

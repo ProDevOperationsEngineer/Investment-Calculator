@@ -3,18 +3,18 @@ import os
 import xlsxwriter
 from modules.investor import Investor
 from utils import (
-    colorizer,
     load_last_shared_data,
     taxes,
     json_file_amender,
     calculator,
-    excel_merger
+    excel_merger,
+    save_to_csv_excel
 )
 
 
 # Loads the dictionary from shared data
 investor_dict = load_last_shared_data()
-investor_dict['projects'][-1].pop('break_even', None)
+# investor_dict['projects'][-1].pop('break_even', None)
 EXCEL_PORTFOLIO_NAME = f"{investor_dict['username']} Portfolio.xlsx"
 EXCEL_PROJ = f"{investor_dict['projects'][-1]['project_name']} Portfolio.xlsx"
 
@@ -71,7 +71,6 @@ if os.path.exists(EXCEL_PORTFOLIO_NAME):
             acc_list
         )
     )
-    colorizer(EXCEL_PORTFOLIO_NAME, EXCEL_PROJ)
 else:
     excel_document = xlsxwriter.Workbook(EXCEL_PORTFOLIO_NAME)
     excel_sheet = excel_document.add_worksheet(EXCEL_PROJ)
@@ -91,7 +90,12 @@ else:
         acc_list
     )
     excel_document.close()
-    colorizer(EXCEL_PORTFOLIO_NAME, EXCEL_PROJ)
+    save_to_csv_excel(
+        EXCEL_PORTFOLIO_NAME,
+        EXCEL_PROJ,
+        "portfolio_database.csv",
+        username=investor_dict["username"]
+    )
 
 
 # Update project with calculated results
