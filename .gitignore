@@ -1,5 +1,5 @@
 *.json
-__pycache__/
+**/__pycache__/
 image_database.csv
 investment_portfolio.xlsx
 project_database.csv

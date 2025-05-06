@@ -82,6 +82,8 @@ def json_file_amender(filename, investor_data) -> list:
     else:
         data = []
 
+    username = investor_data.get("username")
+
     if data:
         latest_entry = data[-1]
 
@@ -98,6 +100,10 @@ def json_file_amender(filename, investor_data) -> list:
                 # Add the new version
                 existing_projects.append(new_project)
         else:
+            # 🔥 Remove all previous entries with the same username
+            data = (
+                [entry for entry in data if entry.get("username") != username]
+            )
             data.append(investor_data)
     else:
         data.append(investor_data)

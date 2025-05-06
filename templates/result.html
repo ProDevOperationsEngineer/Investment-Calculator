@@ -14,7 +14,7 @@
             {% else %}
                 Failed to load data
             {% endif %}
-        </span> SEK
+        </span> $
     </h1>
     <div class="grid-container">
         <div class="grid-item">
@@ -30,7 +30,7 @@
             <p class="text-item">Initial Investment: 
                 <span class="number">
                     {% if "initial_investment" in project and project["initial_investment"] is not none %}
-                        {{ "{:,.0f}".format(project["initial_investment"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["initial_investment"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -39,7 +39,7 @@
             <p class="text-item">Depreciation: 
                 <span class="number">
                     {% if "depreciation" in project and project["depreciation"] is not none %}
-                        {{ "{:,.0f}".format(project["depreciation"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["depreciation"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -48,7 +48,7 @@
             <p class="text-item">Outgoing Payments (for year 0): 
                 <span class="number">
                     {% if "outgoing_payments_0" in project and project["outgoing_payments_0"] is not none %}
-                        {{ "{:,.0f}".format(project["outgoing_payments_0"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["outgoing_payments_0"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -57,7 +57,7 @@
             <p class="text-item">Yearly Outgoing Payments (from year 1): 
                 <span class="number">
                     {% if "outgoing_payments" in project and project["outgoing_payments"] is not none %}
-                        {{ "{:,.0f}".format(project["outgoing_payments"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["outgoing_payments"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -66,7 +66,7 @@
             <p class="text-item">Yearly Incoming Payments (from year 1): 
                 <span class="number">
                     {% if "incoming_payments" in project and project["incoming_payments"] is not none %}
-                        {{ "{:,.0f}".format(project["incoming_payments"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["incoming_payments"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -75,7 +75,7 @@
             <p class="text-item">Residual: 
                 <span class="number">
                     {% if "residual" in project and project["residual"] is not none %}
-                        {{ "{:,.0f}".format(project["residual"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["residual"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}
@@ -84,7 +84,7 @@
             <p class="text-item">Restricted equity: 
                 <span class="number">
                     {% if "restricted_equity" in project and project["restricted_equity"] is not none %}
-                        {{ "{:,.0f}".format(project["restricted_equity"]) | replace(',', ' ') }}kr
+                        {{ "{:,.0f}".format(project["restricted_equity"]) | replace(',', ' ') }}$
                     {% else %}
                         Failed to load data
                     {% endif %}

@@ -86,8 +86,10 @@
                     <p><strong>Lifetime:</strong> {{ p.lifetime | float | round }} years</p>
                     <p><strong>Initial Investment:</strong> {{ "{:,.0f}".format(p.initial_investment | float).replace(",", " ") }}$</p>
                     <p><strong>Net Present Value:</strong> {{ "{:,.0f}".format(p.net_present_value | float).replace(",", " ") }}$</p>
-                    <p><strong>Discount Rate:</strong> {{ p.discount_rate }}%</p>
-                    <p><strong>Tax Rate:</strong> {{ p.tax_rate }}%</p>
+                    {% set discount = (p.discount_rate | float * 100) %}
+                    {% set tax = (p.tax_rate | float * 100) %}
+                    <p><strong>Discount Rate:</strong> {{ discount if discount % 1 != 0 else discount | int }}%</p>
+                    <p><strong>Tax Rate:</strong> {{ tax if tax % 1 != 0 else tax | int }}%</p>
                     <p><strong>Restricted Equity:</strong> {{ "{:,.0f}".format(p.restricted_equity | float).replace(",", " ") }}$</p>
                     <p><strong>Residual:</strong> {{ "{:,.0f}".format(p.residual | float).replace(",", " ") }}$</p>
                     <p><strong>Depreciation:</strong> {{ "{:,.0f}".format(p.depreciation | float).replace(",", " ") }}$</p>

@@ -51,15 +51,20 @@ def home():
                     "info.html",
                     current_investor=current_investor)
 
-            # list_of_break_even = []
+            list_of_break_even = []
             list_of_projects = []
             list_of_npv = []
             list_of_diagrams = []
+            c = -1
 
             for item in project:
                 if current_investor["username"] == item["username"]:
+                    c += 1
                     project_name = item["project_name"]
-                    # break_even = item["break_even"]
+                    break_even = current_investor["projects"][c].get(
+                        "break_even", 0
+                    )
+                    print(break_even)
                     net_present_value = round(float(item["net_present_value"]))
                     npv_str = f"{net_present_value:,.0f}"
 
@@ -67,7 +72,7 @@ def home():
                     net_present_value_formatted = npv_str.replace(
                         ",", " "
                     )
-                    # list_of_break_even.append(break_even)
+                    list_of_break_even.append(break_even)
                     list_of_npv.append(net_present_value_formatted)
                     list_of_projects.append(project_name)
 
@@ -78,7 +83,7 @@ def home():
             return render_template(
                 "info.html",
                 current_investor=current_investor,
-                # list_of_break_even=list_of_break_even,
+                list_of_break_even=list_of_break_even,
                 list_of_diagrams=list_of_diagrams,
                 list_of_npv=list_of_npv,
                 list_of_projects=list_of_projects,
