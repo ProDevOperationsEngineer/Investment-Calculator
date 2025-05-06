@@ -18,6 +18,7 @@ excel_sheet = excel_document.add_worksheet("Project 1")
 
 # Loads the dictionary from shared data
 investor_dict = load_last_shared_data()
+investor_dict["projects"][-1].pop("break_even", None)
 
 # Convert the dictionary back to an Invester instance
 investor = Investor.from_dict(investor_dict)
@@ -211,6 +212,7 @@ project.accumulated_net_value_list = acc_list
 investor_projects_dict = investor.to_dict()
 investor_last_project = investor_projects_dict['projects'][-1]
 investor.add_project(investor_last_project)
+print("Last output before amendment: ", investor.to_dict())
 sys.stdout.flush()
 
 json_file_amender("shared_data.json", investor.to_dict())

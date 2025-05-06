@@ -61,6 +61,14 @@ def generate_random_id(length=8):
     return ''.join(random.choice(letters_and_digits) for i in range(length))
 
 
+def get_last_user(data: list, username: str) -> dict | None:
+    """Returns the last user entry in the list that matches the username."""
+    for entry in reversed(data):  # go from the end backwards
+        if entry.get("username") == username:
+            return entry
+    return None  # if no match found
+
+
 def json_file_amender(filename, investor_data) -> list:
     """Amends JSON file by overwriting projects with the same name."""
 

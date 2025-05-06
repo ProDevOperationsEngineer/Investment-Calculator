@@ -19,6 +19,7 @@ from flask import (
 from modules.investor import Investor
 from utils import (
     file_path_creator,
+    get_last_user,
     load_shared_data,
     load_last_shared_data,
     save_to_csv_user,
@@ -142,6 +143,7 @@ def save_project():
 def account():
     """Page to create or log into account"""
     user = session.get("user", 0)
+    print("user: ", user)
     return render_template("account.html", user=user)
 
 
@@ -232,7 +234,8 @@ def submit_login():
             "temp_user": str(request.form["temp_user"]),
             "temp_pswd": str(request.form["temp_pswd"])
         }
-        investor = Investor(userdata["temp_user"], userdata["temp_pswd"])
+        data = load_shared_data()
+        last_user = get_last_user(data, userdata["temp_user"])
 
     except ValueError as e:
         # Handle invalid input
@@ -246,8 +249,8 @@ def submit_login():
             user["password"] == userdata["temp_pswd"]
             for user in accounts
         ):
-            investor_dict = investor.to_dict()
-            json_file_amender("shared_data.json", investor_dict)
+            print("Last user: ", last_user)
+            json_file_amender("shared_data.json", last_user)
             session.pop("user", 0)
             return redirect(url_for("home"))
         else:
@@ -323,9 +326,12 @@ def netpresentvalue():
     break_even = count - 1
     project_name = str(project["project_name"])
     username = data["username"]
+    project_csv = project.copy()
+    project_csv.pop("accumulated_net_value_list")
     # Add line for break even variable to be added to project dictionary
-    del project["accumulated_net_value_list"]
-    save_to_csv_project(project, "project_database.csv")
+    save_to_csv_project(project_csv, "project_database.csv")
+    data["projects"][-1]["break_even"] = break_even
+    json_file_amender("shared_data.json", data)
 
     # Save byte64data image to CSV image database
     byte64_dict = {

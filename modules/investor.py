@@ -34,10 +34,18 @@ class Investor:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """Returns dictionary into class instance"""
+        """Returns dictionary into class instance."""
         investor = cls(username=data["username"], password=data["password"])
+        allowed_keys = {
+            field.name for field in Investor.Project.__dataclass_fields__.values()  # type: ignore[attr-defined]  # noqa: E501  # pylint: disable=no-member,line-too-long
+        }
+
         for project_data in data["projects"]:
-            investor.add_project(project_data)
+            cleaned_data = {
+                k: v for k, v in project_data.items() if k in allowed_keys
+            }
+            investor.add_project(cleaned_data)
+
         return investor
 
     @classmethod

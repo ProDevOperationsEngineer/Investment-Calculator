@@ -2403,16 +2403,6 @@
     {
         "username": "Canadian",
         "password": "Goose",
-        "projects": []
-    },
-    {
-        "username": "Bliss",
-        "password": "Miss",
-        "projects": []
-    },
-    {
-        "username": "Canadian",
-        "password": "Goose",
         "projects": [
             {
                 "project_name": "Goose Hunter Pro",
@@ -2818,6 +2808,235 @@
                     18717041.52965282,
                     19196651.18183211
                 ]
+            }
+        ]
+    },
+    {
+        "username": "Hilter",
+        "password": "Skilter",
+        "projects": [
+            {
+                "project_name": "PimKlom Land",
+                "lifetime": 10,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 450000.0,
+                "net_present_value": 7522964.295964601,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -15835658.238884047,
+                    -11769100.469820442,
+                    -8223714.44622532,
+                    -5132706.579097925,
+                    -2437843.57375582,
+                    -88355.33893271163,
+                    1960021.500494584,
+                    3745877.5069699944,
+                    5302857.4603051385,
+                    7522964.295964601
+                ]
+            },
+            {
+                "project_name": "PimKlom Land Mini",
+                "lifetime": 15,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 8000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 300000.0,
+                "net_present_value": 2481068.556020299,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -17187009.590235397,
+                    -14298613.41781639,
+                    -11780395.307599293,
+                    -9584913.084219087,
+                    -7670804.781359274,
+                    -6002009.399615758,
+                    -4547087.532358987,
+                    -3278629.0604699105,
+                    -2172736.7571664434,
+                    -1208576.0742514767,
+                    -367982.6279437464,
+                    364880.0105111188,
+                    1003818.6665310535,
+                    1560870.6770105083,
+                    2481068.556020299
+                ]
+            },
+            {
+                "project_name": "PimKlom Land Max",
+                "lifetime": 15,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 15000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 300000.0,
+                "net_present_value": 31554226.523567557,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -12914995.640802093,
+                    -6302088.614474362,
+                    -536694.5200299583,
+                    4489804.254551039,
+                    8872104.842677452,
+                    12692767.95351129,
+                    16023773.281178107,
+                    18927875.572082046,
+                    21459786.8980663,
+                    23667207.408950567,
+                    25591723.983391948,
+                    27269593.708275456,
+                    28732426.947057936,
+                    30007782.865787216,
+                    31554226.523567557
+                ],
+                "break_even": 4
+            }
+        ]
+    },
+    {
+        "username": "Bliss",
+        "password": "Miss",
+        "projects": [
+            {
+                "project_name": "Dj for Ahmed",
+                "lifetime": 10,
+                "initial_investment": 800000.0,
+                "incoming_payments": 1000000.0,
+                "outgoing_payments": 200000.0,
+                "residual": 400000.0,
+                "restricted_equity": 200000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 400000.0,
+                "depreciation": 24000.0,
+                "net_present_value": 1806575.973799032,
+                "accumulated_net_value_list": [
+                    -1280000.0,
+                    -770845.6843940716,
+                    -326944.7989486239,
+                    60065.56325316138,
+                    397476.5154779088,
+                    691644.7388647853,
+                    948112.2396379993,
+                    1171710.7581848293,
+                    1366652.797022519,
+                    1536610.9825828413,
+                    1806575.973799032
+                ]
+            }
+        ]
+    },
+    {
+        "username": "Hilter",
+        "password": "Skilter",
+        "projects": [
+            {
+                "project_name": "PimKlom Land",
+                "lifetime": 10,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 10000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 450000.0,
+                "net_present_value": 7522964.295964601,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -15835658.238884047,
+                    -11769100.469820442,
+                    -8223714.44622532,
+                    -5132706.579097925,
+                    -2437843.57375582,
+                    -88355.33893271163,
+                    1960021.500494584,
+                    3745877.5069699944,
+                    5302857.4603051385,
+                    7522964.295964601
+                ]
+            },
+            {
+                "project_name": "PimKlom Land Mini",
+                "lifetime": 15,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 8000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 300000.0,
+                "net_present_value": 2481068.556020299,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -17187009.590235397,
+                    -14298613.41781639,
+                    -11780395.307599293,
+                    -9584913.084219087,
+                    -7670804.781359274,
+                    -6002009.399615758,
+                    -4547087.532358987,
+                    -3278629.0604699105,
+                    -2172736.7571664434,
+                    -1208576.0742514767,
+                    -367982.6279437464,
+                    364880.0105111188,
+                    1003818.6665310535,
+                    1560870.6770105083,
+                    2481068.556020299
+                ]
+            },
+            {
+                "project_name": "PimKlom Land Max",
+                "lifetime": 15,
+                "initial_investment": 15000000.0,
+                "incoming_payments": 15000000.0,
+                "outgoing_payments": 3000000.0,
+                "residual": 2000000.0,
+                "restricted_equity": 2000000.0,
+                "discount_rate": 0.21,
+                "tax_rate": 0.3,
+                "outgoing_payments_0": 5000000.0,
+                "depreciation": 300000.0,
+                "net_present_value": 31554226.523567557,
+                "accumulated_net_value_list": [
+                    -20500000.0,
+                    -12914995.640802093,
+                    -6302088.614474362,
+                    -536694.5200299583,
+                    4489804.254551039,
+                    8872104.842677452,
+                    12692767.95351129,
+                    16023773.281178107,
+                    18927875.572082046,
+                    21459786.8980663,
+                    23667207.408950567,
+                    25591723.983391948,
+                    27269593.708275456,
+                    28732426.947057936,
+                    30007782.865787216,
+                    31554226.523567557
+                ],
+                "break_even": 4
             }
         ]
     }
