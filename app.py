@@ -14,12 +14,14 @@ from flask import (
     redirect,
     url_for,
     session,
+    send_file,
     abort
 )
 from modules.investor import Investor
 from utils import (
     file_path_creator,
     get_last_user,
+    load_from_csv_excel,
     load_shared_data,
     load_last_shared_data,
     save_to_csv_user,
@@ -102,6 +104,27 @@ def kalkyl():
     """Route to investment calculation form"""
     user_dict = load_from_csv("user_database.csv")
     return render_template("index.html", user_dict=user_dict)
+
+
+@app.route("/download/<username>/<project>", methods=["GET"])
+def download_excel(username, project):
+    """Download individual projects in excel format"""
+    csv_filename = "portfolio_database.csv"
+    excel_stream = load_from_csv_excel(csv_filename, username, project)
+    print("username: ", username)
+    print("project: ", project)
+    if excel_stream is None:
+        return f"Project '{project}' for user '{username}' not found.", 404
+
+    filename = f"{username}_{project}.xlsx"
+    return send_file(
+        excel_stream,
+        mimetype=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        download_name=filename,
+        as_attachment=True
+    )
 
 
 @app.route('/project/<username>/<project_name>')

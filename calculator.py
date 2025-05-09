@@ -16,7 +16,7 @@ from utils import (
 investor_dict = load_last_shared_data()
 # investor_dict['projects'][-1].pop('break_even', None)
 EXCEL_PORTFOLIO_NAME = f"{investor_dict['username']} Portfolio.xlsx"
-EXCEL_PROJ = f"{investor_dict['projects'][-1]['project_name']} Portfolio.xlsx"
+EXCEL_PROJ = f"{investor_dict['projects'][-1]['project_name']}"
 
 # Convert the dictionary back to an Invester instance
 investor = Investor.from_dict(investor_dict)

@@ -7,6 +7,8 @@ import random
 import string
 from typing import Union
 import pandas as pd
+import io
+import tempfile
 import xlsxwriter
 from openpyxl.styles import PatternFill
 from openpyxl import load_workbook
@@ -149,22 +151,22 @@ def calculator(
     return ar_sista_ack_nuvarde, acc_list, avskrivningar
 
 
-def colorizer(filename, sheetname):
+def colorizer(filename, project):
     """
     Applies color to distinguish positive and negative values
     in a given worksheet of an Excel file.
 
     Arguments:
     - filename (str): Full name of the Excel file, e.g. "Alice Portfolio.xlsx"
-    - sheetname (str): Name of the worksheet, e.g. "Projekt1 Portfolio.xlsx"
+    - project (str): Name of the worksheet, e.g. "Projekt1 Portfolio.xlsx"
     """
 
     # Load the workbook and select the specific sheet
     wb = load_workbook(filename)
-    if sheetname not in wb.sheetnames:
-        raise ValueError(f"Worksheet '{sheetname}' not found in '{filename}'")
+    if project not in wb.sheetnames:
+        raise ValueError(f"Worksheet '{project}' not found in '{filename}'")
 
-    ws = wb[sheetname]
+    ws = wb[project]
 
     # Define the colors for positive and negative values
     green_fill = PatternFill(
@@ -313,6 +315,42 @@ def json_file_amender(filename, investor_data) -> list:
     return data
 
 
+def load_from_csv_excel(csv_filename, username, project):
+    """
+    Loads project data from a CSV file, saves it as a temporary Excel file,
+    applies color formatting, and returns an in-memory Excel stream.
+    """
+    df = pd.read_csv(csv_filename, dtype=object)
+
+    match = (df["username"] == username) & (df["project"] == project)
+    if not match.any():
+        return None
+
+    filtered_df = df[match].copy()
+
+    for col in filtered_df.columns:
+        if pd.api.types.is_numeric_dtype(filtered_df[col]):
+            filtered_df[col] = filtered_df[col].round(0).astype("Int64")
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
+        tmp_filename = tmp.name
+
+    # Write Excel to temp file
+    with pd.ExcelWriter(tmp_filename, engine="xlsxwriter") as writer:
+        filtered_df.to_excel(writer, index=False, sheet_name=project)
+
+    # Apply coloring
+    colorizer(tmp_filename, project)
+
+    # Read the result into memory
+    with open(tmp_filename, "rb") as f:
+        excel_bytes = f.read()
+
+    os.remove(tmp_filename)
+
+    return io.BytesIO(excel_bytes)
+
+
 def load_from_csv(filename) -> list:
     """Loads data from a CSV file and returns a list of dictionaries."""
     data_list = []
@@ -384,7 +422,7 @@ def load_shared_data() -> list:
 
 def save_to_csv_excel(
     excel_filename,
-    sheetname,
+    project,
     csv_filename,
     username=None
 ):
@@ -398,14 +436,14 @@ def save_to_csv_excel(
         )
 
     try:
-        df = pd.read_excel(excel_filename, sheet_name=sheetname, dtype=object)
+        df = pd.read_excel(excel_filename, sheet_name=project, dtype=object)
     except ValueError as exc:
         raise ValueError(
-            f"Sheet '{sheetname}' not found in '{excel_filename}'."
+            f"Sheet '{project}' not found in '{excel_filename}'."
         ) from exc
 
     # Add metadata columns (optional, but reversible)
-    df.insert(0, "project", sheetname)
+    df.insert(0, "project", project)
     if username:
         df.insert(0, "username", username)
 
@@ -419,15 +457,15 @@ def save_to_csv_excel(
         if username:
             match = (
                 (
-                    existing_df["project"] == sheetname
+                    existing_df["project"] == project
                 ) & (
                     existing_df["username"] == username)
             ).any()
         else:
-            match = (existing_df["project"] == sheetname).any()
+            match = (existing_df["project"] == project).any()
         if match:
             print(
-                f" Project '{sheetname}' already exists in '{csv_filename}'"
+                f" Project '{project}' already exists in '{csv_filename}'"
             )
             os.remove(excel_filename)
             print(f"Deleted Excel file '{excel_filename}'")
@@ -446,7 +484,7 @@ def save_to_csv_excel(
     file_exists = os.path.exists(csv_filename)
     df.to_csv(csv_filename, mode="a", header=not file_exists, index=False)
 
-    print(f" Saved sheet '{sheetname}' to '{csv_filename}'")
+    print(f" Saved sheet '{project}' to '{csv_filename}'")
 
     # Delete the source Excel file to save memory (optional)
     os.remove(excel_filename)
