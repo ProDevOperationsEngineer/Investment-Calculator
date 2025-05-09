@@ -20,6 +20,7 @@ from flask import (
 from modules.investor import Investor
 from utils import (
     file_path_creator,
+    generate_full_portfolio,
     get_last_user,
     load_from_csv_excel,
     load_shared_data,
@@ -111,18 +112,35 @@ def download_excel(username, project):
     """Download individual projects in excel format"""
     csv_filename = "portfolio_database.csv"
     excel_stream = load_from_csv_excel(csv_filename, username, project)
-    print("username: ", username)
-    print("project: ", project)
     if excel_stream is None:
         return f"Project '{project}' for user '{username}' not found.", 404
 
-    filename = f"{username}_{project}.xlsx"
+    filename = f"{username} {project}.xlsx"
     return send_file(
         excel_stream,
         mimetype=(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ),
         download_name=filename,
+        as_attachment=True
+    )
+
+
+@app.route("/download/portfolio/<username>", methods=["GET"])
+def download_portfolio(username):
+    """Download the entire users portfolio in a excel workbook format"""
+    csv_filename = "portfolio_database.csv"
+    portfolio_stream = generate_full_portfolio(csv_filename, username)
+
+    if portfolio_stream is None:
+        return f"No projects found for user '{username}'", 404
+
+    return send_file(
+        portfolio_stream,
+        mimetype=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        download_name=f"{username} Portfolio.xlsx",
         as_attachment=True
     )
 

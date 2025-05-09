@@ -54,6 +54,9 @@
           <a href="/account" class="item">
             <i class="address card outline icon"></i> Sign in or create account
           </a>
+          <a href="{{ url_for('download_portfolio', username=current_investor['username']) }}" class="item">
+            <i class="download icon"></i> Download Entire Portfolio
+          </a>
         </div>
       </div>
     </div>
@@ -74,12 +77,11 @@
               <p></p>
             </div>
             <div class="extra">
-                <a class="ui right floated primary button"
+            <a class="ui right floated primary button"
                 href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[0]) }}">
               Download Excel File
               <i class="right chevron icon"></i>
-           </a>
-              </a>
+            </a>
               <div class="ui label">Break even point: {{ list_of_break_even[0]}} years</div>
             </div>
           </div>
@@ -103,11 +105,11 @@
               <p></p>
             </div>
             <div class="extra">
-              <a class="ui right floated primary button">
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[1]) }}"
-                  Download Excel File
-                  <i class="right chevron icon"></i>
-              </a>
+           <a class="ui right floated primary button"
+                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[1]) }}">
+              Download Excel File
+              <i class="right chevron icon"></i>
+            </a>
               <div class="ui label">Break even point: {{ list_of_break_even[1]}} years </div>
             </div>
           </div>
@@ -131,11 +133,11 @@
               <p></p>
             </div>
             <div class="extra">
-              <a class="ui right floated primary button">
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[2]) }}"
-                  Download Excel File
-                  <i class="right chevron icon"></i>
-              </a>
+            <a class="ui right floated primary button"
+                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[2]) }}">
+              Download Excel File
+              <i class="right chevron icon"></i>
+            </a>
               <div class="ui label">Break even point: {{ list_of_break_even[2]}} years</div>
             </div>
           </div>
@@ -159,11 +161,11 @@
               <p></p>
             </div>
             <div class="extra">
-              <a class="ui right floated primary button">
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[3]) }}"
-                  Download Excel File
-                  <i class="right chevron icon"></i>
-              </a>
+           <a class="ui right floated primary button"
+                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[3]) }}">
+              Download Excel File
+              <i class="right chevron icon"></i>
+            </a>
               <div class="ui label">Break even point: {{ list_of_break_even[3]}} years</div>
             </div>
           </div>
@@ -187,12 +189,12 @@
               <p></p>
             </div>
             <div class="extra">
-              <a class="ui right floated primary button">
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[4]) }}"
-                  Download Excel File
-                  <i class="right chevron icon"></i>
-              </a>
-              <div class="ui label">Break even point: {{ list_of_break_even[4]}} years</div>
+            <a class="ui right floated primary button"
+                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[0]) }}">
+              Download Excel File
+              <i class="right chevron icon"></i>
+            </a>
+            <div class="ui label">Break even point: {{ list_of_break_even[4]}} years</div>
             </div>
           </div>
         </div>

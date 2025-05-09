@@ -1,5 +1,6 @@
 """Main functions to be utilized throughout
 the project can be found here."""
+import copy
 import csv
 import os
 import json
@@ -11,7 +12,8 @@ from typing import Union
 import pandas as pd
 import xlsxwriter
 from openpyxl.styles import PatternFill
-from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+from openpyxl import load_workbook, Workbook
 
 
 def calculator(
@@ -51,10 +53,15 @@ def calculator(
         "align": "center",
         "num_format": "#,##0.00"
     })
+    percent_format = excel_document.add_format({
+        "italic": True,
+        "bold": True,
+        "num_format": "0.0%"
+    })
 
     # Set column widths
     excel_sheet.set_column("A:A", 25)
-    excel_sheet.set_column("B:T", 15, center_economic_format)
+    excel_sheet.set_column("B:X", 15, center_economic_format)
 
     # Headlines
     excel_sheet.write("A1", "Project lifetime", bold_format)
@@ -144,9 +151,9 @@ def calculator(
 
     # Final summary values
     excel_sheet.write("B11", ar_sista_ack_nuvarde, bold_center_econ_format)
-    excel_sheet.write("B13", kalkylrantan / (1 - skattesats))
-    excel_sheet.write("B14", kalkylrantan)
-    excel_sheet.write("B15", skattesats)
+    excel_sheet.write("B13", kalkylrantan / (1 - skattesats), percent_format)
+    excel_sheet.write("B14", kalkylrantan, percent_format)
+    excel_sheet.write("B15", skattesats, percent_format)
 
     return ar_sista_ack_nuvarde, acc_list, avskrivningar
 
@@ -178,7 +185,7 @@ def colorizer(filename, project):
 
     # Iterate through each cell (excluding headers)
     for row in ws.iter_rows(
-        min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max_column
+        min_row=2, max_row=12, min_col=1, max_col=ws.max_column
     ):
         for cell in row:
             if isinstance(cell.value, (int, float)):
@@ -241,6 +248,14 @@ def excel_merger(
     return ar_sista_ack_nuvarde, acc_list, avskrivningar
 
 
+def extract_values(project_df, year_columns, title):
+    """Extracts float values for a given object title across year columns."""
+    row = project_df[project_df["object title"] == title]
+    if row.empty:
+        return [0.0] * len(year_columns)
+    return row.iloc[0][year_columns].fillna(0).astype(float).tolist()
+
+
 def file_path_creator() -> str:
     """handles the conditions for githubs testing environment,
     filepath creator."""
@@ -260,6 +275,74 @@ def generate_random_id(length=8):
     """Generate a random string of fixed length."""
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(length))
+
+
+def generate_full_portfolio(csv_filename, username):
+    """
+    Creates a complete investment portfolio workbook for a user by combining
+    all of their projects (each as a worksheet) into one Excel file.
+    """
+    df = pd.read_csv(csv_filename, dtype=object)
+    user_projects = df[df["username"] == username]["project"].unique()
+
+    if len(user_projects) == 0:
+        return None
+
+    # Create final master workbook
+    master_wb = Workbook()
+    master_wb.remove(master_wb.active)  # remove default empty sheet
+
+    for project in user_projects:
+        # Generate Excel file in memory for this project
+        project_stream = load_from_csv_excel(csv_filename, username, project)
+        if project_stream is None:
+            continue
+
+        # Save to temp file for colorizer
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
+            tmp_filename = tmp.name
+            with open(tmp_filename, "wb") as f:
+                f.write(project_stream.read())
+
+        # Apply coloring
+        colorizer(tmp_filename, project)
+
+        # Load and copy the sheet into master workbook
+        temp_wb = load_workbook(tmp_filename)
+        temp_ws = temp_wb[project]
+
+        # Create new sheet in master workbook
+        new_ws = master_wb.create_sheet(title=project)
+
+        for col_idx in range(1, temp_ws.max_column + 1):
+            letter = get_column_letter(col_idx)
+            src_dim = temp_ws.column_dimensions.get(letter)
+            if src_dim and src_dim.width:
+                new_ws.column_dimensions[letter].width = src_dim.width
+            else:
+                # fallback width if not defined
+                new_ws.column_dimensions[letter].width = 15
+
+        for row in temp_ws.iter_rows():
+            for cell in row:
+                new_cell = new_ws.cell(
+                    row=cell.row, column=cell.col_idx, value=cell.value
+                )
+                if cell.has_style:
+                    new_cell.font = copy.copy(cell.font)
+                    new_cell.fill = copy.copy(cell.fill)
+                    new_cell.border = copy.copy(cell.border)
+                    new_cell.number_format = cell.number_format
+                    new_cell.alignment = copy.copy(cell.alignment)
+
+        temp_wb.close()
+        os.remove(tmp_filename)
+
+    # Save final master workbook to stream
+    output = io.BytesIO()
+    master_wb.save(output)
+    output.seek(0)
+    return output
 
 
 def get_last_user(data: list, username: str) -> dict | None:
