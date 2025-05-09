@@ -5,10 +5,10 @@ import os
 import json
 import random
 import string
-from typing import Union
-import pandas as pd
 import io
 import tempfile
+from typing import Union
+import pandas as pd
 import xlsxwriter
 from openpyxl.styles import PatternFill
 from openpyxl import load_workbook
@@ -317,38 +317,84 @@ def json_file_amender(filename, investor_data) -> list:
 
 def load_from_csv_excel(csv_filename, username, project):
     """
-    Loads project data from a CSV file, saves it as a temporary Excel file,
-    applies color formatting, and returns an in-memory Excel stream.
+    Loads a specific project from a row-based CSV database,
+    generates a formatted Excel sheet using calculator(),
+    applies cell coloring via colorizer(),
+    and returns the result as a downloadable stream.
     """
+    # Read the full database
     df = pd.read_csv(csv_filename, dtype=object)
 
-    match = (df["username"] == username) & (df["project"] == project)
-    if not match.any():
+    # Filter for user + project
+    project_df = df[(df["username"] == username) & (df["project"] == project)]
+    if project_df.empty:
         return None
 
-    filtered_df = df[match].copy()
+    # Detect which columns are years (0, 1, ..., N)
+    year_columns = [col for col in df.columns if col.isdigit()]
+    projekt_tid = len(year_columns) - 1  # exclude year 0
 
-    for col in filtered_df.columns:
-        if pd.api.types.is_numeric_dtype(filtered_df[col]):
-            filtered_df[col] = filtered_df[col].round(0).astype("Int64")
+    # Extract a specific variable’s values as a list of floats
+    def get_values(title):
+        row = project_df[project_df["object title"] == title]
+        if row.empty:
+            return [0.0] * len(year_columns)
+        return row.iloc[0][year_columns].fillna(0).astype(float).tolist()
 
+    # Extract fields required by your calculator()
+    grundinvestering = get_values("Initial Investment")[0]
+    avskrivningar_list = get_values("Depreciation")
+    inbet_list = get_values("Incoming Payments")
+    utbet_list = get_values("Outgoing Payments")
+    rest = get_values("Residual")[-1]
+    rorelsebindandekapital = get_values("Restricted Equity")[0]
+    kalkylrantan = get_values("Discount Rate After TaX")[0]
+    skattesats = get_values("Tax Rate")[0]
+    acc_list = []
+
+    # Create Excel file in memory
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    worksheet = workbook.add_worksheet(project)
+
+    # Generate content using your calculator
+    calculator(
+        workbook,
+        worksheet,
+        projekt_tid,
+        kalkylrantan,
+        skattesats,
+        grundinvestering,
+        utbet_list[0],              # utbet_ar_noll
+        rorelsebindandekapital,
+        avskrivningar_list[1],
+        inbet_list[1],
+        utbet_list[1],
+        rest,
+        acc_list
+    )
+
+    # Finish writing in memory
+    workbook.close()
+
+    # Save to a temp file so colorizer (which expects a file) can process it
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
         tmp_filename = tmp.name
+        with open(tmp_filename, "wb") as f:
+            f.write(output.getvalue())
 
-    # Write Excel to temp file
-    with pd.ExcelWriter(tmp_filename, engine="xlsxwriter") as writer:
-        filtered_df.to_excel(writer, index=False, sheet_name=project)
-
-    # Apply coloring
+    # Run the colorizer on the temp file
     colorizer(tmp_filename, project)
 
-    # Read the result into memory
+    # Read the final version back into memory
     with open(tmp_filename, "rb") as f:
-        excel_bytes = f.read()
+        final_bytes = f.read()
 
+    # Clean up the temp file
     os.remove(tmp_filename)
 
-    return io.BytesIO(excel_bytes)
+    # Return the colored Excel file as a stream
+    return io.BytesIO(final_bytes)
 
 
 def load_from_csv(filename) -> list:
