@@ -8,13 +8,6 @@
         body {
             background-color: #f5f5f5;
         }
-        .custom-theme {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
         .project-data {
             font-size: 1.3em;
             font-weight: bold;
@@ -47,63 +40,100 @@
             font-style: italic;
             font-size: 1.2em;
             color: #888;
-          }      
+          }
+        .custom-theme {
+            background-color: rgb(3, 26, 4);
+            color: white;
+            padding: 20px;
+            border-radius: 0px;
+            overflow: visible;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: center;
+            gap: 40px;
+        }
+        h1.ui.header {
+            color: #f5f5f5;
+        }
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 200px);
+            width: 100%;
+        }
+        .side-column:first-child {
+            border-top-right-radius: 5px;
+        }
+        .side-column:last-child {
+            border-top-left-radius: 5px;
+        }
+        .side-column {
+            background-color: rgb(3, 26, 4);
+            width: 30%;
+            min-width: 100px;
+        }
+        .main-content {
+            flex-grow: 1;
+            background-color: rgb(243, 239, 239);
+            padding: 20px;
+        }    
     </style>
 </head>
 <body>
 
-    <div class="ui container custom-theme">
-        <h1 class="ui header">Project: {{ p.project_name }}</h1>
-        <p>Welcome, {{ p.username }}. Below is your project summary.</p>
-        <div class="ui attached stackable menu">
-            <div class="ui container">
-                <a href="/" class="item">
-                    <i class="home icon"></i> Home
-                </a>
-                <a href="/calculus" class="item">
-                    <i class="calculator icon"></i> Investment Calculus
-                </a>
-                <a href="/account" class="item">
-                    <i class="address card outline icon"></i> Your Account
-                </a>
+    <div class="custom-theme">
+        <div>
+            <h1 class="ui header">Project: {{ p.project_name }}</h1>
+            <p>Welcome, {{ p.username }}. Below is your project summary.</p>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <div class="ui attached stackable menu" style="width: 900px;">
+                <a href="/" class="item"><i class="home icon"></i> Home</a>
+                <a href="/calculus" class="item"><i class="calculator icon"></i> Investment Calculus</a>
+                <a href="/account" class="item"><i class="address card outline icon"></i> Your Account</a>
             </div>
         </div>
     </div>
-
-    <div class="ui centered card" style="width: 44%;">
-        {% if p.image_base64 %}
-        <div class="image">
-            <img src="data:image/png;base64,{{ p.image_base64 }}" alt="Project Image">
-        </div>
-        {% endif %}
-        <div class="ui card" style="width: 100%; padding: 20px;">
-
-            <div class="two-column-layout">
-                <!-- LEFT SIDE -->
-                <div class="left-column">
-                    <h2 class="ui header">{{ p.project_name }}</h2>
-                    <div class="project-data">
-                    <p><strong>Lifetime:</strong> {{ p.lifetime | float | round }} years</p>
-                    <p><strong>Initial Investment:</strong> {{ "{:,.0f}".format(p.initial_investment | float).replace(",", " ") }}$</p>
-                    <p><strong>Net Present Value:</strong> {{ "{:,.0f}".format(p.net_present_value | float).replace(",", " ") }}$</p>
-                    {% set discount = (p.discount_rate | float * 100) %}
-                    {% set tax = (p.tax_rate | float * 100) %}
-                    <p><strong>Discount Rate:</strong> {{ discount if discount % 1 != 0 else discount | int }}%</p>
-                    <p><strong>Tax Rate:</strong> {{ tax if tax % 1 != 0 else tax | int }}%</p>
-                    <p><strong>Restricted Equity:</strong> {{ "{:,.0f}".format(p.restricted_equity | float).replace(",", " ") }}$</p>
-                    <p><strong>Residual:</strong> {{ "{:,.0f}".format(p.residual | float).replace(",", " ") }}$</p>
-                    <p><strong>Depreciation:</strong> {{ "{:,.0f}".format(p.depreciation | float).replace(",", " ") }}$</p>
+    <div class="layout-container">
+        <div class="side-column"></div>
+        <div class="ui centered card" style="width: 44%;">
+            {% if p.image_base64 %}
+            <div class="image">
+                <img src="data:image/png;base64,{{ p.image_base64 }}" alt="Project Image">
+            </div>
+            {% endif %}
+            <div class="ui card" style="width: 100%; padding: 20px;">
+                <div class="two-column-layout">
+                    <!-- LEFT SIDE -->
+                    <div class="left-column">
+                        <h2 class="ui header">{{ p.project_name }}</h2>
+                        <div class="project-data">
+                        <p><strong>Lifetime:</strong> {{ p.lifetime | float | round }} years</p>
+                        <p><strong>Initial Investment:</strong> {{ "{:,.0f}".format(p.initial_investment | float).replace(",", " ") }}$</p>
+                        <p><strong>Net Present Value:</strong> {{ "{:,.0f}".format(p.net_present_value | float).replace(",", " ") }}$</p>
+                        {% set discount = (p.discount_rate | float * 100) %}
+                        {% set tax = (p.tax_rate | float * 100) %}
+                        <p><strong>Discount Rate:</strong> {{ discount if discount % 1 != 0 else discount | int }}%</p>
+                        <p><strong>Tax Rate:</strong> {{ tax if tax % 1 != 0 else tax | int }}%</p>
+                        <p><strong>Restricted Equity:</strong> {{ "{:,.0f}".format(p.restricted_equity | float).replace(",", " ") }}$</p>
+                        <p><strong>Residual:</strong> {{ "{:,.0f}".format(p.residual | float).replace(",", " ") }}$</p>
+                        <p><strong>Depreciation:</strong> {{ "{:,.0f}".format(p.depreciation | float).replace(",", " ") }}$</p>
+                        </div>
+                    </div>         
+                    <!-- RIGHT SIDE -->
+                    <div class="right-column">
+                        <div class="creator-line">Created by {{ p.username }}</div>
+                        <a href="/" class="ui blue button" style="margin-top: 20px;">
+                        <i class="arrow left icon"></i> Back to Overview
+                        </a>
                     </div>
-                </div>         
-                <!-- RIGHT SIDE -->
-                <div class="right-column">
-                    <div class="creator-line">Created by {{ p.username }}</div>
-                    <a href="/" class="ui blue button" style="margin-top: 20px;">
-                    <i class="arrow left icon"></i> Back to Overview
-                    </a>
-                </div>
-            </div>          
+                </div>          
+            </div>
         </div>
+        <div class="side-column"></div>
     </div>
 </body>
 </html>

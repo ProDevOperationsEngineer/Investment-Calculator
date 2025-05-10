@@ -4,116 +4,173 @@
     <meta charset="UTF-8">
     <title>Sign in</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <style>
+        body {
+            background-color: rgb(243, 239, 239);
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            width: 100%;
+        }
+        .custom-theme {
+            background-color: rgb(3, 26, 4);
+            color: white;
+            padding: 20px 0;
+            height: 300px;
+            text-align: center;
+            border-radius: 0px;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .custom-theme h1,
+        .custom-theme p {
+            color: white !important;
+            margin: 0;
+        }
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 140px);
+        }
+        .side-column {
+            background-color: rgb(3, 26, 4);
+            width: 25%;
+            min-width: 100px;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .ui.placeholder.segment {
+            max-width: 700px;
+            width: 100%;
+        }
+        .ui.message {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .ui.form .field .ui.input input {
+          width: 100% !important;
+        }
+    </style>
 </head>
 <body>
-    <h1>Please sign in to access your portfolio of investments</h1>
-    <form id="signInForm" action="/submit/login" method="POST">
-        <div class="ui placeholder segment">
-            <div class="ui two column very relaxed stackable grid">
-              <div class="column">
-                <div class="ui form">
-                  <div class="field">
-                    <label>Username</label>
-                    <div class="ui left icon input">
-                      <input type="text" name="temp_user" placeholder="username">
-                      <i class="user icon"></i>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label>Password</label>
-                    <div class="ui left icon input">
-                      <input type="password" name="temp_pswd">
-                      <i class="lock icon"></i>
-                    </div>
-                  </div>
-                  <div class="ui blue submit button" onclick="submitForm()">Login</div>
-                </div>
-              </div>
-              <div class="middle aligned column">
-                <div class="ui big button" onclick="modal()">
-                  <i class="signup icon"></i>
-                  Sign Up
-                </div>
-              </div>
-            </div>
-            <div class="ui vertical divider">
-              Or
-            </div>
-          </div>
-        </div>
-    </form>
-    <div class="ui basic modal">
-      <div class="ui icon header">
-        <i class="user icon"></i>
-        New profile
-      </div>
-      <div class="content">
-        <p>Please enter your username and password</p>
-      </div>
-      <form id="myForm" action="/submit/account" method="POST">
-        <div class="column">
-          <div class="ui form">
-            <div class="field">
-              <label>Username</label>
-              <div class="ui left icon input">
-                <input type="text" name="username" placeholder="username">
-                <i class="user icon"></i>
-              </div>
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <div class="ui left icon input">
-                <input type="password" name="password">
-                <i class="lock icon"></i>
-              </div>
-            </div>
-            <div class="actions">
-              <div class="ui red basic cancel inverted button">
-                <i class="remove icon"></i>
-                Exit
-              </div>
-              <div class="ui green ok inverted button" onclick="submitForm1()">
-                <i class="checkmark icon"></i>
-                Ok
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+    <div class="custom-theme">
+        <h1 class="ui header">Please sign in to access your portfolio of investments</h1>
     </div>
-    {% if user %}
-      <div class="ui message" onclick="closeBox()">
-        <i class="close icon"></i>
-        <div class="header">
-          Wrong password or username
+    <div class="layout-container">
+        <div class="side-column"></div>
+
+        <div class="main-content">
+            <form id="signInForm" action="/submit/login" method="POST">
+                <div class="ui placeholder segment">
+                    <div class="ui two column very relaxed stackable grid">
+                        <div class="column">
+                            <div class="ui form">
+                                <div class="field">
+                                    <label>Username</label>
+                                    <div class="ui fluid left icon input">
+                                        <input type="text" name="temp_user" placeholder="username">
+                                        <i class="user icon"></i>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Password</label>
+                                    <div class="ui fluid left icon input">
+                                        <input type="password" name="temp_pswd">
+                                        <i class="lock icon"></i>
+                                    </div>
+                                </div>
+                                <div class="ui blue submit button" onclick="submitForm()">Login</div>
+                            </div>
+                        </div>
+                        <div class="middle aligned column">
+                            <div class="ui big button" onclick="modal()">
+                                <i class="signup icon"></i>
+                                Sign Up
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui vertical divider">Or</div>
+                </div>
+            </form>
+
+            {% if user %}
+            <div class="ui message">
+                <i class="close icon"></i>
+                <div class="header">Wrong password or username</div>
+                <p>Please try again</p>
+            </div>
+            {% endif %}
         </div>
-        <p>please try again</p>
-      </div>
-    {% endif %}
+
+        <div class="side-column"></div>
+    </div>
+
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="user icon"></i>
+            New profile
+        </div>
+        <div class="content">
+            <p>Please enter your username and password</p>
+        </div>
+        <form id="myForm" action="/submit/account" method="POST">
+            <div class="column">
+                <div class="ui form" style="padding: 0 20px 20px;">
+                    <div class="field">
+                        <label>Username</label>
+                        <div class="ui fluid left icon input">
+                            <input type="text" name="username" placeholder="username">
+                            <i class="user icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                        <div class="ui fluid left icon input">
+                            <input type="password" name="password">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+                    <div class="actions" style="margin-top: 20px;">
+                        <div class="ui red basic cancel inverted button">
+                            <i class="remove icon"></i>
+                            Exit
+                        </div>
+                        <div class="ui green ok inverted button" onclick="submitForm1()">
+                            <i class="checkmark icon"></i>
+                            Ok
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     <script>
-      function submitForm1() {
-        document.getElementById("myForm").submit();
-      }
-      function submitForm() {
-        document.getElementById("signInForm").submit();
-      }
-      function modal() {
-        $('.ui.basic.modal')
-        .modal('show')
-        ;
-      }
-      function closeBox() {
-        $('.message .close')
-        .on('click', function() {
-        $(this)
-        .closest('.message')
-        .transition('fade')
-        ;
-        })
-        ;
-      }
+        function submitForm1() {
+            document.getElementById("myForm").submit();
+        }
+        function submitForm() {
+            document.getElementById("signInForm").submit();
+        }
+        function modal() {
+            $('.ui.basic.modal').modal('show');
+        }
+        function closeBox() {
+            $('.message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+        }
     </script>
 </body>
 </html>

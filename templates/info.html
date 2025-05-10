@@ -1,206 +1,112 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Investment Calculus</title>
     <meta charset="UTF-8">
-    <title>Data Form</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
     <style>
         body {
-            background-color:rgb(243, 239, 239); /* Light gray background color */
+            background-color:rgb(243, 239, 239);
         }
         .custom-theme {
-          background-color:rgb(3, 26, 4);
-          color: white;
-          padding: 20px;
-          border-radius: 0; /* Optional: remove rounded corners */
-          overflow: visible;
-          height: 420px
+            background-color:rgb(3, 26, 4);
+            color: white;
+            padding: 20px;
+            border-radius: 0;
+            overflow: visible;
+            height: 420px;
+        }
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 420px);
+            width: 100%;
+        }
+        .side-column:first-child {
+            border-top-right-radius: 5px;
+        }
+        .side-column:last-child {
+            border-top-left-radius: 5px;
+        }
+        .side-column {
+            background-color: rgb(3, 26, 4);
+            width: 10%;
+            min-width: 100px;
+        }
+        .main-content {
+            flex-grow: 1;
+            background-color: rgb(243, 239, 239);
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div class="custom-theme" style="width: 100%; box-sizing: border-box;">
-      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 40px;">
-  
-        <!-- Logo on the left -->
-        <img src="{{ url_for('static', filename='investment_calculator.png') }}"
-           alt="Logo"
-           style="height: 353px;">
-  
-        <!-- Title and intro text -->
-        <div style="position: absolute; left: 50%; transform: translateX(-50%); text-align: center; color: white;">
-          <h1 class="ui header" style="color: white;">The project has been developed to simplify and clarify investment calculation</h1>
-          <p style="color: white;">Click on the Investment Calculus icon to begin the process of obtaining a net present value for your future investments</p>
-        
-          {% if current_investor %}
-            <p style="color: white; font-style: italic; font-size: 2em;">Current Investor Logged In: {{ current_investor["username"] }}</p>
-          {% endif %}
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 40px;">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='investment_calculator.png') }}"
+                 alt="Logo"
+                 style="height: 353px;">
+            <!-- Title/Intro -->
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); text-align: center; color: white;">
+                <h1 class="ui header" style="color: white;">
+                    The project has been developed to simplify and clarify investment calculation
+                </h1>
+                <p style="color: white;">
+                    Click on the Investment Calculus icon to begin the process of obtaining a net present value for your future investments
+                </p>
+                {% if current_investor %}
+                    <p style="color: white; font-style: italic; font-size: 2em;">
+                        Current Investor Logged In: {{ current_investor["username"] }}
+                    </p>
+                {% endif %}
+            </div>
+            <!-- Download icon -->
+            <img src="{{ url_for('static', filename='excel_download.png') }}"
+                 alt="Download Excel"
+                 style="height: 353px;">
         </div>
-  
-        <!-- Excel download icon on the right -->
-        <img src="{{ url_for('static', filename='excel_download.png') }}"
-            alt="Download Excel"
-            style="height: 353px;">
-  
-      </div>
-  
-      <!-- Menu bar -->
-      <div style="display: flex; justify-content: center;">
-        <div class="ui attached stackable menu" style="width: 900px;">
-          <a href="/calculus" class="item">
-            <i class="calculator icon"></i> Investment Calculus
-          </a>
-          <a href="/account" class="item">
-            <i class="address card outline icon"></i> Sign in or create account
-          </a>
-          <a href="{{ url_for('download_portfolio', username=current_investor['username']) }}" class="item">
-            <i class="download icon"></i> Download Entire Portfolio
-          </a>
+        <div style="display: flex; justify-content: center;">
+            <div class="ui attached stackable menu" style="width: 900px;">
+                <a href="/calculus" class="item"><i class="calculator icon"></i> Investment Calculus</a>
+                <a href="/account" class="item"><i class="address card outline icon"></i> Sign in or create account</a>
+                <a href="{{ url_for('download_portfolio', username=current_investor['username']) }}" class="item"><i class="download icon"></i> Download Entire Portfolio</a>
+            </div>
         </div>
-      </div>
     </div>
-    {% if list_of_projects|length > 0 %}
-    <div class="ui centered divided items" style="margin-top: 200px;">
-        <div class="item">
-          <div class="image">
-            <img src="data:image/png;base64,{{ list_of_diagrams[0] }}">
-          </div>
-          <div class="content">
-            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[0]) }}">
-              Project: {{ list_of_projects[0] }}
-            </a>
-            <div class="meta">
-              <span class="cinema">Net Present Value: {{ list_of_npv[0] }}$</span>
+    <div class="layout-container">
+        <div class="side-column"></div>
+        <div class="main-content">
+            {% if list_of_projects %}
+            <div class="ui centered divided items" style="margin-top: 200px;">
+                {% for i in range(list_of_projects|length) %}
+                <div class="item">
+                    <div class="image">
+                        <img src="data:image/png;base64,{{ list_of_diagrams[i] }}">
+                    </div>
+                    <div class="content">
+                        <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[i]) }}">
+                            Project: {{ list_of_projects[i] }}
+                        </a>
+                        <div class="meta">
+                            <span class="cinema">Net Present Value: {{ list_of_npv[i] }}$</span>
+                        </div>
+                        <div class="extra">
+                            <a class="ui right floated primary button" href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[i]) }}">
+                                Download Excel File
+                                <i class="right chevron icon"></i>
+                            </a>
+                            <div class="ui label">Break even point: {{ list_of_break_even[i] }} years</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-            <a class="ui right floated primary button"
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[0]) }}">
-              Download Excel File
-              <i class="right chevron icon"></i>
-            </a>
-              <div class="ui label">Break even point: {{ list_of_break_even[0]}} years</div>
-            </div>
-          </div>
+            {% else %}
+            <br>
+            {% endif %}
         </div>
-        {% else %}
-          <br>
-        {% endif %}
-        {% if list_of_projects|length > 1 %}
-        <div class="item">
-          <div class="image">
-            <img src="data:image/png;base64,{{ list_of_diagrams[1] }}">
-          </div>
-          <div class="content">
-            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[1]) }}">
-              Project: {{ list_of_projects[1] }}
-            </a>
-            <div class="meta">
-              <span class="cinema">Net Present Value: {{ list_of_npv[1] }}$</span>
-            </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-           <a class="ui right floated primary button"
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[1]) }}">
-              Download Excel File
-              <i class="right chevron icon"></i>
-            </a>
-              <div class="ui label">Break even point: {{ list_of_break_even[1]}} years </div>
-            </div>
-          </div>
-        </div>
-        {% else %}
-          <br>
-        {% endif %}
-        {% if list_of_projects|length > 2 %}
-        <div class="item">
-          <div class="image">
-            <img src="data:image/png;base64,{{ list_of_diagrams[2] }}">
-          </div>
-          <div class="content">
-            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[2]) }}">
-              Project: {{ list_of_projects[2] }}
-            </a>
-            <div class="meta">
-              <span class="cinema">Net Present Value: {{ list_of_npv[2] }}$</span>
-            </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-            <a class="ui right floated primary button"
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[2]) }}">
-              Download Excel File
-              <i class="right chevron icon"></i>
-            </a>
-              <div class="ui label">Break even point: {{ list_of_break_even[2]}} years</div>
-            </div>
-          </div>
-        </div>
-        {% else %}
-          <br>
-        {% endif %}
-        {% if list_of_projects|length > 3 %}
-        <div class="item">
-          <div class="image">
-            <img src="data:image/png;base64,{{ list_of_diagrams[3] }}">
-          </div>
-          <div class="content">
-            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[3]) }}">
-              Project: {{ list_of_projects[3] }}
-            </a>
-            <div class="meta">
-              <span class="cinema">Net Present Value: {{ list_of_npv[3] }}$</span>
-            </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-           <a class="ui right floated primary button"
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[3]) }}">
-              Download Excel File
-              <i class="right chevron icon"></i>
-            </a>
-              <div class="ui label">Break even point: {{ list_of_break_even[3]}} years</div>
-            </div>
-          </div>
-        </div>
-        {% else %}
-        <br>
-        {% endif %}
-        {% if list_of_projects|length > 4 %}
-        <div class="item">
-          <div class="image">
-            <img src="data:image/png;base64,{{ list_of_diagrams[4] }}">
-          </div>
-          <div class="content">
-            <a class="header" href="{{ url_for('view_project', username=current_investor['username'], project_name=list_of_projects[4]) }}">
-              Project: {{ list_of_projects[4] }}
-            </a>
-            <div class="meta">
-              <span class="cinema">Net Present Value: {{ list_of_npv[4] }}$</span>
-            </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-            <a class="ui right floated primary button"
-                href="{{ url_for('download_excel', username=current_investor['username'], project=list_of_projects[0]) }}">
-              Download Excel File
-              <i class="right chevron icon"></i>
-            </a>
-            <div class="ui label">Break even point: {{ list_of_break_even[4]}} years</div>
-            </div>
-          </div>
-        </div>
-        {% else %}
-        <br>
-        {% endif %}        
-      </div>
+
+        <div class="side-column"></div>
+    </div>
 </body>
 </html>

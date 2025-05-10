@@ -3,69 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <title>Investment Calculus</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <style>
+        body {
+            background-color: rgb(243, 239, 239);
+            margin: 0;
+        }
+        .custom-theme {
+            background-color: rgb(3, 26, 4);
+            color: white;
+            padding: 20px;
+            border-radius: 0;
+            overflow: visible;
+            height: 200px;
+        }
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 200px);
+            width: 100%;
+        }
+        .side-column:first-child {
+            border-top-right-radius: 5px;
+        }
+        .side-column:last-child {
+            border-top-left-radius: 5px;
+        }
+        .side-column {
+            background-color: rgb(3, 26, 4);
+            width: 12%;
+            min-width: 100px;
+        }
+        .main-content {
+            flex-grow: 1;
+            background-color: rgb(243, 239, 239);
+            padding: 40px;
+            color: black;
+        }
+        .main-content p {
+            font-size: 1.4em;
+        }
+        h1, label {
+            font-weight: bold;
+            color: rgb(3, 26, 4);
+            font-size: 1.2em;
+        }
+        input[type="text"],
+        input[type="number"] {
+            font-size: 0.95em;
+            padding: 6px;
+            width: 100%;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            font-size: 1.3em;
+            padding: 14px 28px;
+            background-color: #2185d0;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #1678c2;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 40% 30% 30%;
+            gap: 40px;
+            align-items: start;
+        }
+        .image-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            gap: 300px;
+        }
+        .image-column img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
-    <h1>Please fill out the form with accurate estimates for the project conditions</h1>
-    <form action="/submit" method="POST">
-        <div class="grid-container">
-            <div class="grid-item">
-                <p>To accurately calculate your investment returns, please provide estimates for the following variables. Each variable is crucial for the precise calculation of your investment’s financial outlook. Below is a detailed explanation of each term you need to enter</p>
-
-                <p>Project lifetime: Indicates the expected duration of the project in years.</p>
-                <p>Initial Investment: This is the total amount of money you initially invested in the project.</p>
-                <p>Incoming Payments: These are the expected inflows of cash from the project on a yearly basis.</p>
-                <p>Outgoing Payments: These represent the expected outflows of cash necessary for the project’s operations and expenses. Give an average estimate of yearly total outgoing payments under your projects lifetime.</p>
-                <p>Residual: The residual value is the estimated remaining value of the project at the end of its useful life. For example, if the project’s equipment will be worth 100 000$ after depreciation, that’s the number to enter.</p>
-                <p>Restricted Equity: Restricted equity refers to the portion of equity that cannot be distributed to shareholders or used for other purposes.</p>
-                <p>Discount Rate: The discount rate is used to calculate the present value of future cash flows. Enter this rate in decimal form. For example, if your discount rate is 5%, enter 0.05</p>
-                <p>Tax Rate: This is the rate at which the project’s earnings will be taxed. Enter the tax rate in decimal form. For example, if the tax rate is 30%, enter 0.30</p>
-                <p>By providing accurate estimates for each of these variables, you ensure the most precise calculation of your investment’s financial performance.</p>
+    <div class="custom-theme" style="width: 100%; box-sizing: border-box;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+            <div style="text-align: center; color: white; max-width: 1000px;">
+                <h1 class="ui header" style="color: white;">
+                    Please fill out the form with accurate estimates for the project conditions
+                </h1>
             </div>
-            <div class="grid-item">
-                <br>
-                <label for="project_name">Project Name:</label>
-                <input type="string" id="project_name" name="project_name"><br>
-                <br>
-                <br>
-                <label for="lifetime">Project lifetime:</label>
-                <input type="number" id="lifetime" name="lifetime"><br>
-                <br>
-                <br>
-                <label for="investment">Initial Investment:</label>
-                <input type="number" step="100000" id="investment" name="investment"><br>
-                <br>
-                <br>
-                <label for="inflows">Incoming Payments (from year 1):</label>
-                <input type="number" step="100000" id="inflows" name="inflows"><br>
-                <br>
-                <br>
-                <label for="outflows">Outgoing Payments (from year 1):</label>
-                <input type="number" step="100000" id="outflows" name="outflows"><br>
-                <br>
-                <br>
-                <label for="outflow_0">Outgoing Payments (year 0):</label>
-                <input type="number" step="100000" id="outflow_0" name="outflow_0"><br>
-                <br>
-                <br>
-                <label for="residual">Residual:</label>
-                <input type="number" step="100000" id="residual" name="residual"><br>
-                <br>
-                <br>
-                <label for="work_cap">Restricted Equity:</label>
-                <input type="number" step="100000" id="work_cap" name="work_cap"><br>
-                <br>
-                <br>
-                <label for="discount_rate">Discount Rate:</label>
-                <input type="floatformat" step="any" id="discount_rate" name="discount_rate"><br>
-                <br>
-                <br>
-                <label for="tax_rate">Tax Rate:</label>
-                <input type="floatformat" step="any" id="tax_rate" name="tax_rate"><br>
-                <br>
-                <input type="submit" value="Submit">
-            </div>                   
         </div>
-    </form>
+    </div>
+
+    <div class="layout-container">
+        <div class="side-column"></div>
+
+        <div class="main-content">
+            <form action="/submit" method="POST">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <p><strong>To accurately calculate your investment returns</strong>, please provide estimates for the following variables. Each variable is crucial for the precise calculation of your investment’s financial outlook. Below is a detailed explanation of each term you need to enter:</p>
+
+                        <p><strong>Project lifetime:</strong> Indicates the expected duration of the project in years.</p>
+                        <p><strong>Initial Investment:</strong> This is the total amount of money you initially invested in the project.</p>
+                        <p><strong>Incoming Payments:</strong> These are the expected inflows of cash from the project on a yearly basis.</p>
+                        <p><strong>Outgoing Payments:</strong> These represent the expected outflows of cash necessary for the project’s operations and expenses. Give an average estimate of yearly total outgoing payments under your project’s lifetime.</p>
+                        <p><strong>Residual:</strong> The residual value is the estimated remaining value of the project at the end of its useful life. For example, if the project’s equipment will be worth $100,000 after depreciation, that’s the number to enter.</p>
+                        <p><strong>Restricted Equity:</strong> Restricted equity refers to the portion of equity that cannot be distributed to shareholders or used for other purposes.</p>
+                        <p><strong>Discount Rate:</strong> The discount rate is used to calculate the present value of future cash flows. Enter this rate in decimal form. For example, if your discount rate is 5%, enter <code>0.05</code>.</p>
+                        <p><strong>Tax Rate:</strong> This is the rate at which the project’s earnings will be taxed. Enter the tax rate in decimal form. For example, if the tax rate is 30%, enter <code>0.30</code>.</p>
+                    </div>
+                    <div class="grid-item">
+                        <label for="project_name">Project Name:</label><br>
+                        <input type="text" id="project_name" name="project_name"><br><br>
+
+                        <label for="lifetime">Project lifetime:</label><br>
+                        <input type="number" id="lifetime" name="lifetime"><br><br>
+
+                        <label for="investment">Initial Investment:</label><br>
+                        <input type="text" id="investment" name="investment"><br><br>
+
+                        <label for="inflows">Incoming Payments (from year 1):</label><br>
+                        <input type="text" id="inflows" name="inflows"><br><br>
+
+                        <label for="outflows">Outgoing Payments (from year 1):</label><br>
+                        <input type="text" id="outflows" name="outflows"><br><br>
+
+                        <label for="outflow_0">Outgoing Payments (year 0):</label><br>
+                        <input type="text" id="outflow_0" name="outflow_0"><br><br>
+
+                        <label for="residual">Residual:</label><br>
+                        <input type="text" id="residual" name="residual"><br><br>
+
+                        <label for="work_cap">Restricted Equity:</label><br>
+                        <input type="text" id="work_cap" name="work_cap"><br><br>
+
+                        <label for="discount_rate">Discount Rate:</label><br>
+                        <input type="number" step="any" id="discount_rate" name="discount_rate"><br><br>
+
+                        <label for="tax_rate">Tax Rate:</label><br>
+                        <input type="number" step="any" id="tax_rate" name="tax_rate"><br><br>
+                    </div>
+                    <div class="grid-item image-column">
+                        <img src="{{ url_for('static', filename='investment_calculator.png') }}" alt="Investment Calculator Logo">
+                        <input type="submit" value="Calculate Investment Value">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="side-column"></div>
+    </div>
+
+    <script>
+        function formatNumberWithSpaces(value) {
+            const numeric = value.replace(/\D/g, '');
+            return numeric.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function showWarning(input, message) {
+            const existing = input.parentNode.querySelector(".ui.warning.message");
+            if (existing) return;
+
+            const warning = document.createElement("div");
+            warning.className = "ui warning message";
+            warning.textContent = message;
+            warning.style.marginTop = "5px";
+            input.parentNode.appendChild(warning);
+        }
+
+        function removeWarning(input) {
+            const warning = input.parentNode.querySelector(".ui.warning.message");
+            if (warning) warning.remove();
+        }
+
+        function handleInput(e) {
+            const raw = e.target.value;
+
+            if (/[^0-9\s]/.test(raw)) {
+                showWarning(e.target, "Only numbers are allowed.");
+            } else {
+                removeWarning(e.target);
+                const cursorPos = e.target.selectionStart;
+                const originalLength = e.target.value.length;
+
+                const formatted = formatNumberWithSpaces(raw);
+                e.target.value = formatted;
+
+                const newLength = formatted.length;
+                e.target.setSelectionRange(
+                    cursorPos + (newLength - originalLength),
+                    cursorPos + (newLength - originalLength)
+                );
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const numericFieldIds = [
+                "investment", "inflows", "outflows", "outflow_0",
+                "residual", "work_cap"
+            ];
+
+            numericFieldIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.type = "text";
+                    input.addEventListener("input", handleInput);
+                }
+            });
+
+            const form = document.querySelector("form");
+            form.addEventListener("submit", () => {
+                numericFieldIds.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        input.value = input.value.replace(/\s/g, '');
+                        removeWarning(input);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
