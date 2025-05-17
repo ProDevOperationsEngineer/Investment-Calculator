@@ -100,11 +100,38 @@ def home():
         return render_template("info.html")
 
 
+@app.route("/account")
+def account():
+    """Page to create or log into account"""
+    user = session.get("user", 0)
+    print("user: ", user)
+    return render_template("account.html", user=user)
+
+
 @app.route("/calculus")
 def kalkyl():
     """Route to investment calculation form"""
     user_dict = load_from_csv("user_database.csv")
     return render_template("index.html", user_dict=user_dict)
+
+
+@app.route("/download/portfolio/<username>", methods=["GET"])
+def download_portfolio(username):
+    """Download the entire users portfolio in a excel workbook format"""
+    csv_filename = "portfolio_database.csv"
+    portfolio_stream = generate_full_portfolio(csv_filename, username)
+
+    if portfolio_stream is None:
+        return f"No projects found for user '{username}'", 404
+
+    return send_file(
+        portfolio_stream,
+        mimetype=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        download_name=f"{username} Portfolio.xlsx",
+        as_attachment=True
+    )
 
 
 @app.route("/download/<username>/<project>", methods=["GET"])
@@ -126,22 +153,93 @@ def download_excel(username, project):
     )
 
 
-@app.route("/download/portfolio/<username>", methods=["GET"])
-def download_portfolio(username):
-    """Download the entire users portfolio in a excel workbook format"""
-    csv_filename = "portfolio_database.csv"
-    portfolio_stream = generate_full_portfolio(csv_filename, username)
+@app.route("/netpresentvalue")
+def netpresentvalue():
+    """Net present value of investment"""
+    data = load_last_shared_data()
+    project = data["projects"][-1]
 
-    if portfolio_stream is None:
-        return f"No projects found for user '{username}'", 404
+    # Diagram construction
+    y_axel_list = project["accumulated_net_value_list"]
+    t = np.arange(project["lifetime"] + 1)
+    fig, ax = plt.subplots(figsize=(12, 8), layout='constrained')
+    colors = ['green' if value >= 0 else '#B22222' for value in y_axel_list]
+    bars = ax.bar(t, y_axel_list, color=colors)
 
-    return send_file(
-        portfolio_stream,
-        mimetype=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
-        download_name=f"{username} Portfolio.xlsx",
-        as_attachment=True
+    # Add the values on top of the bars
+    for b, value in zip(bars, y_axel_list):
+        height = b.get_height()
+        rounded_value = math.floor(value)
+        ax.annotate(f'{rounded_value}',
+                    xy=(b.get_x() + b.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom')
+
+    # Set x-axis ticks and labels
+    ax.set_xticks(t)
+    ax.set_xticklabels(t)
+    ax.yaxis.set_ticks([])
+    ax.set_title("Net Value of Investment by Year")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Accumulated Net Value")
+
+    # Convert the plot to a PNG image and encode it to base64
+    img = io.BytesIO()
+    fig.savefig(img, format='png')
+    img.seek(0)
+    bar_plot_url = base64.b64encode(img.getvalue()).decode()
+
+    # Diagram construction for line plot
+    fig_line, ax_line = plt.subplots(figsize=(12, 9))
+    ax_line.plot(t, y_axel_list, marker='o', linestyle='-', color='purple')
+
+    # Set x-axis and y-axis labels for line plot
+    ax_line.set_title("Net Value of Investment by Year")
+    ax_line.set_xlabel("Year")
+    ax_line.set_ylabel("Accumulated Net Value")
+
+    # Set y-axis ticks to display only minimum and maximum values
+    min_value = min(y_axel_list)
+    max_value = max(y_axel_list)
+    ax_line.yaxis.set_ticks([min_value, max_value])
+
+    # Convert the line plot to a PNG image and encode it to base64
+    img_line = io.BytesIO()
+    fig_line.savefig(img_line, format='png')
+    img_line.seek(0)
+    line_plot_url = base64.b64encode(img_line.getvalue()).decode()
+
+    # Calculate break-even point and save to CSV project database
+    count = 0
+    for i in project["accumulated_net_value_list"]:
+        count += 1
+        if i > 0:
+            break
+    break_even = count - 1
+    project_name = str(project["project_name"])
+    username = data["username"]
+    project_csv = project.copy()
+    project_csv.pop("accumulated_net_value_list")
+    # Add line for break even variable to be added to project dictionary
+    save_to_csv_project(project_csv, "project_database.csv")
+    data["projects"][-1]["break_even"] = break_even
+    json_file_amender("shared_data.json", data)
+
+    # Save byte64data image to CSV image database
+    byte64_dict = {
+        "username": username,
+        "project_name": project_name,
+        "image": bar_plot_url
+    }
+    save_to_csv_image(byte64_dict, "image_database.csv")
+
+    return render_template(
+        "result.html",
+        bar_plot_url=bar_plot_url,
+        line_plot_url=line_plot_url,
+        break_even=break_even,
+        project=project
     )
 
 
@@ -183,14 +281,6 @@ def save_project():
     save_to_csv_user(investor_user, "user_database.csv")
     save_to_csv_project(investor_project_dict, "project_database.csv")
     return redirect(url_for("home"))
-
-
-@app.route("/account")
-def account():
-    """Page to create or log into account"""
-    user = session.get("user", 0)
-    print("user: ", user)
-    return render_template("account.html", user=user)
 
 
 @app.route("/submit", methods=["POST"])
@@ -304,96 +394,6 @@ def submit_login():
             session["user"] = 1
             os.remove("shared_data.json")
     return redirect(url_for("account"))
-
-
-@app.route("/netpresentvalue")
-def netpresentvalue():
-    """Net present value of investment"""
-    data = load_last_shared_data()
-    project = data["projects"][-1]
-
-    # Diagram construction
-    y_axel_list = project["accumulated_net_value_list"]
-    t = np.arange(project["lifetime"] + 1)
-    fig, ax = plt.subplots(figsize=(12, 8), layout='constrained')
-    colors = ['green' if value >= 0 else '#B22222' for value in y_axel_list]
-    bars = ax.bar(t, y_axel_list, color=colors)
-
-    # Add the values on top of the bars
-    for b, value in zip(bars, y_axel_list):
-        height = b.get_height()
-        rounded_value = math.floor(value)
-        ax.annotate(f'{rounded_value}',
-                    xy=(b.get_x() + b.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom')
-
-    # Set x-axis ticks and labels
-    ax.set_xticks(t)
-    ax.set_xticklabels(t)
-    ax.yaxis.set_ticks([])
-    ax.set_title("Net Value of Investment by Year")
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Accumulated Net Value")
-
-    # Convert the plot to a PNG image and encode it to base64
-    img = io.BytesIO()
-    fig.savefig(img, format='png')
-    img.seek(0)
-    bar_plot_url = base64.b64encode(img.getvalue()).decode()
-
-    # Diagram construction for line plot
-    fig_line, ax_line = plt.subplots(figsize=(12, 9))
-    ax_line.plot(t, y_axel_list, marker='o', linestyle='-', color='purple')
-
-    # Set x-axis and y-axis labels for line plot
-    ax_line.set_title("Net Value of Investment by Year")
-    ax_line.set_xlabel("Year")
-    ax_line.set_ylabel("Accumulated Net Value")
-
-    # Set y-axis ticks to display only minimum and maximum values
-    min_value = min(y_axel_list)
-    max_value = max(y_axel_list)
-    ax_line.yaxis.set_ticks([min_value, max_value])
-
-    # Convert the line plot to a PNG image and encode it to base64
-    img_line = io.BytesIO()
-    fig_line.savefig(img_line, format='png')
-    img_line.seek(0)
-    line_plot_url = base64.b64encode(img_line.getvalue()).decode()
-
-    # Calculate break-even point and save to CSV project database
-    count = 0
-    for i in project["accumulated_net_value_list"]:
-        count += 1
-        if i > 0:
-            break
-    break_even = count - 1
-    project_name = str(project["project_name"])
-    username = data["username"]
-    project_csv = project.copy()
-    project_csv.pop("accumulated_net_value_list")
-    # Add line for break even variable to be added to project dictionary
-    save_to_csv_project(project_csv, "project_database.csv")
-    data["projects"][-1]["break_even"] = break_even
-    json_file_amender("shared_data.json", data)
-
-    # Save byte64data image to CSV image database
-    byte64_dict = {
-        "username": username,
-        "project_name": project_name,
-        "image": bar_plot_url
-    }
-    save_to_csv_image(byte64_dict, "image_database.csv")
-
-    return render_template(
-        "result.html",
-        bar_plot_url=bar_plot_url,
-        line_plot_url=line_plot_url,
-        break_even=break_even,
-        project=project
-    )
 
 
 if __name__ == '__main__':

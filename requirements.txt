@@ -1,4 +1,6 @@
-xlsxwriter
 flask
 requests
 openpyxl
+xlsxwriter
+matplotlib
+pandas
